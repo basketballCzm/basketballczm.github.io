@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>tag-2 on Czm blog</title>
-    <link>https://basketballczm.github.io/tags/tag-2/</link>
+    <link>https://basketballczm.github.io/blog/tags/tag-2/</link>
     <description>Recent content in tag-2 on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 31 Aug 2017 15:43:48 +0800</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/tags/tag-2/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://basketballczm.github.io/blog/tags/tag-2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>English Creating a New Theme</title>
-      <link>https://basketballczm.github.io/post/english-preview/</link>
+      <link>https://basketballczm.github.io/blog/post/english-preview/</link>
       <pubDate>Thu, 31 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/post/english-preview/</guid>
+      <guid>https://basketballczm.github.io/blog/post/english-preview/</guid>
       <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
 
 &lt;p&gt;This tutorial will show you how to create a simple theme in Hugo. I assume that you are familiar with HTML, the bash command line, and that you are comfortable using Markdown to format content. I&amp;rsquo;ll explain how Hugo uses templates and how you can organize your templates to create a theme. I won&amp;rsquo;t cover using CSS to style your theme.&lt;/p&gt;</description>
@@ -24,10 +24,10 @@
     
     <item>
       <title>This is a very long title This is a very long title This is a very long title This is a very long title This is a very long title</title>
-      <link>https://basketballczm.github.io/post/this-is-a-very-long-title/</link>
+      <link>https://basketballczm.github.io/blog/post/this-is-a-very-long-title/</link>
       <pubDate>Wed, 30 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/post/this-is-a-very-long-title/</guid>
+      <guid>https://basketballczm.github.io/blog/post/this-is-a-very-long-title/</guid>
       <description>This is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long titleThis is a very long title</description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Czm blog</title>
-    <link>https://basketballczm.github.io/</link>
+    <link>https://basketballczm.github.io/blog/</link>
     <description>Recent content on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 04 Mar 2019 16:01:23 +0800</lastBuildDate>
     
-        <atom:link href="https://basketballczm.github.io/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://basketballczm.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>About</title>
-      <link>https://basketballczm.github.io/about/</link>
+      <link>https://basketballczm.github.io/blog/about/</link>
       <pubDate>Sun, 20 Aug 2017 21:38:52 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/about/</guid>
+      <guid>https://basketballczm.github.io/blog/about/</guid>
       
         <description>&lt;p&gt;Hugo is a static site engine written in Go.&lt;/p&gt;
 
@@ -36,10 +36,10 @@
     
     <item>
       <title>Posts</title>
-      <link>https://basketballczm.github.io/post/</link>
+      <link>https://basketballczm.github.io/blog/post/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/post/</guid>
+      <guid>https://basketballczm.github.io/blog/post/</guid>
       
         <description></description>
       

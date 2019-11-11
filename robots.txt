@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://basketballczm.github.io/sitemap.xml
+Sitemap: https://basketballczm.github.io/blog/sitemap.xml

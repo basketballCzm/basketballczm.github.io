@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>math on Czm blog</title>
-    <link>https://basketballczm.github.io/categories/math/</link>
+    <link>https://basketballczm.github.io/blog/categories/math/</link>
     <description>Recent content in math on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 04 Mar 2019 16:01:23 +0800</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/categories/math/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://basketballczm.github.io/blog/categories/math/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Math Preview</title>
-      <link>https://basketballczm.github.io/post/math-preview/</link>
+      <link>https://basketballczm.github.io/blog/post/math-preview/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/post/math-preview/</guid>
+      <guid>https://basketballczm.github.io/blog/post/math-preview/</guid>
       <description>&lt;p&gt;&lt;a href=&#34;https://www.intmath.com/cg5/katex-mathjax-comparison.php&#34;&gt;KaTeX and MathJax Comparison Demo, currently processed as KaTex&lt;/a&gt;&lt;/p&gt;</description>
     </item>
     

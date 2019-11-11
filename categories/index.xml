@@ -2,93 +2,93 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Czm blog</title>
-    <link>https://basketballczm.github.io/categories/</link>
+    <link>https://basketballczm.github.io/blog/categories/</link>
     <description>Recent content in Categories on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Mon, 04 Mar 2019 16:01:23 +0800</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://basketballczm.github.io/blog/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>docs</title>
-      <link>https://basketballczm.github.io/categories/docs/</link>
+      <link>https://basketballczm.github.io/blog/categories/docs/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/docs/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/docs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>index</title>
-      <link>https://basketballczm.github.io/categories/index/</link>
+      <link>https://basketballczm.github.io/blog/categories/index/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/index/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/index/</guid>
       <description></description>
     </item>
     
     <item>
       <title>math</title>
-      <link>https://basketballczm.github.io/categories/math/</link>
+      <link>https://basketballczm.github.io/blog/categories/math/</link>
       <pubDate>Mon, 04 Mar 2019 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/math/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/math/</guid>
       <description></description>
     </item>
     
     <item>
       <title>shortcodes</title>
-      <link>https://basketballczm.github.io/categories/shortcodes/</link>
+      <link>https://basketballczm.github.io/blog/categories/shortcodes/</link>
       <pubDate>Tue, 06 Mar 2018 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/shortcodes/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/shortcodes/</guid>
       <description></description>
     </item>
     
     <item>
       <title>English</title>
-      <link>https://basketballczm.github.io/categories/english/</link>
+      <link>https://basketballczm.github.io/blog/categories/english/</link>
       <pubDate>Thu, 31 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/english/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/english/</guid>
       <description></description>
     </item>
     
     <item>
       <title>test</title>
-      <link>https://basketballczm.github.io/categories/test/</link>
+      <link>https://basketballczm.github.io/blog/categories/test/</link>
       <pubDate>Wed, 30 Aug 2017 15:43:48 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/test/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/test/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Development</title>
-      <link>https://basketballczm.github.io/categories/development/</link>
+      <link>https://basketballczm.github.io/blog/categories/development/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/development/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/development/</guid>
       <description></description>
     </item>
     
     <item>
       <title>golang</title>
-      <link>https://basketballczm.github.io/categories/golang/</link>
+      <link>https://basketballczm.github.io/blog/categories/golang/</link>
       <pubDate>Sun, 28 Sep 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/golang/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/golang/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Syntax Highlighting</title>
-      <link>https://basketballczm.github.io/categories/syntax-highlighting/</link>
+      <link>https://basketballczm.github.io/blog/categories/syntax-highlighting/</link>
       <pubDate>Tue, 30 Aug 2011 16:01:23 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/categories/syntax-highlighting/</guid>
+      <guid>https://basketballczm.github.io/blog/categories/syntax-highlighting/</guid>
       <description></description>
     </item>
     

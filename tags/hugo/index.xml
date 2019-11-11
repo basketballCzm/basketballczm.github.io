@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>hugo on Czm blog</title>
-    <link>https://basketballczm.github.io/tags/hugo/</link>
+    <link>https://basketballczm.github.io/blog/tags/hugo/</link>
     <description>Recent content in hugo on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Wed, 02 Apr 2014 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://basketballczm.github.io/blog/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Getting Started with Hugo</title>
-      <link>https://basketballczm.github.io/post/hugoisforlovers/</link>
+      <link>https://basketballczm.github.io/blog/post/hugoisforlovers/</link>
       <pubDate>Wed, 02 Apr 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://basketballczm.github.io/post/hugoisforlovers/</guid>
+      <guid>https://basketballczm.github.io/blog/post/hugoisforlovers/</guid>
       <description>Step 1. Install Hugo Goto hugo releases and download the appropriate version for your os and architecture.
 Save it somewhere specific as we will be using it in the next step.
 More complete instructions are available at installing hugo

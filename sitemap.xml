@@ -2,28 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://puppym.github.io/blog/</loc>
-    <lastmod>2020-01-04T16:21:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://puppym.github.io/blog/go-scheduler/</loc>
-    <lastmod>2020-01-04T16:21:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://puppym.github.io/blog/geth-query/</loc>
-    <lastmod>2020-01-02T09:41:04+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://puppym.github.io/blog/categories/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://puppym.github.io/blog/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

@@ -13,19 +13,19 @@
     
     <item>
       <title>Go Sheduler</title>
-      <link>https://puppym.github.io/blog/post/go-scheduler/</link>
+      <link>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</link>
       <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
       
-      <guid>https://puppym.github.io/blog/post/go-scheduler/</guid>
+      <guid>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</guid>
       <description>go 调度器 介绍 Go 1.1的最重要的一个特性是引入了新的调度器，由Dmitry Vyukov贡献， 新的调度器极大的提高了程序的并行性能。 go runti</description>
     </item>
     
     <item>
       <title>Geth_query</title>
-      <link>https://puppym.github.io/blog/post/geth-query/</link>
+      <link>https://puppym.github.io/blog/post/geth-query/geth-query/</link>
       <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
       
-      <guid>https://puppym.github.io/blog/post/geth-query/</guid>
+      <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
       <description>以太坊智能合约数据高速抽取和重放 为了解决从海量的区块数据中快速提取智能合约运行特征，本文提出智能合约数据快速抽取和重放技术。解决以太坊从海量</description>
     </item>
     

@@ -33,7 +33,7 @@
 <meta name="generator" content="Hugo 0.59.1" />
 
 
-<link rel="canonical" href="https://puppym.github.io/blog/post/geth-query/" />
+<link rel="canonical" href="https://puppym.github.io/blog/post/geth-query/geth-query/" />
 
 
 
@@ -60,7 +60,7 @@
 <meta property="og:title" content="Geth_query" />
 <meta property="og:description" content="以太坊智能合约数据快速抽取和重放" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://puppym.github.io/blog/post/geth-query/" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/geth-query/geth-query/" />
 <meta property="article:published_time" content="2020-01-02T09:41:04+08:00" />
 <meta property="article:modified_time" content="2020-01-02T09:41:04+08:00" />
 <meta itemprop="name" content="Geth_query">
@@ -69,7 +69,7 @@
 
 <meta itemprop="datePublished" content="2020-01-02T09:41:04&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-02T09:41:04&#43;08:00" />
-<meta itemprop="wordCount" content="3234">
+<meta itemprop="wordCount" content="3231">
 
 
 
@@ -285,7 +285,7 @@
           2020-01-02
         </time>
         
-        <span class="more-meta"> 3234 words </span>
+        <span class="more-meta"> 3231 words </span>
           <span class="more-meta"> 7 min read </span>
 
         
@@ -347,7 +347,7 @@
 <li>重复上述操作，直至全节点跟上主网的同步状态。</li>
 </ol>
 
-<p><img src="C:Usersczm18Desktop开题报告简化以太坊数据抽取图中文 (1).png" alt="简化以太坊数据抽取图中文 (1)" /></p>
+<p><img src="1.png" alt="简化以太坊数据抽取图中文 (1)" /></p>
 
 <p>另一方面，合约状态和区块交易中还包含大量冗余信息，对长期数据存储同步以及后续分析带来极大的压力，后面会对数据使用颗粒化快照策略，对这部分信息进行过滤。</p>
 
@@ -369,7 +369,7 @@
 
 <p>智能合约执行过程重放优化过程如下图所示:</p>
 
-<p><img src="C:Usersczm18Desktop开题报告以太坊交易流程图中文 (1).png" alt="以太坊交易流程图中文 (1)" /></p>
+<p><img src="2.png" alt="以太坊交易流程图中文 (1)" /></p>
 
 <p>智能合约在虚拟机中的运行过程包含重要信息，对于安全分析和监控尤为重要。在合约任意状态恢复技术的之处下，可复原任意时刻链上状态用于虚拟机跟踪调试，即可用于漏洞追溯分析和威胁检测。本技术还可对关键操作符进行识别，以获取更多核心数据，为后续分析提供尽可能多的深度元信息。</p>
 
@@ -397,7 +397,7 @@
 
 <p>具体区块链数据缓存架构图如下所示:</p>
 
-<p><img src="C:Usersczm18Desktop开题报告以太坊数据存储架构图中文.png" alt="以太坊数据存储架构图中文" /></p>
+<p><img src="3.png" alt="以太坊数据存储架构图中文" /></p>
 
 <p>为了满足针对区块链和智能合约的大量数据分析需求，本文研究实时数据导出技术，方便其他场景下的数据二次加工。本文通过更改区块链全节点的源代码，在区块链节点数据同步过程中，对于区块链数据进行实时导出。导出内容可以指定，从而满足不同场景下的需求。</p>
 
@@ -405,11 +405,13 @@
 
 <p>完成上述研究后会将产生的结果和现有的全节点RPC接口以及全节点EVM运行速度相互对比，对比主要分为三个方面：</p>
 
-<p>\1. 对比本地EVM重放智能合约速度和全节点运行智能合约的速度。</p>
+<ol>
+<li><p>对比本地EVM重放智能合约速度和全节点运行智能合约的速度。</p></li>
 
-<p>\2. 对比两者RPC请求响应速度，通过对比两者RPC请求响应速度来体现现有工作的优势。</p>
+<li><p>对比两者RPC请求响应速度，通过对比两者RPC请求响应速度来体现现有工作的优势。</p></li>
 
-<p>\3. 对比现有实验结果的RPC请求能够获取的数据而现有全节点的RPC请求不能获取的数据，体现现有工作的优势。比如智能合约运行过程中产生的特征。</p>
+<li><p>对比现有实验结果的RPC请求能够获取的数据而现有全节点的RPC请求不能获取的数据，体现现有工作的优势。比如智能合约运行过程中产生的特征。</p></li>
+</ol>
 
     </div>
 
@@ -448,7 +450,7 @@
       
       <nav class="post-nav">
         
-          <a class="prev" href="/blog/post/go-scheduler/">
+          <a class="prev" href="/blog/post/go-scheduler/go-scheduler/">
             
             <i class="iconfont">
               <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"

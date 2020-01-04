@@ -3,7 +3,7 @@ title: "Go Sheduler"
 date: 2020-01-04T16:21:44+08:00
 draft: true
 # description: "go-sheduler简介"
-# tags: "golang"
+tags: [golang]
 ---
 
 ## go 调度器

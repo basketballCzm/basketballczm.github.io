@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Geth_query</title>
+      <title>Geth-query</title>
       <link>https://puppym.github.io/blog/post/geth-query/geth-query/</link>
       <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
       
       <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
-      <description>以太坊智能合约数据高速抽取和重放 为了解决从海量的区块数据中快速提取智能合约运行特征，本文提出智能合约数据快速抽取和重放技术。解决以太坊从海量</description>
+      <description>以太坊智能合约数据快速抽取和重放</description>
     </item>
     
   </channel>

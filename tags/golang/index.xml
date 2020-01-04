@@ -17,7 +17,7 @@
       <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
       
       <guid>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</guid>
-      <description>go 调度器 介绍 Go 1.1的最重要的一个特性是引入了新的调度器，由Dmitry Vyukov贡献， 新的调度器极大的提高了程序的并行性能。 go runti</description>
+      <description>go-sheduler简介</description>
     </item>
     
   </channel>

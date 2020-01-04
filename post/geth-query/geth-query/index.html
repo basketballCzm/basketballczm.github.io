@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Geth_query - Czm blog</title>
+  <title>Geth-query - Czm blog</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -22,7 +22,8 @@
 
 <meta name="mobile-web-app-capable" content="yes">
 
-<meta name="author" content="Czm" /><meta name="description" content="以太坊智能合约数据快速抽取和重放" />
+<meta name="author" content="Czm" />
+  <meta name="description" content="以太坊智能合约数据快速抽取和重放" />
 
 
 
@@ -57,13 +58,13 @@
 
 
 
-<meta property="og:title" content="Geth_query" />
+<meta property="og:title" content="Geth-query" />
 <meta property="og:description" content="以太坊智能合约数据快速抽取和重放" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://puppym.github.io/blog/post/geth-query/geth-query/" />
 <meta property="article:published_time" content="2020-01-02T09:41:04+08:00" />
 <meta property="article:modified_time" content="2020-01-02T09:41:04+08:00" />
-<meta itemprop="name" content="Geth_query">
+<meta itemprop="name" content="Geth-query">
 <meta itemprop="description" content="以太坊智能合约数据快速抽取和重放">
 
 
@@ -75,7 +76,7 @@
 
 <meta itemprop="keywords" content="blockchain,ethereum," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Geth_query"/>
+<meta name="twitter:title" content="Geth-query"/>
 <meta name="twitter:description" content="以太坊智能合约数据快速抽取和重放"/>
 
 <!--[if lte IE 9]>
@@ -278,7 +279,7 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">Geth_query</h1>
+      <h1 class="post-title">Geth-query</h1>
       
       <div class="post-meta">
         <time datetime="2020-01-02" class="post-time">
@@ -347,7 +348,7 @@
 <li>重复上述操作，直至全节点跟上主网的同步状态。</li>
 </ol>
 
-<p><img src="1.png" alt="简化以太坊数据抽取图中文 (1)" /></p>
+<p><img src="1.png" alt="" /></p>
 
 <p>另一方面，合约状态和区块交易中还包含大量冗余信息，对长期数据存储同步以及后续分析带来极大的压力，后面会对数据使用颗粒化快照策略，对这部分信息进行过滤。</p>
 
@@ -369,7 +370,7 @@
 
 <p>智能合约执行过程重放优化过程如下图所示:</p>
 
-<p><img src="2.png" alt="以太坊交易流程图中文 (1)" /></p>
+<p><img src="2.png" alt="" /></p>
 
 <p>智能合约在虚拟机中的运行过程包含重要信息，对于安全分析和监控尤为重要。在合约任意状态恢复技术的之处下，可复原任意时刻链上状态用于虚拟机跟踪调试，即可用于漏洞追溯分析和威胁检测。本技术还可对关键操作符进行识别，以获取更多核心数据，为后续分析提供尽可能多的深度元信息。</p>
 
@@ -397,7 +398,7 @@
 
 <p>具体区块链数据缓存架构图如下所示:</p>
 
-<p><img src="3.png" alt="以太坊数据存储架构图中文" /></p>
+<p><img src="3.png" alt="" /></p>
 
 <p>为了满足针对区块链和智能合约的大量数据分析需求，本文研究实时数据导出技术，方便其他场景下的数据二次加工。本文通过更改区块链全节点的源代码，在区块链节点数据同步过程中，对于区块链数据进行实时导出。导出内容可以指定，从而满足不同场景下的需求。</p>
 

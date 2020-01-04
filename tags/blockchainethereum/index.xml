@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>blockchain,ethereum on Czm blog</title>
-    <link>https://basketballczm.github.io/blog/tags/blockchainethereum/</link>
+    <link>https://puppym.github.io/blog/tags/blockchainethereum/</link>
     <description>Recent content in blockchain,ethereum on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 02 Jan 2020 09:41:04 +0800</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/blog/tags/blockchainethereum/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://puppym.github.io/blog/tags/blockchainethereum/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Geth_query</title>
-      <link>https://basketballczm.github.io/blog/geth_query/</link>
+      <link>https://puppym.github.io/blog/geth_query/</link>
       <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/blog/geth_query/</guid>
+      <guid>https://puppym.github.io/blog/geth_query/</guid>
       <description>以太坊智能合约数据高速抽取和重放 为了解决从海量的区块数据中快速提取智能合约运行特征，本文提出智能合约数据快速抽取和重放技术。解决以太坊从海量</description>
     </item>
     

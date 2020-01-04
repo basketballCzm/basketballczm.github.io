@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Czm blog</title>
-    <link>https://basketballczm.github.io/blog/tags/</link>
+    <link>https://puppym.github.io/blog/tags/</link>
     <description>Recent content in Tags on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <lastBuildDate>Thu, 02 Jan 2020 09:41:04 +0800</lastBuildDate>
     
-	<atom:link href="https://basketballczm.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://puppym.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>blockchain,ethereum</title>
-      <link>https://basketballczm.github.io/blog/tags/blockchainethereum/</link>
+      <link>https://puppym.github.io/blog/tags/blockchainethereum/</link>
       <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
       
-      <guid>https://basketballczm.github.io/blog/tags/blockchainethereum/</guid>
+      <guid>https://puppym.github.io/blog/tags/blockchainethereum/</guid>
       <description></description>
     </item>
     

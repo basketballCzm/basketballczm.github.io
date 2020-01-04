@@ -6,10 +6,19 @@
     <description>Recent content in Tags on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 02 Jan 2020 09:41:04 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 04 Jan 2020 16:21:44 +0800</lastBuildDate>
     
 	<atom:link href="https://puppym.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>golang</title>
+      <link>https://puppym.github.io/blog/tags/golang/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/golang/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>blockchain,ethereum</title>

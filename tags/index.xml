@@ -20,5 +20,23 @@
       <description></description>
     </item>
     
+    <item>
+      <title>blockchain</title>
+      <link>https://puppym.github.io/blog/tags/blockchain/</link>
+      <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/blockchain/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>ethereum</title>
+      <link>https://puppym.github.io/blog/tags/ethereum/</link>
+      <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/ethereum/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

@@ -92,7 +92,7 @@ sysmon是一个由runtime启动的M，也叫监控线程，它无需P也可以�
 1. 释放闲置超过5分钟的span物理内存； scavenge heap
 2. 如果超过2分钟没有垃圾回收，强制执行；forcegc
 3. 将长时间未处理的netpoll结果添加到任务队列；netpool
-4. 向长时间运行的G任务发出抢占调度；retake[golang-Cpu密集型任务调度抢占](http://xiaorui.cc/2018/06/04/golang%e5%af%86%e9%9b%86%e5%9c%ba%e6%99%af%e4%b8%8b%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e9%a5%a5%e9%a5%bf%e9%97%ae%e9%a2%98/)。这里发生抢占其实是一种伪抢占，本质上是sysmon中的retake触发morestack，然后调用newstack，然后gopreempt_m会重置g的状态，并且扔到本地runq中重新进行调度。
+4. 向长时间运行的G任务发出抢占调度；retake[golang-Cpu密集型任务调度抢占](http://xiaorui.cc/2018/06/04/golang%e5%af%86%e9%9b%86%e5%9c%ba%e6%99%af%e4%b8%8b%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e9%a5%a5%e9%a5%bf%e9%97%ae%e9%a2%98/)。这里发生抢占其实是一种伪抢占，本质上是sysmon中的retake触发morestack，然后调用newstack，然后gopreempt_m会重置g的状态，并且扔到全局runq中重新进行调度(这里扔到全局的runq中也比较好理解，因为全局队列中都是一些需要执行时间比较长的G，中心思想是全局runq中的G执行时间比本地runq执行时间要长)。
 5. 收回因syscall长时间阻塞的P；
 
 go调度器还有很多细节，比如cgo线程LockOSThread()函数以及与网络轮询器的集成。这些都能够在go的runtime库中能够找到。

@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Geth-query获取数据 - Czm blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Czm" />
+  <meta name="description" content="以太坊智能合约数据抽取数据" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.59.1" />
+
+
+<link rel="canonical" href="https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/" />
+
+
+
+
+
+<link rel="icon" href="/blog/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/sass/jane.min.af20b78e95c84de86b00a0242a4a77bd2601700e1b250edf27537d957ac0041d.css" integrity="sha256-ryC3jpXITehrAKAkKkp3vSYBcA4bJQ7fJ1N9lXrABB0=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Geth-query获取数据" />
+<meta property="og:description" content="以太坊智能合约数据抽取数据" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/" />
+<meta property="article:published_time" content="2020-01-09T14:49:51+08:00" />
+<meta property="article:modified_time" content="2020-01-09T14:49:51+08:00" />
+<meta itemprop="name" content="Geth-query获取数据">
+<meta itemprop="description" content="以太坊智能合约数据抽取数据">
+
+
+<meta itemprop="datePublished" content="2020-01-09T14:49:51&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-09T14:49:51&#43;08:00" />
+<meta itemprop="wordCount" content="3018">
+
+
+
+<meta itemprop="keywords" content="blockchain,ethereum,smart contract," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Geth-query获取数据"/>
+<meta name="twitter:description" content="以太坊智能合约数据抽取数据"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">Czm blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/blog/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/blog/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/blog/" class="logo">
+    
+      Czm blog
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Geth-query获取数据</h1>
+      
+      <div class="post-meta">
+        <time datetime="2020-01-09" class="post-time">
+          2020-01-09
+        </time>
+        
+        <span class="more-meta"> 3018 words </span>
+          <span class="more-meta"> 7 min read </span>
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#geth-query获取数据">Geth-query获取数据</a>
+<ul>
+<li><a href="#block数据">block数据</a></li>
+<li><a href="#transfers数据">transfers数据</a></li>
+<li><a href="#transactions数据">transactions数据</a></li>
+<li><a href="#traces数据">traces数据</a></li>
+<li><a href="#events数据">events数据</a></li>
+<li><a href="#其它数据">其它数据</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      
+
+<h2 id="geth-query获取数据">Geth-query获取数据</h2>
+
+<blockquote>
+<p>本文承接Geth-query设计文档，主要阐述通过Geth-query功能获得哪些数据，以及怎么获得，需要修改哪些代码。当然Geth-query是一个自定义的合约重放工具，通过修改<code>go-ethereum</code>的源码以及该工具的代码能够自定义获取任何在EVM中产生过的中间数据。</p>
+</blockquote>
+
+<p>重发智能合约主要要使用<code>achieve</code>模式全节点的2种数据：1. 区块数据。2.区块的世界状态数据。前者通过<code>achieve</code>模式全节点通过p2p网络同步获取，后者通过全节点同步过程中通过EVM执行区块数据获取每一个区块的世界状态，然后将两者都通过RLP编码格式进行压缩，存储到底层的levelDB数据库中。</p>
+
+<p>在重放过程中，获取上述两种数据可以通过<code>go-ethereum</code>的接口获取。</p>
+
+<p>获取区块数据<code>block := chain.GetBlockByNumber(currentBlock)</code>。</p>
+
+<p>获取区块世界状态数据<code>statedb, err := blockchain.StateAt(blockchain.GetBlockByHash(block.ParentHash()).Root())</code></p>
+
+<p>执行每笔交易的EVM api接口<code>_, gas, failed, err := core.ApplyMessage(vmenv, msg, gp)</code></p>
+
+<h3 id="block数据">block数据</h3>
+
+<p>对于区块数据而言，可以直接通过<code>achieve</code>模式的全节点同步区块数据，然后按照区块数据存入blocks的表中。</p>
+
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>evmType</th>
+<th>pgType</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>blockNumber</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>blockHash</td>
+<td>a hex string</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>parentHash</td>
+<td>a hex string</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>nonce</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>miner</td>
+<td>a hex string</td>
+<td>text (Address length 20)</td>
+</tr>
+
+<tr>
+<td>difficulty</td>
+<td>bigint_to_string</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>totalDifficulty</td>
+<td>bigint_to string</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>extraData</td>
+<td>byte[]</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>size</td>
+<td>float64-&gt;string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>gasLimit</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>gasUsed</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>_timestamp</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>transactionCount</td>
+<td>uint64</td>
+<td>int</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="transfers数据">transfers数据</h3>
+
+<p>对于transfers数据可以理解为由交易和内部交易导致账户余额世界状态的变化，通过深入修改EVM的源码代码，通过分析EVM在执行合约过程中哪里修改了账户地址的世界状态，然后在该处添加<code>capturetransfers</code>动作，抓取出每次EVM执行合约过程中账户世界状态变动的transfers数据。下面EVM中的动作导致了账户世界状态的变化：</p>
+
+<ol>
+<li>Call 指令中如果<code>msg.value</code>的值不为零，并且校验<code>!evm.Context.CanTransfer</code>校验通过，会进行交易转账或者内部交易转账<code>evm.Transfer(evm.StateDB, caller.Address(), to.Address(), value)</code>，因此需要在该处添加<code>capturetransfer</code>动作。</li>
+</ol>
+
+<p><code>evm.go 240</code></p>
+
+<pre><code>   ```golang
+if evm.Interpreter().(*EVMInterpreter).GetConfig().Debug {
+    evm.Interpreter().(*EVMInterpreter).GetConfig().Tracer.(*StructLogger).CaptureTransferState(evm.StateDB.(*state.StateDB), evm.depth, common.Hash{}, caller.Address(),
+        to.Address(), value, &quot;CALL&quot;, evm.StateDB.(*state.StateDB).GetNextRevisionId())
+}
+   ```
+</code></pre>
+
+<ol>
+<li>Create 指令中<code>msg.value</code>值不为零，并且校验<code>!evm.Context.CanTransfer</code>校验通过，会导致创建合约过程中给合约账户转账<code>evm.Transfer(evm.StateDB, caller.Address(), address, value)</code>。</li>
+</ol>
+
+<blockquote>
+<p>这里可能存在一种情况，就是合约hash已经创建成功，但是由于gas费用不足以将合约的code存储进入世界状态会产生<code>ErrCodeStoreOutOfGas</code>错误，但是此时合约的地址已经存在世界状态中，并且转给合约账户的转账操作也已经生效。<code>evm.go 470</code></p>
+</blockquote>
+
+<p><code>evm.go   420</code>插入<code>capturetransfer</code>动作</p>
+
+<pre><code class="language-golang">	if evm.Interpreter().(*EVMInterpreter).GetConfig().Debug {
+		evm.Interpreter().(*EVMInterpreter).GetConfig().Tracer.(*StructLogger).CaptureTransferState(evm.StateDB.(*state.StateDB), evm.depth, common.Hash{}, caller.Address(),
+			address, value, &quot;CREATE&quot;, evm.StateDB.(*state.StateDB).GetNextRevisionId())
+	}
+</code></pre>
+
+<ol>
+<li>selfdestruct指令返回销毁账户的余额。</li>
+</ol>
+
+<p><code>instructions.go  881</code></p>
+
+<pre><code class="language-golang">	if interpreter.GetConfig().Debug {
+		interpreter.GetConfig().Tracer.(*StructLogger).CaptureTransferState(interpreter.evm.StateDB.(*state.StateDB), interpreter.evm.depth, common.Hash{}, contract.Address(),
+			common.BigToAddress(stack.pop()), balance, &quot;selfDestruct&quot;, interpreter.evm.StateDB.(*state.StateDB).GetNextRevisionId())
+	}
+</code></pre>
+
+<ol>
+<li>区块中每笔交易产生的gas费用会直接在EVM中进行加减，因此在该处应该加入<code>capturetransfers</code>动作抓取<code>transfer</code>。注意这里的gas费用值为用户消耗的gas费用值。</li>
+</ol>
+
+<blockquote>
+<p>这里计算gas费用也有一些规则：用户首先预支initialGas的上限值，然后在执行合约过程中会逐步消耗gas，但是对于用户的一些操作eth也会奖励用户gas，比如释放storage空间，selfdestruct合约(该操作会退回两笔费用，一笔是gas费用，一笔是合约余额)。最后用户支付的gas费用就是<code>st.initialGas - st.gas</code>。为了防止用户最后支付的gas费用为负值的情况，用户获得奖励的gas小于或等于用户消耗gas数目的一半。因此在销毁合约获得的奖励可能小于理论值，和用户本次交易消耗的gas有关。</p>
+</blockquote>
+
+<p>​     <code>capturetansfer</code>动作可以添加在<code>state_transition.go 232行</code>，具体代码如      下：</p>
+
+<pre><code class="language-golang">	if st.evm.Interpreter().(*vm.EVMInterpreter).GetConfig().Debug {
+		st.evm.Interpreter().(*vm.EVMInterpreter).GetConfig().Tracer.(*vm.StructLogger).CaptureTransferState(st.evm.StateDB.(*state.StateDB), 0, common.Hash{}, msg.From(),
+			st.evm.Coinbase, new(big.Int).Mul(new(big.Int).SetUint64(st.gasUsed()), st.gasPrice), &quot;GASFEE&quot;, 0)
+	}
+</code></pre>
+
+<ol>
+<li><p>叔叔区块奖励和父区块的奖励也是直接在EVM中进行运算，因此也需要加入<code>capturetransfer</code>动作，该部分在geth-query重放工具中完成。</p>
+
+<pre><code class="language-golang">	for _, uncle := range block.Uncles() {
+		r.Add(uncle.Number, big8)
+		r.Sub(r, block.Header().Number)
+		r.Mul(r, blockReward)
+		r.Div(r, big8)
+		data.transfers = append(data.transfers,
+			newRewardTransfer(statedb, 0, common.Hash{}, common.Address{}, uncle.Coinbase, r, &quot;UNCLE&quot;))
+		rd := new(big.Int)
+		rd.Div(blockReward, big32)
+		reward.Add(reward, rd)
+	}
+
+	data.transfers = append(data.transfers,
+		newRewardTransfer(statedb, 0, common.Hash{}, common.Address{}, block.Coinbase(), reward, &quot;MINED&quot;))
+</code></pre></li>
+</ol>
+
+<p><code>transfers</code>表的各项数据如下：</p>
+
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>evmType</th>
+<th>pgType</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>id</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>blockNumber</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>blockHash</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>_timestamp</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>transactionHash</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>transferIndex</td>
+<td>int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>depth</td>
+<td>int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>_from</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>_to</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>fromBalance</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>toBalance</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>transferValue</td>
+<td>string</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>transferType</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>decollator</td>
+<td>&rdquo;&rdquo;   -&gt;  string</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="transactions数据">transactions数据</h3>
+
+<p>transactions数据主要是交易执行完后产生的receipt数据。通过组合<code>get-query</code>重放合约后的返回值和同步的<code>transactions</code>数据一起组合形成<code>receipt</code>。</p>
+
+<p>主要的格式如下：</p>
+
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>evmType</th>
+<th>pgType</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>id</td>
+<td>uint64</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>blockNumber</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>blockHash</td>
+<td>a hex string</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>_timestamp</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>transactionHash</td>
+<td>a hex string</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>_from</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>_to</td>
+<td>a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>gas</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>gasUsed</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>gasPrice</td>
+<td>big.Int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>input</td>
+<td>[]byte</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>logs</td>
+<td>log</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>nonce</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>txStr</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>contractAddress</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>error</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>decollator</td>
+<td>&rdquo;&rdquo;</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="traces数据">traces数据</h3>
+
+<p>trace包含内容为：CREATE，CALL，CALLCODE，DELEGATECALL，SELFDESTRUCT操作及预编译合约的调用。这里抓取trace的种类可以自定义。该数据的获取通过打开<code>vm.Config</code>的Debug选项，然后对于每一个trace都会执行<code>captureState</code>函数捕获每一个trace的相关信息。</p>
+
+<pre><code class="language-golang">type StructLog struct {
+	Pc            uint64                      `json:&quot;pc&quot;`
+	Op            OpCode                      `json:&quot;op&quot;`
+	Gas           uint64                      `json:&quot;gas&quot;`
+	GasCost       uint64                      `json:&quot;gasCost&quot;`
+	Memory        []byte                      `json:&quot;memory&quot;`
+	MemorySize    int                         `json:&quot;memSize&quot;`
+	Stack         []*big.Int                  `json:&quot;stack&quot;`
+	Storage       map[common.Hash]common.Hash `json:&quot;-&quot;`
+	Depth         int                         `json:&quot;depth&quot;`
+	RefundCounter uint64                      `json:&quot;refund&quot;`
+	Err           error                       `json:&quot;-&quot;`
+}
+</code></pre>
+
+<p>在捕获trace的过程中由于stack是一个1M大小的数组，当碰到6810086中的<code>0x68b71d202dc52ad80812b563f3f6b0aaf1f19c04c1260d13055daad5b88a36a8</code>交易时，其trace数量为100W，因为StructLog中的指针有指向每一个trace中stack的副本，导致其内存分配巨大而一直得不到释放，并行重放区块会直接被卡死，因此在快速重放时一般会屏蔽statck和memory的抓取。发现问题后可以使用单线程抓取某一区块的全部trace信息。</p>
+
+<blockquote>
+<p>By using the three main trace types (call, create, suicide), we can generalise the type of ether transfers that can occur:</p>
+
+<ul>
+<li><strong>call</strong>: Used to <strong>transfer</strong> ether from one account to another and/or to call a smart contract function defined by parameters in the data field. This trace also encompasses <strong>delegatecall</strong> and <strong>callcode</strong>.</li>
+<li><strong>create</strong>: Used to create a smart contract, and ether is <strong>transferred</strong> to the newly created smart contract</li>
+<li><strong>suicide</strong>: Used by an owner of a smart contract to kill the smart contract. Triggers a <strong>transfer</strong> of ether for a refund for killing a contract. Additionally, killing a smart contract can free memory in the blockchain, which can also affects the value transferred.</li>
+<li>[ethereum-traces-not-transactions-3f0533d26aa](</li>
+</ul>
+</blockquote>
+
+<p>traces数据的格式为：</p>
+
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>evmType</th>
+<th>pgType</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>id</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>blockHash</td>
+<td>[HashLength]byte</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>blockHeight</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>txHash</td>
+<td>[HashLength]byte</td>
+<td>text (32 byte Keccak256)</td>
+</tr>
+
+<tr>
+<td>txIndex</td>
+<td>int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>pc</td>
+<td>int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>op</td>
+<td>string</td>
+<td>string</td>
+</tr>
+
+<tr>
+<td>depth</td>
+<td>int</td>
+<td>bignint</td>
+</tr>
+
+<tr>
+<td>refundCounter</td>
+<td>int</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>precompiled</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>err</td>
+<td>string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>decollator</td>
+<td>&rdquo;&rdquo;</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="events数据">events数据</h3>
+
+<p>events数据主要是用来分析<code>ERC20 token</code>的转账情况，因为根据<code>ERC 20</code>规范每一笔转账操作都会产生一个event事件。events数据主要通过交易执行之后产生的receipt.logs来获取。</p>
+
+<p><code>receipt.Logs = statedb.GetLogs(tx.Hash())</code></p>
+
+<p><code>id = blockNumber*10^5 + idx</code></p>
+
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>evmType</th>
+<th>pgType</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>id</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>eventAddress</td>
+<td>[AddressLength]byte   a hex string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>topics</td>
+<td>[]byte -&gt; string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>eventData</td>
+<td>[]byte -&gt; string</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>blockNumber</td>
+<td>uint64</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>transactionHash</td>
+<td>[HashLength]byte</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>transactionIndex</td>
+<td>uint</td>
+<td>bignint</td>
+</tr>
+
+<tr>
+<td>blockHash</td>
+<td>[HashLength]byte</td>
+<td>text</td>
+</tr>
+
+<tr>
+<td>logIndex</td>
+<td>uint</td>
+<td>bigint</td>
+</tr>
+
+<tr>
+<td>removed</td>
+<td>bool</td>
+<td>boolean</td>
+</tr>
+
+<tr>
+<td>decollator</td>
+<td>&rdquo;&rdquo;</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="其它数据">其它数据</h3>
+
+<p>geth-query工具可以自定义导出数据，根据哪些数据具备分析价值可以通过修改工具代码或者<code>go-ethereum</code>代码进行导出数据分析。</p>
+
+<ol>
+<li>对于合约运行失败的交易统计，可以从以下几个方面统计：交易失败类型统计(柱状图)，交易失败数目统计(折线图，每1W个块或者10W个块为单位)。</li>
+<li>trace数量由前面的块到后面的块，交易的trace数量逐步递增的曲线。</li>
+<li>交易消耗的gas分析。</li>
+<li>热点合约的分析。</li>
+<li>交易地址的网络图。</li>
+<li>交易运行特征trace分析。</li>
+<li>所有历史交易随时间变化trace数量的调用关系。</li>
+<li>交易执行高频trace，低频trace。</li>
+</ol>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2020-01-09
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://puppym.github.io/blog/tags/blockchain/">blockchain</a>
+          <a href="https://puppym.github.io/blog/tags/ethereum/">ethereum</a>
+          <a href="https://puppym.github.io/blog/tags/smart-contract/">smart contract</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/blog/post/go-scheduler/go-scheduler/">
+            <span class="next-text nav-default">Go Sheduler</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://puppym.github.io/blog/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2019 -
+    2020
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        Czm
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/blog/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/blog/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/blog/js/main.dee43230127a73d039a734510fa896c89c3c7ce0cf0be0c7a7433f8fd69b76dc.js" integrity="sha256-3uQyMBJ6c9A5pzRRD6iWyJw8fODPC&#43;DHp0M/j9abdtw=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/blog/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

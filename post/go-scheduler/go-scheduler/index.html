@@ -70,7 +70,7 @@
 
 <meta itemprop="datePublished" content="2020-01-04T16:21:44&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-04T16:21:44&#43;08:00" />
-<meta itemprop="wordCount" content="2934">
+<meta itemprop="wordCount" content="3009">
 
 
 
@@ -286,8 +286,8 @@
           2020-01-04
         </time>
         
-        <span class="more-meta"> 2934 words </span>
-          <span class="more-meta"> 6 min read </span>
+        <span class="more-meta"> 3009 words </span>
+          <span class="more-meta"> 7 min read </span>
 
         
         
@@ -420,7 +420,7 @@
 <li>释放闲置超过5分钟的span物理内存； scavenge heap</li>
 <li>如果超过2分钟没有垃圾回收，强制执行；forcegc</li>
 <li>将长时间未处理的netpoll结果添加到任务队列；netpool</li>
-<li>向长时间运行的G任务发出抢占调度；retake<a href="http://xiaorui.cc/2018/06/04/golang%e5%af%86%e9%9b%86%e5%9c%ba%e6%99%af%e4%b8%8b%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e9%a5%a5%e9%a5%bf%e9%97%ae%e9%a2%98/">golang-Cpu密集型任务调度抢占</a>。这里发生抢占其实是一种伪抢占，本质上是sysmon中的retake触发morestack，然后调用newstack，然后gopreempt_m会重置g的状态，并且扔到本地runq中重新进行调度。</li>
+<li>向长时间运行的G任务发出抢占调度；retake<a href="http://xiaorui.cc/2018/06/04/golang%e5%af%86%e9%9b%86%e5%9c%ba%e6%99%af%e4%b8%8b%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e9%a5%a5%e9%a5%bf%e9%97%ae%e9%a2%98/">golang-Cpu密集型任务调度抢占</a>。这里发生抢占其实是一种伪抢占，本质上是sysmon中的retake触发morestack，然后调用newstack，然后gopreempt_m会重置g的状态，并且扔到全局runq中重新进行调度(这里扔到全局的runq中也比较好理解，因为全局队列中都是一些需要执行时间比较长的G，中心思想是全局runq中的G执行时间比本地runq执行时间要长)。</li>
 <li>收回因syscall长时间阻塞的P；</li>
 </ol>
 
@@ -468,6 +468,19 @@
       
       <nav class="post-nav">
         
+          <a class="prev" href="/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">Geth-query获取数据</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
         
           <a class="next" href="/blog/post/geth-query/geth-query/">
             <span class="next-text nav-default">Geth-query</span>

@@ -3,7 +3,7 @@ title: "Geth-query"
 date: 2020-01-02T09:41:04+08:00
 draft: false
 summary: "以太坊智能合约数据快速抽取和重放"
-tags: [blockchain,ethereum]
+tags: [geth-query,blockchain,ethereum]
 
 ---
 

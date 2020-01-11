@@ -2,7 +2,7 @@
 title: "Geth-query获取数据"
 date: 2020-01-09T14:49:51+08:00
 draft: false
-summary: "以太坊智能合约数据抽取数据"
+summary: "以太坊智能合约数据抽取数据分析"
 tags: [geth-query,blockchain,ethereum, smart contract]
 ---
 

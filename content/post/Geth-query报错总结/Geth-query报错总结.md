@@ -1,7 +1,7 @@
 ---
 title: "Geth Query报错总结"
 date: 2020-01-09T17:23:56+08:00
-draft: true
+draft: false
 summary: "以太坊智能合约数据抽取和重放报错总结"
 tags: [geth-query,blockchain,ethereum]
 ---
@@ -65,7 +65,7 @@ tags: [geth-query,blockchain,ethereum]
 			to.Address(), big.NewInt(0).Set(value), "CALL", evm.StateDB.(*state.StateDB).GetNextRevisionId())
 ```
 
-上面一段代码中直接保存value的地址，该value地址的值后面可能会发生变化，尽管有指针副本一直指向该处，内存不会释放，但是其值已经改变。具体错误现象是`transfer`中的value，只有transactions中的value和gas fee的value是正确的。其余内部交易的value值都是错误的。
+上面一段代码中直接保存value的地址，该value地址的值后面可能会发生变化，尽管有指针副本一直指向该处，内存不会释放，但是其值已经改变。具体错误现象是`transfer`中的value，只有transactions中的value和gas fee的value是正确的。其余内部交易的value值都是错误的。因为stack中每次push的value值都是从`integer = interpreter.intPool.get()`中获取的，该pool中的value值是在动态改变。
 
 2. 局部指针变量指向一块较大内存，通过全局指针保存。导致一直有指针指向局部分配的较大内存地址，因此大内存一直不能被go的gc释放，导致内存占用过高。
 

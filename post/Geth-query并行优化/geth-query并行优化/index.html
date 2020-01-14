@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>ethereum · Czm blog</title>
+  <title>Geth Query并行优化 - Czm blog</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,6 +23,8 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Czm" />
+  <meta name="description" content="以太坊智能合约重放工具geth-query优化" />
+
 
 
 
@@ -32,8 +34,8 @@
 <meta name="generator" content="Hugo 0.59.1" />
 
 
-<link rel="canonical" href="https://puppym.github.io/blog/tags/ethereum/" />
-<link href="/blog/tags/ethereum/index.xml" rel="alternate" type="application/rss+xml" title="Czm blog" />
+<link rel="canonical" href="https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/" />
+
 
 
 
@@ -56,18 +58,26 @@
 
 
 
-<meta property="og:title" content="ethereum" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://puppym.github.io/blog/tags/ethereum/" />
+<meta property="og:title" content="Geth Query并行优化" />
+<meta property="og:description" content="以太坊智能合约重放工具geth-query优化" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/" />
+<meta property="article:published_time" content="2020-01-09T17:24:08+08:00" />
+<meta property="article:modified_time" content="2020-01-09T17:24:08+08:00" />
+<meta itemprop="name" content="Geth Query并行优化">
+<meta itemprop="description" content="以太坊智能合约重放工具geth-query优化">
 
-<meta property="og:updated_time" content="2020-01-09T17:24:08+08:00" />
-<meta itemprop="name" content="ethereum">
-<meta itemprop="description" content="">
 
+<meta itemprop="datePublished" content="2020-01-09T17:24:08&#43;08:00" />
+<meta itemprop="dateModified" content="2020-01-09T17:24:08&#43;08:00" />
+<meta itemprop="wordCount" content="715">
+
+
+
+<meta itemprop="keywords" content="geth-query,blockchain,ethereum,smart contract," />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="ethereum"/>
-<meta name="twitter:description" content=""/>
+<meta name="twitter:title" content="Geth Query并行优化"/>
+<meta name="twitter:description" content="以太坊智能合约重放工具geth-query优化"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -266,88 +276,159 @@
     <main id="main" class="main bg-llight">
       <div class="content-wrapper">
         <div id="content" class="content container">
-          
-
-<section id="archive" class="archive">
-  
+          <article class="post bg-white">
     
-      <div class="archive-title tag">
-        <h2 class="archive-name">Tag: ethereum</h2>
+    <header class="post-header">
+      <h1 class="post-title">Geth Query并行优化</h1>
+      
+      <div class="post-meta">
+        <time datetime="2020-01-09" class="post-time">
+          2020-01-09
+        </time>
+        
+        <span class="more-meta"> 715 words </span>
+          <span class="more-meta"> 2 min read </span>
+
+        
+        
+
+        
+        
       </div>
+    </header>
+
     
-  
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#进一步工作">进一步工作</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+  </div>
+</div>
 
-  
-    <div class="archive-post">
-      <time datetime="2020-01-09" class="archive-post-time">
-        2020-01-09
-      </time>
-      <span class="archive-post-title">
-        <a href="/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/" class="archive-post-link">
-          Geth Query并行优化
-        </a>
-      </span>
+    
+    <div class="post-content">
+      
+
+<blockquote>
+<p>对于archive模式的全节点完整的跑一次区块大概需要14天(<a href="https://blog.ethereum.org/2019/07/10/geth-v1-9-0/">geth v1.9.0</a>)对于重放合约获取数据该时间较长，并且geth客户端不能定点重放合约，因此需要编写geth-query重放合约工具，并且优化该工具的运行效率。</p>
+</blockquote>
+
+<ol>
+<li><p>对需要重放的区块数量平均分成cpu逻辑内核的份数，然后每一份启动一个协程开始重放区块数据。</p></li>
+
+<li><p>构建一个协程池，协程池内的协程数目为cpu的核数，然后定义一个batchBlockNum，每次向协程池中的空余协程投放batchBlockNum个block。因为每一个协程都在大量读写磁盘，这里使用协程池限制协程数量主要是因为磁盘I/O的限制。这里的运行效率主要和batchBlockNum的大小(CPU计算量的大小)以及使用逻辑核数P的值有关。</p></li>
+</ol>
+
+<p>对于思路1主要是在区块数据中，前面区块数据运行较快，后面区块数据运行慢。通过平分区块数量不能达到平分计算量的效果，因此会导致运行前面区块的协程早已运行完毕，运行后面区块的协程还在继续运行，并且此时CPU的逻辑核没有用完，导致CPU利用效率不高。</p>
+
+<p>对于思路2，具体分析如下：</p>
+
+<pre><code class="language-bash"># 本机环境
+cpu: K9900 8核16线程
+mem: 32G
+SSD:4T + 4T
+</code></pre>
+
+<p>首先将逻辑核数用满16核，三星阵列的读取速度最高位800M每秒左右。然后尝试使用12核发现三星阵列的读取速度也已经跑满，测试600W-610W的速度如下所示：</p>
+
+<p><img src="../1.png" alt="" /></p>
+
+<p>上面的图显示当P值12及12以上的时候，geth-query的执行效率提升不高，因此600W-610W的g的最优值为12</p>
+
+<p>对于batchnum大小的衡量如下：</p>
+
+<h3 id="进一步工作">进一步工作</h3>
+
+<p>由于前面的block世界状态大小较小，对于磁盘读写压力较小，猜想对于前面的块较高P值能够适当提升geth-query执行前面区块的执行效率。</p>
+
     </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2020-01-09
+      
+    </span>
+  </p>
   
-    <div class="archive-post">
-      <time datetime="2020-01-09" class="archive-post-time">
-        2020-01-09
-      </time>
-      <span class="archive-post-title">
-        <a href="/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/" class="archive-post-link">
-          Geth Query报错总结
-        </a>
-      </span>
-    </div>
-  
-    <div class="archive-post">
-      <time datetime="2020-01-09" class="archive-post-time">
-        2020-01-09
-      </time>
-      <span class="archive-post-title">
-        <a href="/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/" class="archive-post-link">
-          Geth-query获取数据
-        </a>
-      </span>
-    </div>
-  
-    <div class="archive-post">
-      <time datetime="2020-01-02" class="archive-post-time">
-        2020-01-02
-      </time>
-      <span class="archive-post-title">
-        <a href="/blog/post/geth-query/geth-query/" class="archive-post-link">
-          Geth-query
-        </a>
-      </span>
-    </div>
-  
-</section>
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
 
 
+    
+    
 
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://puppym.github.io/blog/tags/geth-query/">geth-query</a>
+          <a href="https://puppym.github.io/blog/tags/blockchain/">blockchain</a>
+          <a href="https://puppym.github.io/blog/tags/ethereum/">ethereum</a>
+          <a href="https://puppym.github.io/blog/tags/smart-contract/">smart contract</a>
+          
+        </div>
 
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/">
+            <span class="next-text nav-default">Geth Query报错总结</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
 
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
 
   
   
+
+  
+  
+
   
 
   
   
 
   
-  
 
   
-  
 
   
+
+    
+
   
-
-
-
-
 
         </div>
       </div>

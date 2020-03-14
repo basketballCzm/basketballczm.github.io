@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Czm blog</title>
+    <link>https://puppym.github.io/blog/</link>
+    <description>Recent content on Czm blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Thu, 09 Jan 2020 17:24:08 +0800</lastBuildDate>
+    
+        <atom:link href="https://puppym.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Geth Query并行优化</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/</link>
+      <pubDate>Thu, 09 Jan 2020 17:24:08 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/</guid>
+      
+        <description>&lt;blockquote&gt;
+&lt;p&gt;对于archive模式的全节点完整的跑一次区块大概需要14天(&lt;a href=&#34;https://blog.ethereum.org/2019/07/10/geth-v1-9-0/&#34;&gt;geth v1.9.0&lt;/a&gt;)对于重放合约获取数据该时间较长，并且geth客户端不能定点重放合约，因此需要编写geth-query重放合约工具，并且优化该工具的运行效率。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;对需要重放的区块数量平均分成cpu逻辑内核的份数，然后每一份启动一个协程开始重放区块数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;构建一个协程池，协程池内的协程数目为cpu的核数，然后定义一个batchBlockNum，每次向协程池中的空余协程投放batchBlockNum个block。因为每一个协程都在大量读写磁盘，这里使用协程池限制协程数量主要是因为磁盘I/O的限制。这里的运行效率主要和batchBlockNum的大小(CPU计算量的大小)以及使用逻辑核数P的值有关。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;对于思路1主要是在区块数据中，前面区块数据运行较快，后面区块数据运行慢。通过平分区块数量不能达到平分计算量的效果，因此会导致运行前面区块的协程早已运行完毕，运行后面区块的协程还在继续运行，并且此时CPU的逻辑核没有用完，导致CPU利用效率不高。&lt;/p&gt;
+&lt;p&gt;对于思路2，具体分析如下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 本机环境&lt;/span&gt;
+cpu: K9900 8核16线程
+mem: 32G
+SSD:4T + 4T
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;首先将逻辑核数用满16核，三星阵列的读取速度最高位800M每秒左右。然后尝试使用12核发现三星阵列的读取速度也已经跑满，测试600W-610W的速度如下所示：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.cloudinary.com/dcvachvmj/image/upload/v1584145870/czm_blog/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/4_z7bvcx.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;上面的图显示当P值12及12以上的时候，geth-query的执行效率提升不高，因此600W-610W的g的最优值为12&lt;/p&gt;
+&lt;p&gt;对于batchnum大小的衡量如下：&lt;/p&gt;
+&lt;h3 id=&#34;进一步工作&#34;&gt;进一步工作&lt;/h3&gt;
+&lt;p&gt;由于前面的block世界状态大小较小，对于磁盘读写压力较小，猜想对于前面的块较高P值能够适当提升geth-query执行前面区块的执行效率。&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Geth Query报错总结</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Thu, 09 Jan 2020 17:23:56 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/</guid>
+      
+        <description>&lt;h2 id=&#34;geth-query报错总结&#34;&gt;Geth-query报错总结&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文主要介绍Geth-query工具编写过程中的一些问题，特此记录。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;并发程序文件夹创建失败&#34;&gt;并发程序文件夹创建失败&lt;/h3&gt;
+&lt;p&gt;对于对并发程序对于新建一个文件夹，正常逻辑是首先检查一个文件夹是否存在，不存在就创建一个文件夹。但是可能存在一种情况：在检查csv_data目录的时候可能会在检查&lt;code&gt;os.IsNotExist(err)&lt;/code&gt;时候文件不存在，但是&lt;code&gt;os.Mkdir(absDir, 0777)&lt;/code&gt;的时候该&lt;code&gt;csv_data&lt;/code&gt;文件已经由别的协程创建成功，因此writer指针为空。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stat&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;absDir&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IsNotExist&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Mkdir&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;absDir&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0777&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;Logger&lt;/span&gt;
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+		}
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;preDir&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;absDir&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prefix&lt;/span&gt;
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stat&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;preDir&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IsNotExist&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Mkdir&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;preDir&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0777&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+		}
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;folderDir&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fmt&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sprintf&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%v/%v&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;preDir&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;folderSeq&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;FILE_NUMBER_IN_FOLDER&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;BLOCK_NUMBER_IN_FILE&lt;/span&gt;)
+	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Stat&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;folderDir&lt;/span&gt;); &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IsNotExist&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;) {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; = &lt;span style=&#34;color:#a6e22e&#34;&gt;os&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Mkdir&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;folderDir&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0777&lt;/span&gt;)
+		&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt; {
+			&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;nil&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;err&lt;/span&gt;
+		}
+	}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;for-range语句循环变量为值传递&#34;&gt;for range语句循环变量为值传递&lt;/h3&gt;
+&lt;p&gt;对于情况1能够将&lt;code&gt;transfers&lt;/code&gt;的地址加入切片，情况2将循环局部变量的地址加入切片，情况3新建一个对象将&lt;code&gt;transferTmp&lt;/code&gt;的值赋值给新对象，并且将新对象的地址加入切片。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;		&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transferTmp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt; {
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; (&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;valueTransfer&lt;/span&gt;)(&lt;span style=&#34;color:#a6e22e&#34;&gt;unsafe&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Pointer&lt;/span&gt;(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;transferTmp&lt;/span&gt;))
+			&lt;span style=&#34;color:#75715e&#34;&gt;// 1.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#75715e&#34;&gt;// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;amp;transfers[i])))
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#75715e&#34;&gt;// Logger.Infof(&amp;#34;value: %v&amp;#34;, data.transfers[len(data.transfers)-1].value)
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#75715e&#34;&gt;// 2.
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#75715e&#34;&gt;// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;amp;transfer)))
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;			&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt;, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;valueTransfer&lt;/span&gt;{&lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;depth&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transactionHash&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;srcBalance&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;dest&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;destBalance&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;kind&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;transfer&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;snapshot&lt;/span&gt;})
+		}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;go-指针内存释放问题&#34;&gt;go 指针内存释放问题&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;对于全局变量要通过指针保存局部变量的值，最好的办法是将局部变量指针指向的局部地址内容重新new一边，然后赋给全局变量指针。因为局部变量的值在后面可能发生变化。使用全局变量的指针保存局部变量的指针最后全局变量保存的值具有很大的随机性(&lt;strong&gt;全局变量保存局部变量的某一成员指针，局部变量也会被gc释放&lt;/strong&gt;)。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;		&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interpreter&lt;/span&gt;().(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;EVMInterpreter&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Tracer&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;StructLogger&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureTransferState&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;), &lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;depth&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;caller&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;(),
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;to&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;big&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;NewInt&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Set&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CALL&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetNextRevisionId&lt;/span&gt;())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;上面一段代码中直接保存value的地址，该value地址的值后面可能会发生变化，尽管有指针副本一直指向该处，内存不会释放，但是其值已经改变。具体错误现象是&lt;code&gt;transfer&lt;/code&gt;中的value，只有transactions中的value和gas fee的value是正确的。其余内部交易的value值都是错误的。因为stack中每次push的value值都是从&lt;code&gt;integer = interpreter.intPool.get()&lt;/code&gt;中获取的，该pool中的value值是在动态改变。&lt;/p&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;局部指针变量指向一块较大内存，通过全局指针保存。导致一直有指针指向局部分配的较大内存地址，因此大内存一直不能被go的gc释放，导致内存占用过高。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;上述问题是由于captureState函数中新建了一些对象，然后这些对象的指针被保存在全局变量的结构体中，导致go gc工具在释放内存时由于captureState中的对象一直有全局对象指针指向其值，导致其内存一直得不到释放。stack和memory都是一个1024字节的数组，因此其内存一直就是成M的增加，当碰到6810086中的&lt;code&gt;0x68b71d202dc52ad80812b563f3f6b0aaf1f19c04c1260d13055daad5b88a36a8&lt;/code&gt;交易时，其trace数量为100W，导致其内存分配巨大而一直得不到释放。只需将保存stack和memory的部分注释掉即可，因为该部分只要debug打开，该部分会默认加入到structlog的全局变量中。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;其它问题&#34;&gt;其它问题&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;reverTransfer 中的revertNum初始值应该为-1， 避免transfer全部revert掉之后初始值0，还剩余一个transfer。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;selfdestruct中转账的源地址为合约地址，目的地址为stack.pop()出来的地址，注意stack.pop()动作不要为了获取目的地址而执行两遍。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Geth-query获取数据</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/</link>
+      <pubDate>Thu, 09 Jan 2020 14:49:51 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/</guid>
+      
+        <description>&lt;h2 id=&#34;geth-query获取数据&#34;&gt;Geth-query获取数据&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;本文承接Geth-query设计文档，主要阐述通过Geth-query功能获得哪些数据，以及怎么获得，需要修改哪些代码。当然Geth-query是一个自定义的合约重放工具，通过修改&lt;code&gt;go-ethereum&lt;/code&gt;的源码以及该工具的代码能够自定义获取任何在EVM中产生过的中间数据。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;重发智能合约主要要使用&lt;code&gt;achieve&lt;/code&gt;模式全节点的2种数据：1. 区块数据。2.区块的世界状态数据。前者通过&lt;code&gt;achieve&lt;/code&gt;模式全节点通过p2p网络同步获取，后者通过全节点同步过程中通过EVM执行区块数据获取每一个区块的世界状态，然后将两者都通过RLP编码格式进行压缩，存储到底层的levelDB数据库中。&lt;/p&gt;
+&lt;p&gt;在重放过程中，获取上述两种数据可以通过&lt;code&gt;go-ethereum&lt;/code&gt;的接口获取。&lt;/p&gt;
+&lt;p&gt;获取区块数据&lt;code&gt;block := chain.GetBlockByNumber(currentBlock)&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;获取区块世界状态数据&lt;code&gt;statedb, err := blockchain.StateAt(blockchain.GetBlockByHash(block.ParentHash()).Root())&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;执行每笔交易的EVM api接口&lt;code&gt;_, gas, failed, err := core.ApplyMessage(vmenv, msg, gp)&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;block数据&#34;&gt;block数据&lt;/h3&gt;
+&lt;p&gt;对于区块数据而言，可以直接通过&lt;code&gt;achieve&lt;/code&gt;模式的全节点同步区块数据，然后按照区块数据存入blocks的表中。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;evmType&lt;/th&gt;
+&lt;th&gt;pgType&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;blockNumber&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;parentHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;nonce&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;miner&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text (Address length 20)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;difficulty&lt;/td&gt;
+&lt;td&gt;bigint_to_string&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;totalDifficulty&lt;/td&gt;
+&lt;td&gt;bigint_to string&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;extraData&lt;/td&gt;
+&lt;td&gt;byte[]&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;size&lt;/td&gt;
+&lt;td&gt;float64-&amp;gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gasLimit&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gasUsed&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_timestamp&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionCount&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;transfers数据&#34;&gt;transfers数据&lt;/h3&gt;
+&lt;p&gt;对于transfers数据可以理解为由交易和内部交易导致账户余额世界状态的变化，通过深入修改EVM的源码代码，通过分析EVM在执行合约过程中哪里修改了账户地址的世界状态，然后在该处添加&lt;code&gt;capturetransfers&lt;/code&gt;动作，抓取出每次EVM执行合约过程中账户世界状态变动的transfers数据。下面EVM中的动作导致了账户世界状态的变化：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Call 指令中如果&lt;code&gt;msg.value&lt;/code&gt;的值不为零，并且校验&lt;code&gt;!evm.Context.CanTransfer&lt;/code&gt;校验通过，会进行交易转账或者内部交易转账&lt;code&gt;evm.Transfer(evm.StateDB, caller.Address(), to.Address(), value)&lt;/code&gt;，因此需要在该处添加&lt;code&gt;capturetransfer&lt;/code&gt;动作。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;evm.go 240 &lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;```golang
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;if evm.Interpreter().(*EVMInterpreter).GetConfig().Debug {
+evm.Interpreter().(*EVMInterpreter).GetConfig().Tracer.(*StructLogger).CaptureTransferState(evm.StateDB.(*state.StateDB), evm.depth, common.Hash{}, caller.Address(),
+to.Address(), value, &amp;ldquo;CALL&amp;rdquo;, evm.StateDB.(*state.StateDB).GetNextRevisionId())
+}
+```&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Create 指令中&lt;code&gt;msg.value&lt;/code&gt;值不为零，并且校验&lt;code&gt;!evm.Context.CanTransfer&lt;/code&gt;校验通过，会导致创建合约过程中给合约账户转账&lt;code&gt;evm.Transfer(evm.StateDB, caller.Address(), address, value)&lt;/code&gt;。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里可能存在一种情况，就是合约hash已经创建成功，但是由于gas费用不足以将合约的code存储进入世界状态会产生&lt;code&gt;ErrCodeStoreOutOfGas&lt;/code&gt;错误，但是此时合约的地址已经存在世界状态中，并且转给合约账户的转账操作也已经生效。&lt;code&gt;evm.go 470&lt;/code&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;code&gt;evm.go   420&lt;/code&gt;插入&lt;code&gt;capturetransfer&lt;/code&gt;动作&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interpreter&lt;/span&gt;().(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;EVMInterpreter&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interpreter&lt;/span&gt;().(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;EVMInterpreter&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Tracer&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;StructLogger&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureTransferState&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;), &lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;depth&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;caller&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;(),
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;address&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CREATE&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetNextRevisionId&lt;/span&gt;())
+	}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;selfdestruct指令返回销毁账户的余额。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;instructions.go  881&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;interpreter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;interpreter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Tracer&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;StructLogger&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureTransferState&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;interpreter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;), &lt;span style=&#34;color:#a6e22e&#34;&gt;interpreter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;depth&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;contract&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;(),
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;BigToAddress&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;stack&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;pop&lt;/span&gt;()), &lt;span style=&#34;color:#a6e22e&#34;&gt;balance&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;selfDestruct&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;interpreter&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetNextRevisionId&lt;/span&gt;())
+	}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;区块中每笔交易产生的gas费用会直接在EVM中进行加减，因此在该处应该加入&lt;code&gt;capturetransfers&lt;/code&gt;动作抓取&lt;code&gt;transfer&lt;/code&gt;。注意这里的gas费用值为用户消耗的gas费用值。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里计算gas费用也有一些规则：用户首先预支initialGas的上限值，然后在执行合约过程中会逐步消耗gas，但是对于用户的一些操作eth也会奖励用户gas，比如释放storage空间，selfdestruct合约(该操作会退回两笔费用，一笔是gas费用，一笔是合约余额)。最后用户支付的gas费用就是&lt;code&gt;st.initialGas - st.gas&lt;/code&gt;。为了防止用户最后支付的gas费用为负值的情况，用户获得奖励的gas小于或等于用户消耗gas数目的一半。因此在销毁合约获得的奖励可能小于理论值，和用户本次交易消耗的gas有关。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;​     &lt;code&gt;capturetansfer&lt;/code&gt;动作可以添加在&lt;code&gt;state_transition.go 232行&lt;/code&gt;，具体代码如      下：&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interpreter&lt;/span&gt;().(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;vm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EVMInterpreter&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Debug&lt;/span&gt; {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Interpreter&lt;/span&gt;().(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;vm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;EVMInterpreter&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;GetConfig&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Tracer&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;vm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StructLogger&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;CaptureTransferState&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;.(&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;state&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;StateDB&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;msg&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;From&lt;/span&gt;(),
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;evm&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Coinbase&lt;/span&gt;, new(&lt;span style=&#34;color:#a6e22e&#34;&gt;big&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Int&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;Mul&lt;/span&gt;(new(&lt;span style=&#34;color:#a6e22e&#34;&gt;big&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Int&lt;/span&gt;).&lt;span style=&#34;color:#a6e22e&#34;&gt;SetUint64&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;gasUsed&lt;/span&gt;()), &lt;span style=&#34;color:#a6e22e&#34;&gt;st&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;gasPrice&lt;/span&gt;), &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;GASFEE&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;)
+	}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;叔叔区块奖励和父区块的奖励也是直接在EVM中进行运算，因此也需要加入&lt;code&gt;capturetransfer&lt;/code&gt;动作，该部分在geth-query重放工具中完成。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;	&lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;uncle&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;range&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;block&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Uncles&lt;/span&gt;() {
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Add&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;uncle&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Number&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;big8&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Sub&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;block&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Header&lt;/span&gt;().&lt;span style=&#34;color:#a6e22e&#34;&gt;Number&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Mul&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;blockReward&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Div&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;big8&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt;,
+			&lt;span style=&#34;color:#a6e22e&#34;&gt;newRewardTransfer&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;statedb&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;uncle&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Coinbase&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;r&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;UNCLE&amp;#34;&lt;/span&gt;))
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;rd&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;:=&lt;/span&gt; new(&lt;span style=&#34;color:#a6e22e&#34;&gt;big&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Int&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;rd&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Div&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;blockReward&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;big32&lt;/span&gt;)
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;reward&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Add&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;reward&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;rd&lt;/span&gt;)
+	}
+
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt; = append(&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;transfers&lt;/span&gt;,
+		&lt;span style=&#34;color:#a6e22e&#34;&gt;newRewardTransfer&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;statedb&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Address&lt;/span&gt;{}, &lt;span style=&#34;color:#a6e22e&#34;&gt;block&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Coinbase&lt;/span&gt;(), &lt;span style=&#34;color:#a6e22e&#34;&gt;reward&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;MINED&amp;#34;&lt;/span&gt;))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;transfers&lt;/code&gt;表的各项数据如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;key&lt;/th&gt;
+&lt;th&gt;evmType&lt;/th&gt;
+&lt;th&gt;pgType&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;id&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockNumber&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_timestamp&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transferIndex&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;depth&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_from&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_to&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fromBalance&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;toBalance&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transferValue&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transferType&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;decollator&lt;/td&gt;
+&lt;td&gt;&amp;quot;&amp;rdquo;   -&amp;gt;  string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;transactions数据&#34;&gt;transactions数据&lt;/h3&gt;
+&lt;p&gt;transactions数据主要是交易执行完后产生的receipt数据。通过组合&lt;code&gt;get-query&lt;/code&gt;重放合约后的返回值和同步的&lt;code&gt;transactions&lt;/code&gt;数据一起组合形成&lt;code&gt;receipt&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;主要的格式如下：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;key&lt;/th&gt;
+&lt;th&gt;evmType&lt;/th&gt;
+&lt;th&gt;pgType&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;id&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockNumber&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_timestamp&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionHash&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_from&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;_to&lt;/td&gt;
+&lt;td&gt;a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gas&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gasUsed&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;gasPrice&lt;/td&gt;
+&lt;td&gt;big.Int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;input&lt;/td&gt;
+&lt;td&gt;[]byte&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;logs&lt;/td&gt;
+&lt;td&gt;log&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;nonce&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;txStr&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;contractAddress&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;error&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;decollator&lt;/td&gt;
+&lt;td&gt;&amp;quot;&amp;rdquo;&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;traces数据&#34;&gt;traces数据&lt;/h3&gt;
+&lt;p&gt;trace包含内容为：CREATE，CALL，CALLCODE，DELEGATECALL，SELFDESTRUCT操作及预编译合约的调用。这里抓取trace的种类可以自定义。该数据的获取通过打开&lt;code&gt;vm.Config&lt;/code&gt;的Debug选项，然后对于每一个trace都会执行&lt;code&gt;captureState&lt;/code&gt;函数捕获每一个trace的相关信息。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-golang&#34; data-lang=&#34;golang&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;type&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;StructLog&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; {
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Pc&lt;/span&gt;            &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;pc&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Op&lt;/span&gt;            &lt;span style=&#34;color:#a6e22e&#34;&gt;OpCode&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;op&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Gas&lt;/span&gt;           &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;gas&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;GasCost&lt;/span&gt;       &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;gasCost&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Memory&lt;/span&gt;        []&lt;span style=&#34;color:#66d9ef&#34;&gt;byte&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;memory&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;MemorySize&lt;/span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;                         &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;memSize&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Stack&lt;/span&gt;         []&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;big&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Int&lt;/span&gt;                  &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;stack&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Storage&lt;/span&gt;       &lt;span style=&#34;color:#66d9ef&#34;&gt;map&lt;/span&gt;[&lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt;]&lt;span style=&#34;color:#a6e22e&#34;&gt;common&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;Hash&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;-&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Depth&lt;/span&gt;         &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;                         &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;depth&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;RefundCounter&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;uint64&lt;/span&gt;                      &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;refund&amp;#34;`&lt;/span&gt;
+	&lt;span style=&#34;color:#a6e22e&#34;&gt;Err&lt;/span&gt;           &lt;span style=&#34;color:#66d9ef&#34;&gt;error&lt;/span&gt;                       &lt;span style=&#34;color:#e6db74&#34;&gt;`json:&amp;#34;-&amp;#34;`&lt;/span&gt;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;在捕获trace的过程中由于stack是一个1M大小的数组，当碰到6810086中的&lt;code&gt;0x68b71d202dc52ad80812b563f3f6b0aaf1f19c04c1260d13055daad5b88a36a8&lt;/code&gt;交易时，其trace数量为100W，因为StructLog中的指针有指向每一个trace中stack的副本，导致其内存分配巨大而一直得不到释放，并行重放区块会直接被卡死，因此在快速重放时一般会屏蔽statck和memory的抓取。发现问题后可以使用单线程抓取某一区块的全部trace信息。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;By using the three main trace types (call, create, suicide), we can generalise the type of ether transfers that can occur:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;call&lt;/strong&gt;: Used to &lt;strong&gt;transfer&lt;/strong&gt; ether from one account to another and/or to call a smart contract function defined by parameters in the data field. This trace also encompasses &lt;strong&gt;delegatecall&lt;/strong&gt; and &lt;strong&gt;callcode&lt;/strong&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;create&lt;/strong&gt;: Used to create a smart contract, and ether is &lt;strong&gt;transferred&lt;/strong&gt; to the newly created smart contract&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;suicide&lt;/strong&gt;: Used by an owner of a smart contract to kill the smart contract. Triggers a &lt;strong&gt;transfer&lt;/strong&gt; of ether for a refund for killing a contract. Additionally, killing a smart contract can free memory in the blockchain, which can also affects the value transferred.&lt;/li&gt;
+&lt;li&gt;[ethereum-traces-not-transactions-3f0533d26aa](&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;traces数据的格式为：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;key&lt;/th&gt;
+&lt;th&gt;evmType&lt;/th&gt;
+&lt;th&gt;pgType&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;id&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHash&lt;/td&gt;
+&lt;td&gt;[HashLength]byte&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHeight&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;txHash&lt;/td&gt;
+&lt;td&gt;[HashLength]byte&lt;/td&gt;
+&lt;td&gt;text (32 byte Keccak256)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;txIndex&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pc&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;op&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;depth&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bignint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;refundCounter&lt;/td&gt;
+&lt;td&gt;int&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;precompiled&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;err&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;decollator&lt;/td&gt;
+&lt;td&gt;&amp;quot;&amp;rdquo;&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;events数据&#34;&gt;events数据&lt;/h3&gt;
+&lt;p&gt;events数据主要是用来分析&lt;code&gt;ERC20 token&lt;/code&gt;的转账情况，因为根据&lt;code&gt;ERC 20&lt;/code&gt;规范每一笔转账操作都会产生一个event事件。events数据主要通过交易执行之后产生的receipt.logs来获取。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;receipt.Logs = statedb.GetLogs(tx.Hash())&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;id = blockNumber*10^5 + idx&lt;/code&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;key&lt;/th&gt;
+&lt;th&gt;evmType&lt;/th&gt;
+&lt;th&gt;pgType&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;id&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;eventAddress&lt;/td&gt;
+&lt;td&gt;[AddressLength]byte   a hex string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;topics&lt;/td&gt;
+&lt;td&gt;[]byte -&amp;gt; string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;eventData&lt;/td&gt;
+&lt;td&gt;[]byte -&amp;gt; string&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockNumber&lt;/td&gt;
+&lt;td&gt;uint64&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionHash&lt;/td&gt;
+&lt;td&gt;[HashLength]byte&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionIndex&lt;/td&gt;
+&lt;td&gt;uint&lt;/td&gt;
+&lt;td&gt;bignint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;blockHash&lt;/td&gt;
+&lt;td&gt;[HashLength]byte&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;logIndex&lt;/td&gt;
+&lt;td&gt;uint&lt;/td&gt;
+&lt;td&gt;bigint&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;removed&lt;/td&gt;
+&lt;td&gt;bool&lt;/td&gt;
+&lt;td&gt;boolean&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;decollator&lt;/td&gt;
+&lt;td&gt;&amp;quot;&amp;rdquo;&lt;/td&gt;
+&lt;td&gt;text&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id=&#34;其它数据&#34;&gt;其它数据&lt;/h3&gt;
+&lt;p&gt;geth-query工具可以自定义导出数据，根据哪些数据具备分析价值可以通过修改工具代码或者&lt;code&gt;go-ethereum&lt;/code&gt;代码进行导出数据分析。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;对于合约运行失败的交易统计，可以从以下几个方面统计：交易失败类型统计(柱状图)，交易失败数目统计(折线图，每1W个块或者10W个块为单位)。&lt;/li&gt;
+&lt;li&gt;trace数量由前面的块到后面的块，交易的trace数量逐步递增的曲线。&lt;/li&gt;
+&lt;li&gt;交易消耗的gas分析。&lt;/li&gt;
+&lt;li&gt;热点合约的分析。&lt;/li&gt;
+&lt;li&gt;交易地址的网络图。&lt;/li&gt;
+&lt;li&gt;交易运行特征trace分析。&lt;/li&gt;
+&lt;li&gt;所有历史交易随时间变化trace数量的调用关系。&lt;/li&gt;
+&lt;li&gt;交易执行高频trace，低频trace。&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title>Go Sheduler</title>
+      <link>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</guid>
+      
+        <description>&lt;h2 id=&#34;go-调度器&#34;&gt;go 调度器&lt;/h2&gt;
+&lt;h3 id=&#34;介绍&#34;&gt;介绍&lt;/h3&gt;
+&lt;p&gt;Go 1.1的最重要的一个特性是引入了新的调度器，由Dmitry Vyukov贡献， 新的调度器极大的提高了程序的并行性能。&lt;/p&gt;
+&lt;h3 id=&#34;go-runtime需要一个怎样的调度器&#34;&gt;go runtime需要一个怎样的调度器？&lt;/h3&gt;
+&lt;p&gt;但是在查看新的调度器之前，我们需要了解为什么需要它。当操作系统可以为您调度线程时为什么需要创建用户进空间的线程（goroutine）?&lt;/p&gt;
+&lt;p&gt;POSIX线程API是现有Unix进程模型的逻辑扩展，因此，线程可以获得与进程相同的许多控件。线程有自己的信号掩码，可以分配CPU亲缘关系，可以放在cgroups中，可以查询它们使用哪些资源。所有这些控件都为Go程序使用goroutines所不需要的功能增加了开销，当程序中有100,000个线程时，这些开销就会迅速增加。&lt;/p&gt;
+&lt;p&gt;另一个问题是，基于Go模型操作系统无法做出明智的调度决策。例如，Go垃圾收集器要求在运行收集动作时停止所有线程，并且内存必须处于一致的状态。这涉及到等待正在运行的线程到达一个内存是一致的点。&lt;/p&gt;
+&lt;p&gt;当您在一个随机时间点调度许多线程时，很可能需要等待许多线程达到一致的状态。Go调度器只能在内存是一致的地方进行调度。这意味着，当我们停止垃圾收集动作时，我们不得不取等待正在CPU核上积极运行的线程。&lt;/p&gt;
+&lt;p&gt;通常有3个线程模型。一个是N:1，其中几个用户空间线程在一个OS线程上运行。这样做的优点是可以非常快速地切换上下文，但是不能利用多核系统。另一个是1:1，其中一个执行线程与一个操作系统线程匹配，它利用了机器上的所有核心，但是上下文切换很慢，因为上下文的切换也就是物理线程的切换，需要操作系统的介入。&lt;/p&gt;
+&lt;p&gt;Go试图通过使用M:N调度器来同时利用这两个方面。它将任意数量的goroutine调度到任意数量的OS线程上。您可以快速切换上下文，并利用系统中的所有核心。这种方法的主要缺点是它增加了调度器的复杂性。&lt;/p&gt;
+&lt;h3 id=&#34;go-scheduler-组成&#34;&gt;go-scheduler 组成&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;为了完成调度任务，Go调度器使用3个主要实体&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;G: goroutine包含堆栈，指令指针和其他协程调度的重要信息，比如任何可能被阻塞的channel。在runtime的代码中它被称为G。&lt;/p&gt;
+&lt;p&gt;P: 逻辑处理器Processor，其代表调度的上下文，您可以将它看作是在单个线程上运行Go代码的调度程序的本地化版本。P是重要的对于让我们从老版本的GM模式的N:1转换到GPM模式的M:N（协程：物理线程）。在runtime中他被称为P，p的值可以被 &lt;code&gt;GOMAXPROCS()&lt;/code&gt;函数所设置。&lt;/p&gt;
+&lt;p&gt;M: M是直接被OS调度管理的物理线程，它非常像标准的POSIX线程。在runtime中，它被称为M for Machine。&lt;/p&gt;
+&lt;p&gt;下面的图可以表示其3者者之间的关系：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://morsmachine.dk/in-motion.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在上面我们看到2个线程(M)，每个M都有一个context(P)和一个正在运行的goroutine(G)。为了运行G，一个M必须拥有一个P。&lt;/p&gt;
+&lt;p&gt;P的数量可以用环境变量GOMAXPROCS和runtime中的&lt;code&gt;GOMAXPROCS()&lt;/code&gt;函数来设置，正常来说该值不会被改变。并且在go语言后面的版本中该值固定为CPU的逻辑核数。&lt;/p&gt;
+&lt;p&gt;灰色的协程没有被运行，但是它准备被调度，他们被排列在runqueues队列中， 该队列采用FIFO的进出方式。当协程执行go语句时，它被放到runqueues的结尾，P会运行一个协程直到到达调度时间点，然后P会从runqueue队列中取出G，然后设置栈和指令指针开始运行协程。&lt;/p&gt;
+&lt;p&gt;为了降低由多个P的情况下对于runqueue的互斥争用情况，每一个P都有自己的local runqueue。在之前的版本中go的调度器仅仅只有一个全局的runqueue，并且用一个互斥锁来保护它。线程经常会为了等待runqueue的互斥锁而被阻塞。当你想充分利用一个32核心机器上的计算资源时，这会变得更加糟糕。&lt;/p&gt;
+&lt;p&gt;只要所有上下文都有goroutines要运行，调度器就会在这种稳定状态下继续调度。然而，有两个场景可以改变这种情况。&lt;/p&gt;
+&lt;h4 id=&#34;syscall&#34;&gt;syscall&lt;/h4&gt;
+&lt;p&gt;你可能会想，为什么要有P呢?我们不能把runqueue放到线程M上，然后去掉上下文P吗?我们有上下文P的原因是，如果正在运行的线程由于某种原因需要阻塞，我们可以将它们传递给其他线程。&lt;/p&gt;
+&lt;p&gt;一个线程可能阻塞的例子是当我们调用一个系统调用时，线程可能会被阻塞在syscall上，因此在线程M阻塞时，应该传递上下文P，使得它能够继续调度其余G。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://morsmachine.dk/syscall.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在上面的图中，我们看到一个线程M0放弃了上下文P，以便另外一个线程M1能够运行该上下文。go调度器确保有足够的线程来运行上下文P。上面例子中的M1可能只是为了处理这个syscall而创建的，也可能来自线程的缓存(线程复用)。syscall线程M0将保持协程G0一直处理系统调用，G0尽管被阻塞了，但是从技术的角度来说它任然在执行。&lt;/p&gt;
+&lt;p&gt;当syscall返回时，为了运行返回的goroutine，线程必须尝试获取一个上下文P。正常的操作模式是从其他线程之一窃取上下文P。如果它不能窃取一个，它将把goroutine放到一个全局运行队列中，把自己放到线程缓存中，然后休眠。&lt;/p&gt;
+&lt;p&gt;上下文P的本地运行队列取出G取完后会到全局运行队列中去取。上下文P还会定期检查全局运行队列中的goroutines。否则，全局运行队列上的goroutines可能会因为饥饿而停止运行。&lt;/p&gt;
+&lt;p&gt;这种对系统调用的处理就是为什么Go程序能够运行多个线程，即使GOMAXPROCS为1。runtime来用goroutines通过线程进行系统调用，线程阻塞时，就将线程放在一边。&lt;/p&gt;
+&lt;h4 id=&#34;stealing-work&#34;&gt;Stealing work&lt;/h4&gt;
+&lt;p&gt;go调度系统稳定状态改变的另一种方式是当上下文P耗尽了要调度的goroutines时，如果上下文P的运行队列上的G数量不平衡，这将导致有的上下文P耗尽了它的运行队列，但是系统中仍然有工作要做。为了继续高效的运行代码，上下文P首先将从全局队列中获取G，如果当中没有G，它会从其余上下文P中取一半的G，这确保了每一个上下文P都是处于工作状态以及所有线程都在以最大容量G工作。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://morsmachine.dk/steal.jpg&#34; alt=&#34;img&#34;&gt;&lt;/p&gt;
+&lt;p&gt;总结上面调度器为了达到平衡状态而做的两个动作。syscall可以总结当G导致M阻塞时，P向下抛弃M。steal work可以总结为P执行完所有G后，从全局运行队列和其余P中调度一半G。&lt;/p&gt;
+&lt;h3 id=&#34;goroutine-调度&#34;&gt;goroutine 调度&lt;/h3&gt;
+&lt;p&gt;Go运行时会在下面的goroutine被阻塞的情况下运行另外一个goroutine。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;blocking syscall(for example opening a file)&lt;/li&gt;
+&lt;li&gt;network input&lt;/li&gt;
+&lt;li&gt;channel operations&lt;/li&gt;
+&lt;li&gt;primitives in the sync package&lt;/li&gt;
+&lt;li&gt;The Go statement, although there is no guarantee that new goroutine will be scheduled immediately.&lt;/li&gt;
+&lt;li&gt;After being stopped for a garbage collection cycle.&lt;a href=&#34;https://codeburst.io/why-goroutines-are-not-lightweight-threads-7c460c1f155f&#34;&gt;link&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;sysmon&#34;&gt;sysmon&lt;/h3&gt;
+&lt;p&gt;sysmon是一个由runtime启动的M，也叫监控线程，它无需P也可以运行，它每20us~10ms唤醒一次，主要执行:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;释放闲置超过5分钟的span物理内存； scavenge heap&lt;/li&gt;
+&lt;li&gt;如果超过2分钟没有垃圾回收，强制执行；forcegc&lt;/li&gt;
+&lt;li&gt;将长时间未处理的netpoll结果添加到任务队列；netpool&lt;/li&gt;
+&lt;li&gt;向长时间运行的G任务发出抢占调度；retake&lt;a href=&#34;http://xiaorui.cc/2018/06/04/golang%e5%af%86%e9%9b%86%e5%9c%ba%e6%99%af%e4%b8%8b%e5%8d%8f%e7%a8%8b%e8%b0%83%e5%ba%a6%e9%a5%a5%e9%a5%bf%e9%97%ae%e9%a2%98/&#34;&gt;golang-Cpu密集型任务调度抢占&lt;/a&gt;。这里发生抢占其实是一种伪抢占，本质上是sysmon中的retake触发morestack，然后调用newstack，然后gopreempt_m会重置g的状态，并且扔到全局runq中重新进行调度(这里扔到全局的runq中也比较好理解，因为全局队列中都是一些需要执行时间比较长的G，中心思想是全局runq中的G执行时间比本地runq执行时间要长)。&lt;/li&gt;
+&lt;li&gt;收回因syscall长时间阻塞的P；&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;go调度器还有很多细节，比如cgo线程LockOSThread()函数以及与网络轮询器的集成。这些都能够在go的runtime库中能够找到。&lt;/p&gt;
+&lt;h4 id=&#34;参考&#34;&gt;参考&lt;/h4&gt;
+&lt;p&gt;&lt;a href=&#34;https://morsmachine.dk/go-scheduler&#34;&gt;go-scheduler&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://wudaijun.com/2018/01/go-scheduler/&#34;&gt;go-scheduler1&lt;/a&gt;&lt;/p&gt;
+</description>
+      
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://puppym.github.io/blog/post/geth-query/geth-query/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
+      
+        <description>&lt;p&gt;title: &amp;ldquo;Geth-query&amp;rdquo;
+date: 2020-01-02T09:41:04+08:00
+draft: false
+summary: &amp;ldquo;以太坊智能合约数据快速抽取和重放&amp;rdquo;
+tags: [geth-query,blockchain,ethereum]&lt;/p&gt;
+&lt;h2 id=&#34;以太坊智能合约数据高速抽取和重放&#34;&gt;以太坊智能合约数据高速抽取和重放&lt;/h2&gt;
+&lt;p&gt;为了解决从海量的区块数据中快速提取智能合约运行特征，本文提出智能合约数据快速抽取和重放技术。解决以太坊从海量区块数据中抽取合约运行状态难和利用合约运行状态实时监控合约状态难的问题。主要的分为以下几个部分：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;智能合约状态的自动抽取。智能&lt;/li&gt;
+&lt;li&gt;合约再链上执行过程中，每一个状态都有可能导致其世界状态的变化。在同步区块数据时，通过适当保存合约运行的中间状态，能够实现智能合约的定点重放。&lt;/li&gt;
+&lt;li&gt;智能合约执行过程的快速重放。通过优化本地的EVM，更改EVM的内部结构，通过EVM快速重发智能合约以及抽取合约运行特征。&lt;/li&gt;
+&lt;li&gt;面向区块链的同步缓存技术。通过存储智能合约重发运行特征以及区块数据，并且提供高效的外部查询接口。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;智能合约状态的自动抽取&#34;&gt;智能合约状态的自动抽取&lt;/h3&gt;
+&lt;p&gt;智能合于运行在区块链虚拟环境中，不存在直观的标准化接口能够访问合约中的各类状态。事实上，单一合约状态的变化会影响整个区块链状态的变化，而且这种变化会随着区块高度和交易数量而不断增加，甚至随着合约代码的逐步调用执行而时刻发生变化。例如，合约的单步执行即可导致自身状态变化，或导致多个账户余额更改，或导致其他合约的状态发生变化。因此为了快速定位需要的信息，高效筛选合约状态至关重要，本部分通过对智能合约特性深入分析，筛选出不同维度的链上信息进行处理和快照，如区块，交易，收据，事件日志，合约基本全貌信息，特定类型合约信息，合约内部调用记录，合约逐步调用轨迹等。这些信息从粗至细记录了合约在链上的所有状态，可以满足不同场景下的分析需求。&lt;/p&gt;
+&lt;p&gt;智能合约数据抽取过程具体如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;通过以太坊Geth客户端启动全节点，全节点会启动一系列服务，P2P服务从其他以太坊全节点通过P2P连接同步区块数据到内存。&lt;/li&gt;
+&lt;li&gt;Geth客户端按区块顺序遍历执行每个区块和区块中的每一笔交易，在执行过程中快照保存每个区块的世界状态和智能合约数据存储的中间状态，便于通过快照状态重放智能合约。&lt;/li&gt;
+&lt;li&gt;每笔交易的执行会对应一个新的EVM虚拟机，EVM虚拟机通过合约账户的code域按顺序读取智能合约的opcode指令执行，快照保存指定opcode执行状态，通过执行opcode识别内部交易，保存内部交易数据。&lt;/li&gt;
+&lt;li&gt;交易执行结束，保存交易数据，以及交易返回的票据数据。&lt;/li&gt;
+&lt;li&gt;区块执行结束，保存区块数据，向底层levelDB数据库commit数据更新。&lt;/li&gt;
+&lt;li&gt;重复上述操作，直至全节点跟上主网的同步状态。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.cloudinary.com/dcvachvmj/image/upload/v1584145931/czm_blog/geth-query/1_zq1ezz.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;另一方面，合约状态和区块交易中还包含大量冗余信息，对长期数据存储同步以及后续分析带来极大的压力，后面会对数据使用颗粒化快照策略，对这部分信息进行过滤。&lt;/p&gt;
+&lt;h3 id=&#34;智能合约执行过程重放优化&#34;&gt;智能合约执行过程重放优化&lt;/h3&gt;
+&lt;p&gt;针对智能合约依赖特定运行环境以及合约状态时间依赖问题，本文研究合约任意状态恢复，合约虚拟机跟踪调试，合约运行资源消耗复原。&lt;/p&gt;
+&lt;p&gt;智能合约和区块链本质上是一个状态机系统，智能合约的逐步执行造成状态的改变和转移。本文通过记录区块链每个区块下的状态，以及在交易维度下的每次状态差异，实现最小代价维护整个区块链系统的关键状态转移信息。另外，通过索引每个交易trace和交易内的虚拟机执行trace,保留最精细的执行过程信息。这种设计下，可以实现以下多维度的执行过程重发：任意区块内的所有交易执行重放；任意交易的执行过程重放；任意合约执行过程中虚拟机状态重放。前面提到记录的每次状态差异即可用于快速对比合约执行效果，也用于高效复原任意节点的完整合约状态。最终通过此套方案快速恢复智能合约在历史上任意时刻的状态。并且由于对EVM进行了优化，通过过滤关键的trace信息和去除交易执行完后向底层数据库LevelDB的写操作，能够极大加快EVM重放交易的速度。智能合约执行过程重发执行步骤主要如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;启动智能合约重放工具Geth-query,Geth-query服务读取全节点数据库LevelDB中的区块数据和区块世界状态快照，恢复重放区块或交易的世界状态。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Geth-query服务按区块顺序遍历执行每个区块和区块中的每一笔交易，通过对每一笔交易都新建一个EVM虚拟机开始执行交易。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;EVM虚拟机通过合约账户的code域按顺序读取智能合约的opcode指令执行，快照保存指定opcode执行状态，通过执行opcode识别内部交易，保存内部交易数据。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;所有交易执行结束，智能合约执行过程重放数据导出存储。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;智能合约执行过程重放优化过程如下图所示:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.cloudinary.com/dcvachvmj/image/upload/v1584145929/czm_blog/geth-query/2_o0ptdq.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;智能合约在虚拟机中的运行过程包含重要信息，对于安全分析和监控尤为重要。在合约任意状态恢复技术的之处下，可复原任意时刻链上状态用于虚拟机跟踪调试，即可用于漏洞追溯分析和威胁检测。本技术还可对关键操作符进行识别，以获取更多核心数据，为后续分析提供尽可能多的深度元信息。&lt;/p&gt;
+&lt;p&gt;智能合约的运行模型中还有至关重要的资源机制，用于防止公共系统下的资源滥用。合约运行资源消耗是合约执行过程中的重要部分，同时也对安全分析以及程序质量优化有着重要意义。通过前期索引智能合约的每一步执行操作符，对应资源消耗和剩余情况，可对合约运行时资源进行完整复原，为资源消耗分析和优化建议提供全貌信息。&lt;/p&gt;
+&lt;h3 id=&#34;面向区块链的同步缓存技术&#34;&gt;面向区块链的同步缓存技术&lt;/h3&gt;
+&lt;p&gt;为了解决区块数据同步和利用过程中，所暴露出来的区别于传统应用数据同步的新问题，本文拟研究节点分叉处理，非活跃数据分离存储方案，热点地址识别策略，实时数据导出等问题。&lt;/p&gt;
+&lt;p&gt;区块量系统的基本单位是单一节点，作为分布式系统中的一员与其他节点进行通讯和数据交换。常见的区块链共识机制决定了节点分叉现象不可避免。本文拟研究节点分叉处理技术来处理数据同步时由于分叉带来的数据错位问题。通过建立双层同步缓存区，对于新同步的数据放入第一层缓存区，可供外部进行简单查询分析。当第一层缓存区中相关交易区块确认高度超过规定数值时，认为交易不会被逆转，则推送至第二层缓存区块进一步处理。当分叉发生后，分叉感知模块对第一层缓存区的数据进行更正。这样可以确保进入后续深度分析和持久化存储的数据可靠性。&lt;/p&gt;
+&lt;p&gt;区块链中还存在大量非活跃数据，如长期无交易记录的地址以及可能已经作废的智能合约。对于与这类地址相关的数据，本文实施非活跃数据分离存储方案，可以起到缩减核心数据库，提升整体查询分析性能的效果。相对的，对于活跃地址和合约，则优先缓存。具体热点地址识别对象包括：主流项目智能合约，近期热点智能合约，高价值智能合约，关键工具合约。同时，冷热地址会按照一定规则进行重新转换，以达到最高的数据缓存和存储性价比。区块链数据缓存技术主要步骤如下：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;启动智能合约重放工具Geth-query,Geth-query服务读取全节点数据库LevelDB中的区块数据和区块世界状态快照，恢复重放区块或交易的世界状态。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Geth-query重放智能合约执行过程，过滤虚拟机中特定trace的状态和内部交易，保留最精细的执行过程。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Geth-query重放智能合约执行过程完成，将获取的合约重放的颗粒快照数据导入各个分析模块进行分析处理。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;各个合约数据处理模块如：热点地址识别，节点分叉处理模块和非活跃数据分离等模块对合约重放数据进行处理，将处理过后的数据存入StateDB。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;StateDB触发数据更新，与底层数据库进行冷热数据交换。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;具体区块链数据缓存架构图如下所示:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://res.cloudinary.com/dcvachvmj/image/upload/v1584145926/czm_blog/geth-query/3_b5fv1e.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;为了满足针对区块链和智能合约的大量数据分析需求，本文研究实时数据导出技术，方便其他场景下的数据二次加工。本文通过更改区块链全节点的源代码，在区块链节点数据同步过程中，对于区块链数据进行实时导出。导出内容可以指定，从而满足不同场景下的需求。&lt;/p&gt;
+&lt;h3 id=&#34;工作优越性&#34;&gt;工作优越性&lt;/h3&gt;
+&lt;p&gt;完成上述研究后会将产生的结果和现有的全节点RPC接口以及全节点EVM运行速度相互对比，对比主要分为三个方面：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;对比本地EVM重放智能合约速度和全节点运行智能合约的速度。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对比两者RPC请求响应速度，通过对比两者RPC请求响应速度来体现现有工作的优势。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;对比现有实验结果的RPC请求能够获取的数据而现有全节点的RPC请求不能获取的数据，体现现有工作的优势。比如智能合约运行过程中产生的特征。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+      
+    </item>
+    
+  </channel>
+</rss>

@@ -1,2 +1,0 @@
-User-agent: *
-Sitemap: https://puppym.github.io/blog/sitemap.xml

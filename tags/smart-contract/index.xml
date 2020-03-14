@@ -13,10 +13,10 @@
     
     <item>
       <title>Geth Query并行优化</title>
-      <link>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/</link>
+      <link>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C1/geth-query1/</link>
       <pubDate>Thu, 09 Jan 2020 17:24:08 +0800</pubDate>
       
-      <guid>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/</guid>
+      <guid>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C1/geth-query1/</guid>
       <description>以太坊智能合约重放工具geth-query优化</description>
     </item>
     

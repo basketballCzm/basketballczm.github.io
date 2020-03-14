@@ -25,7 +25,7 @@ SSD:4T + 4T
 
 首先将逻辑核数用满16核，三星阵列的读取速度最高位800M每秒左右。然后尝试使用12核发现三星阵列的读取速度也已经跑满，测试600W-610W的速度如下所示：
 
- ![](img/1.png)
+![](https://res.cloudinary.com/dcvachvmj/image/upload/v1584145870/czm_blog/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/4_z7bvcx.png)
 
 上面的图显示当P值12及12以上的时候，geth-query的执行效率提升不高，因此600W-610W的g的最优值为12
 

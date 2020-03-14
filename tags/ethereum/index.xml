@@ -38,5 +38,14 @@
       <description>以太坊智能合约数据抽取数据分析</description>
     </item>
     
+    <item>
+      <title>Geth-query</title>
+      <link>https://puppym.github.io/blog/post/geth-query/geth-query/</link>
+      <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
+      <description>以太坊智能合约数据快速抽取和重放</description>
+    </item>
+    
   </channel>
 </rss>

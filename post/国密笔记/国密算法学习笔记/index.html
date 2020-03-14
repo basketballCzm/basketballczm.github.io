@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title> - Czm blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Czm" />
+  <meta name="description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.0" />
+
+
+<link rel="canonical" href="https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+
+
+
+
+
+<link rel="icon" href="/blog/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/sass/jane.min.fa3d941d1d0e0ddc985804227feabffea55c89883eb0af34e0532a7ae9135151.css" integrity="sha256-&#43;j2UHR0ODdyYWAQif&#43;q//qVciYg&#43;sK804FMqeukTUVE=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等">
+
+<meta itemprop="wordCount" content="8313">
+
+
+
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">Czm blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/blog/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/blog/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/blog/" class="logo">
+    
+      Czm blog
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title"></h1>
+      
+      <div class="post-meta">
+        <time datetime="0001-01-01" class="post-time">
+          0001-01-01
+        </time>
+        
+        <span class="more-meta"> 8313 words </span>
+          <span class="more-meta"> 17 min read </span>
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1概述">1.概述</a></li>
+    <li><a href="#2sm2">2.SM2</a>
+      <ul>
+        <li><a href="#21-简介">2.1. 简介</a></li>
+        <li><a href="#22-椭圆曲线及参数">2.2. 椭圆曲线及参数</a></li>
+        <li><a href="#23-密钥对生成和公钥验证算法">2.3 密钥对生成和公钥验证算法</a></li>
+        <li><a href="#24-数字签名算法">2.4 数字签名算法</a></li>
+        <li><a href="#25-密钥交换算法">2.5 密钥交换算法</a></li>
+        <li><a href="#26-非对称加解密算法">2.6 非对称加解密算法</a></li>
+        <li><a href="#264-加解密算法实现">2.6.4 加解密算法实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#3sm3">3.SM3</a>
+      <ul>
+        <li><a href="#31-简介">3.1 简介</a></li>
+        <li><a href="#32-密码杂凑算法">3.2 密码杂凑算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#4sm4">4.SM4</a>
+      <ul>
+        <li><a href="#41-简介">4.1 简介</a></li>
+        <li><a href="#42-分组加密算法">4.2 分组加密算法</a></li>
+        <li><a href="#43-分组解密算法">4.3 分组解密算法</a></li>
+      </ul>
+    </li>
+    <li><a href="#5sm9">5.SM9</a>
+      <ul>
+        <li><a href="#51-简介">5.1 简介</a></li>
+      </ul>
+    </li>
+    <li><a href="#6总结">6.总结</a></li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <h1 id="国密算法学习笔记">国密算法学习笔记</h1>
+<p>[TOC]</p>
+<h2 id="1概述">1.概述</h2>
+<p>国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等密码算法标准及其应用规范。其中“SM”代表“商密”，即用于商用的、不涉及国家秘密的密码技术。[1]</p>
+<p>国密规范标准文件列表：http://www.gmbz.org.cn/main/bzlb.html</p>
+<h2 id="2sm2">2.SM2</h2>
+<h3 id="21-简介">2.1. 简介</h3>
+<p>SM2 为基于椭圆曲线密码的公钥密码算法标准，包含数字签名、密钥交换和公钥加密，用于替换 RSA/Diffie-Hellman/ECDSA/ECDH 等国际算法。其</p>
+<p>私钥长度：32字节。</p>
+<p>公钥长度：SM2非压缩公钥格式字节串长度为65字节，压缩格式长度为33字节，若公钥y坐标最后一位为0，则首字节为<code>0x02</code>，否则为<code>0x03</code>。非压缩格式公钥首字节为<code>0x04</code>。</p>
+<p>签名长度：64字节。</p>
+<h3 id="22-椭圆曲线及参数">2.2. 椭圆曲线及参数</h3>
+<h4 id="221-基础概念">2.2.1 基础概念</h4>
+<h5 id="2211--群">2.2.1.1  群</h5>
+<p>数学意义上的<strong>群</strong>是一个集合和定义在这个集合上的二元运算，我们不妨把这个二元运算称之为“加法”，并用符号+表示。为了使集合G成为一个群，我们必须定义加法（区别于算术加法），使其服从以下四个性质:</p>
+<ol>
+<li>封闭性：如果a和b都属于G，则a+b也属于G；</li>
+<li>结合律：对于G中的任意元素a、b和c，都有（a+b）+c=a+（b+c）成立；</li>
+<li>单位元：G中存在单位元0，对于G中任意元素a，都有a+0=0+a=a成立</li>
+<li>逆元：对于G中任意元素a，G中都存在元素b，使得a+b=b+a=0成立。G就叫作一个群，记为（G，+）
+如果我们加上第五个属性：</li>
+<li>交换律：a+b=b+a
+这样的群被称作交换群（Abel群）</li>
+</ol>
+<p><strong>例子</strong></p>
+<p>用通常的算术加法概念，整数Z的集合是一个群(此外，它是一个交换群)。然而，自然数N的集合不是一个群，因为第四个性质不能被满足。</p>
+<p><strong>椭圆曲线上的群</strong></p>
+<ul>
+<li>该群的元素是椭圆曲线上的点；</li>
+<li>单位元是无穷远处的点0</li>
+<li>点P的逆元是椭圆曲线上关于x轴对称的点；</li>
+<li>加法由以下规则给出:给定三个在一条直线上的非零点P、Q和R，它们的和为P+Q+R=0</li>
+</ul>
+<p><strong>定义在椭圆曲线上群的加法运算</strong></p>
+<p>在椭圆曲线上，我们将加法群和曲线对应为：</p>
+<ol>
+<li>
+<p>我们将<strong>曲线上的点</strong>对应到群上的元素。</p>
+</li>
+<li>
+<p><strong>单位元素定义</strong>为曲线上的无穷大处的点。</p>
+</li>
+<li>
+<p><strong>点P的逆元</strong>，表示为关于x轴对称的点。</p>
+</li>
+</ol>
+<p><strong>加法定义</strong>为：给定曲线上三个点P, Q, R，三个点在一个直线上，使得 P + Q + R = 0现在我们推导一下 P + Q + R = 0， 所以 P + Q = -R, 在图像上表示为 R，关于 x 轴的对称点：</p>
+<p><!-- raw HTML omitted --></p>
+<p><img src="https://www.zhihu.com/equation?tex=P+%3D+%28x_P%2C+y_P%29%2C+Q+%3D+%28x_Q%2C+y_Q%29" alt="[公式]"></p>
+<p>如果P和Q不是同一个点，我们可以计算两点连线的斜率<img src="https://www.zhihu.com/equation?tex=m+%3D+%5Cfrac%7By_P+-+y_Q%7D%7Bx_P+-+x_Q%7D" alt="[公式]"></p>
+<p>这条线与椭圆曲线的交点是第三点<img src="https://www.zhihu.com/equation?tex=R+%3D+%28x_R%2C+y_R%29+%5Cbegin%7Barray%7D%7Brcl%7D+++++x_R+%26+%3D+%26+m%5E2+-+x_P+-+x_Q+%5C%5C+++++y_R+%26+%3D+%26+y_P+%2B+m%28x_R+-+x_P%29+%5Cend%7Barray%7D" alt="[公式]"></p>
+<p>或者等价的有： <img src="https://www.zhihu.com/equation?tex=y_R+%3D+y_Q+%2B+m%28x_R+-+x_Q%29" alt="[公式]"></p>
+<p>最终我们有： <img src="https://www.zhihu.com/equation?tex=%28x_P%2C+y_P%29+%2B+%28x_Q%2C+y_Q%29+%3D+%28x_R%2C+-y_R%29" alt="[公式]"></p>
+<p>注意符号，P + Q = - R，即使P或Q中的一个是切点，上述方程也是有效的。</p>
+<p>P=Q的情况需要有一点不同的处理: 计算 <img src="https://www.zhihu.com/equation?tex=x_R" alt="[公式]"> 和 <img src="https://www.zhihu.com/equation?tex=y_R" alt="[公式]"> 的方程是相同的，但是考虑到 <img src="https://www.zhihu.com/equation?tex=x_P%3Dx_Q" alt="[公式]"> ，我们要重新计算斜率（实际上就是过P点的切线斜率）：</p>
+<p><img src="https://www.zhihu.com/equation?tex=m+%3D+%5Cfrac%7B3+x_P%5E2+%2B+a%7D%7B2+y_P%7D" alt="[公式]"></p>
+<p>上面的两种情况在写代码是由要注意区分。</p>
+<p><strong>定义在椭圆曲线上群的乘法运算</strong></p>
+<p>除了加法，我们可以定义另一种运算:标量乘法，即:</p>
+<p><img src="https://www.zhihu.com/equation?tex=nP+%3D+%5Cunderbrace%7BP+%2B+P+%2B+%5Ccdots+%2B+P%7D_%7Bn%5C+%5Ctext%7Btimes%7D%7D" alt="[公式]"></p>
+<p>但是该中标量乘法，那么我们的算法复杂度是 <img src="https://www.zhihu.com/equation?tex=O%282%5Ek%29" alt="[公式]"> ，效率不是很高。</p>
+<p>介绍了一种更快的计算标量乘法的算法，通过将n转化为二进制形式，例如</p>
+<p><img src="https://www.zhihu.com/equation?tex=%5Cbegin%7Barray%7D%7Brcl%7D+++++151+%26+%3D+%26+1+%5Ccdot+2%5E7+%2B+0+%5Ccdot+2%5E6+%2B+0+%5Ccdot+2%5E5+%2B+1+%5Ccdot+2%5E4+%2B+0+%5Ccdot+2%5E3+%2B+1+%5Ccdot+2%5E2+%2B+1+%5Ccdot+2%5E1+%2B+1+%5Ccdot+2%5E0+%5C%5C+++++%26+%3D+%26+2%5E7+%2B+2%5E4+%2B+2%5E2+%2B+2%5E1+%2B+2%5E0+%5Cend%7Barray%7D" alt="[公式]"></p>
+<p>这样我们计算 <img src="https://www.zhihu.com/equation?tex=151+%5Ccdot+P" alt="[公式]"> 时，可以转化成如下形式：</p>
+<p><img src="https://www.zhihu.com/equation?tex=151+%5Ccdot+P+%3D+2%5E7+P+%2B+2%5E4+P+%2B+2%5E2+P+%2B+2%5E1+P+%2B+2%5E0+P" alt="[公式]"></p>
+<p>优化后的算法复杂度是 <img src="https://www.zhihu.com/equation?tex=O%28log%5C%2Cn%29" alt="[公式]"> ，如果考虑n的二进制位数k，算法的复杂度是 <img src="https://www.zhihu.com/equation?tex=O%28k%29" alt="[公式]"></p>
+<h5 id="2212-有限域">2.2.1.2 有限域</h5>
+<p>有限域 $$F_q$$，其中 q 是一个奇素数或是 2 的幂：</p>
+<ol>
+<li>（素域）当 q 为奇素数时，$$q=p$$，表示为 $$F_p$$，其中 $$p &gt; 2^{191}$$</li>
+<li>（二元扩域）当 q 为 2 的幂，$$q=2^m$$，表示为 $$F_{2^m}$$，其中 $$m&gt;192 $$ 且为素数</li>
+</ol>
+<p>有限域 $$F_q$$必须是一个包含有限数量元素的集合。有限域的一个例子就是模p的整数集，其中p是素数。在域中我们需要定义加法(+)和乘法(*)的二元运算，两者都满足封闭性，结合律和交换律。对于这两个操作，每个元素都有一个唯一的单位元，一个唯一的逆元。</p>
+<p><strong>例子</strong></p>
+<p>有限域的一个实例就是模质数p的整数集$$F_p$$，它是定义在整数集$${0,1,2&hellip;p-1}$$上。$$F_p$$的加法和乘法分别就是模加法和模乘法，$$F_{23}$$的一些操作：</p>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584071393(1).png" alt="1584071393(1)"></p>
+<p>请注意，这里的 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]"> 必须是一个质数！模4整数集就不是一个域: 因为2没有乘法逆(即等式 <img src="https://www.zhihu.com/equation?tex=2+%5Ccdot+x+%5Cbmod%7B4%7D+%3D+1" alt="[公式]"> 没有解)。</p>
+<p>有限域中的除法可以通过利用<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Extended_Euclidean_algorithm">扩展欧几里德算法</a>可以“轻松”地计算乘法逆元，在最坏的情况下，算法的时间复杂度是 <img src="https://www.zhihu.com/equation?tex=O%28%5Clog+p%29" alt="[公式]"> (或者 <img src="https://www.zhihu.com/equation?tex=O%28k+%29" alt="[公式]"> ，如果我们考虑p的比特长度的话)。本质上我们可以认为 <img src="https://www.zhihu.com/equation?tex=x+%2F+y+%3D+x+%5Ccdot+y%5E%7B-1%7D" alt="[公式]"> ，即把x除以y看成是x乘上y的乘法逆元。实现的 <a href="https://zhuanlan.zhihu.com/p/55761894">python例子</a>。</p>
+<h5 id="2213-有限域中的椭圆曲线">2.2.1.3 有限域中的椭圆曲线</h5>
+<p>两类椭圆曲线实质是有限域质数的选取不同，有限域质数的选取也决定了其域的规模。</p>
+<p><!-- raw HTML omitted --></p>
+<p>上图展示了如何在曲线 <img src="https://www.zhihu.com/equation?tex=y%5E2+%5Cequiv+x%5E3+-+x+%2B+3+%5Cpmod%7B127%7D" alt="[公式]"> 上计算点加法，其中 <img src="https://www.zhihu.com/equation?tex=P+%3D+%2816%2C+20%29%2C+Q%3D%2841%2C120%29" alt="[公式]"> 。注意连接点的线 <img src="https://www.zhihu.com/equation?tex=y+%5Cequiv+4x+%2B+83+%5Cpmod%7B127%7D" alt="[公式]"> 是如何在平面内“重复”出现的，<strong>这是$$F_p$$ 中的直线区别于实数域直线的一个重要特征</strong>。</p>
+<p>在椭圆曲线中加入有限域的概念后，定义的点加法还需要满足以下性质：</p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=Q+%2B+0+%3D+0+%2B+Q+%3D+Q" alt="[公式]"> (根据单位元的定义).</li>
+<li>给定非零点 <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> ， <img src="https://www.zhihu.com/equation?tex=Q" alt="[公式]"> 的逆元是横坐标相同但纵坐标相反的点。或者说 <img src="https://www.zhihu.com/equation?tex=-Q+%3D+%28x_Q%EF%BC%8C-y_Q+%5Cbmod%7Bp%7D%29" alt="[公式]"> 。例如，如果 $$F_{29}$$中的曲线有一个点 <img src="https://www.zhihu.com/equation?tex=Q+%3D+%282%EF%BC%8C5+%29" alt="[公式]"> ，则逆元是 <img src="https://www.zhihu.com/equation?tex=-Q+%3D+%282%EF%BC%8C-5+%5Cbmod%7B29%7D%29+%3D+%282%EF%BC%8C24+%29+" alt="[公式]"> 。</li>
+<li>此外， <img src="https://www.zhihu.com/equation?tex=P+%2B+%28-P%29+%3D+0" alt="[公式]"> (根据逆元的定义)。</li>
+</ul>
+<h5 id="2214-椭圆曲线群的阶和子群的阶">2.2.1.4. 椭圆曲线群的阶和子群的阶</h5>
+<p><strong>群组的阶</strong>：可以表述为群组中所有元素的数量，记作p。</p>
+<p>一个群中的元素数量称为这个群的阶，即对应到椭圆曲线群的阶就是：在有限域上定义的椭圆曲线包含的点的数量。我们尝试把0到p-1的所有整数x代入方程，然后对于每个x都找到所有满足方程的解，这样我们就找到了曲线上所有的点。但是这样的算时间复杂度为 <img src="https://www.zhihu.com/equation?tex=O%28p%29" alt="[公式]">，这样做不够高效，有一个更快的计算阶的算法:<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Schoof%27s_algorithm">Schoof&rsquo;s algorithm</a>。</p>
+<p><strong>子群</strong>：首先是一个群，并且它的所有元素是另一个群的非空子集。</p>
+<p><strong>循环子群</strong>：是元素循环重复的子群，循环群中的每个元素都可以写成是一个基本元素的倍数（后面的子群都是循环子群）。</p>
+<p>椭圆曲线的点乘法有一个有趣的性质。取 <img src="https://www.zhihu.com/equation?tex=y%5E2+%5Cequiv+x%5E3+%2B+2x+%2B+3+%5Cpmod%7B97%7D" alt="[公式]"> 曲线上的点 <img src="https://www.zhihu.com/equation?tex=P+%3D+%283%EF%BC%8C6+%29" alt="[公式]"> 。现在我们计算出所有P的点乘倍数:</p>
+<p><img src="https://pic4.zhimg.com/80/v2-99a7f7c31b6fdca1ab0f5e928a383a63_720w.jpg" alt="img"></p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=0P+%3D+0" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=1P+%3D+%283%2C+6%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=2P+%3D+%2880%2C+10%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=3P+%3D+%2880%2C+87%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=4P+%3D+%283%2C+91%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=5P+%3D+0" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=6P+%3D+%283%2C+6%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=7P+%3D+%2880%2C+10%29" alt="[公式]"><img src="https://www.zhihu.com/equation?tex=%285k+%2B+1%29P+%3D+P" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=8P+%3D+%2880%2C+87%29" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=9P+%3D+%283%2C+91%29" alt="[公式]"></li>
+<li>&hellip;</li>
+</ul>
+<p>在这里，我们可以立即发现：P的倍数只有5个点，椭圆曲线的其他点从未出现过。其次，它们是循环重复的。我们可以写作:</p>
+<ul>
+<li><img src="https://www.zhihu.com/equation?tex=5kP+%3D+0" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=%285k+%2B+1%29P+%3D+P" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=%285k+%2B+2%29P+%3D+2P" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=%285k+%2B+3%29P+%3D+3P" alt="[公式]"></li>
+<li><img src="https://www.zhihu.com/equation?tex=%285k+%2B+4%29P+%3D+4P" alt="[公式]"></li>
+</ul>
+<p>这五个方程可以被“压缩”成一个方程：<img src="https://www.zhihu.com/equation?tex=kP+%3D+%28k+%5Cbmod%7B5%7D%29P" alt="[公式]"></p>
+<p><strong>基点的选取</strong>根据循环群中的每个元素都可以写成是一个基本元素的倍数，就像我们在前面的例子中展示的那样。我们把点P这样的基本元素称为循环子组的生成器或基点。</p>
+<h5 id="2215-子群的阶">2.2.1.5 子群的阶</h5>
+<p>由上述基点P所产生的子群的阶不能使用上文提到的Schoof算法来计算，因为该算法只适用于整个椭圆曲线，而不适用于子群。为了解决这个问题，引入定义如下：</p>
+<ul>
+<li>我们已经将阶定义为一个群的元素数量。这个定义仍然有效，但是在循环子组中，我们可以给出一个新的等价定义: **子群P的阶是使得 <img src="https://www.zhihu.com/equation?tex=nP+%3D+0" alt="[公式]"> 的最小的正整数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> **。</li>
+<li>子群P的阶可以通过<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Lagrange%27s_theorem_(group_theory)">拉格朗日定理</a>与椭圆曲线群的阶相联系，拉格朗日定理指出子群的阶是父群阶的除数。换句话说，如果椭圆曲线包含 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]">个点，并且它的一个子群包含 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 点，那么 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 是的 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 的除数。</li>
+</ul>
+<p>这两个信息组合在一起就给我们提供了一种找出一个基点为 <img src="https://www.zhihu.com/equation?tex=P" alt="[公式]"> 的子群的阶的思路：</p>
+<ol>
+<li>使用Schoof算法计算椭圆曲线群的阶数 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> ；</li>
+<li>找到 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 的所有除数；</li>
+<li>对每个 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 的除数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> ，计算 <img src="https://www.zhihu.com/equation?tex=nP" alt="[公式]"> ；</li>
+<li>使 <img src="https://www.zhihu.com/equation?tex=nP%3D0" alt="[公式]"> 成立的最小 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 就是子群P的阶。</li>
+</ol>
+<p>当N是合数，它有很多整数，但是如果是一个素数，将只有1和本身。此时我们考虑一种特殊情况：假设一个椭圆曲线群的阶数 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 是质数，那么这个椭圆曲线的子群的阶就只有两种情况：</p>
+<ol>
+<li>子群的阶是1，此时的子群只包含一个点0；</li>
+<li>子群的阶是N，此时的子群包含椭圆曲线上的所有点</li>
+</ol>
+<h5 id="2216-寻找一个基点">2.2.1.6 寻找一个基点</h5>
+<p>对于我们的ECC算法，我们需要的是高阶的子群。所以一般来说，我们会选择一条椭圆曲线，计算它的阶数 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> ，选择一个较大的除数作为子群阶数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> ，最终找到一个合适的基点。也就是说:我们不会选择一个基点然后计算它的阶，相反，**我们会首先选择一个看起来足够好的阶（也就是足够大），然后我们会寻找一个合适的基点。**下面详细讨论这一过程：</p>
+<p>有鉴于此，我们的算法概述如下：</p>
+<ol>
+<li>计算椭圆曲线的阶数 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"></li>
+<li>选择子群的阶数 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 。为了使算法有效，这个数字必须是质数，并且必须是 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 的除数。</li>
+<li>计算余因子<img src="https://www.zhihu.com/equation?tex=h%3DN%2Fn" alt="[公式]"></li>
+<li>选择椭圆曲线上的一个随机点 <img src="https://www.zhihu.com/equation?tex=P" alt="[公式]"></li>
+<li>计算 <img src="https://www.zhihu.com/equation?tex=G%3DhP" alt="[公式]"></li>
+<li>若 <img src="https://www.zhihu.com/equation?tex=G%3D0" alt="[公式]"> , 就回到步骤4， 否则，我们就找到了一个子群的基点，阶数为 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 和余因子为 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"></li>
+</ol>
+<p>请注意，此算法仅在 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 是质数时有效。如果 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 不是质数，那么 <img src="https://www.zhihu.com/equation?tex=G" alt="[公式]"> 的阶数可能是 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 的除数之一。</p>
+<h5 id="2217-椭圆曲线密码学">2.2.1.7 椭圆曲线密码学</h5>
+<p>ECC算法流程：</p>
+<ol>
+<li>从 <img src="https://www.zhihu.com/equation?tex=%5C%7B1%2C+%5Cdots%2C+n+-+1%5C%7D" alt="[公式]"> 中随机选择一个整数 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 作为私钥（ <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> 是循环子群的阶数）</li>
+<li>计算公钥 <img src="https://www.zhihu.com/equation?tex=H%3DdG" alt="[公式]"> （ <img src="https://www.zhihu.com/equation?tex=G" alt="[公式]"> 是循环子群的基点）我们注意到，如果我们已知 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> （和椭圆曲线的领域参数），计算 <img src="https://www.zhihu.com/equation?tex=H" alt="[公式]"> （标量乘）是很容易的。但是在已知 <img src="https://www.zhihu.com/equation?tex=H%3DdG" alt="[公式]"> 的情况下，计算 <img src="https://www.zhihu.com/equation?tex=d" alt="[公式]"> 是“困难”的，因为这要求我们解一个离散对数问题。</li>
+</ol>
+<p>ECDH（Elliptic curve Diffie-Hellman，一种加密算法）本质上是一个密钥协商协议，而不是一个加密算法。对于通讯双方定义了密钥生成和交换的规则，至于怎么用密钥对数据进行加密，取决于其他的算法。</p>
+<p>ECDSA（Elliptic Curve Digital Signature Algorithm，一种签名算法）：ESCDA处理的实际上是消息的哈希值，而不是消息本身。哈希函数是可选择的，但这个哈希函数必须是一个<a href="https://link.zhihu.com/?target=http%3A//en.wikipedia.org/wiki/Cryptographic_hash_function">密码学安全的哈希函数</a>。消息的哈希值需要截取一个固定的长度 <img src="https://www.zhihu.com/equation?tex=L_n" alt="[公式]"> ，这个长度是 <img src="https://www.zhihu.com/equation?tex=n" alt="[公式]"> （子群的阶）的二进制位数。截取后的哈希值是一个整数，我们记为 <img src="https://www.zhihu.com/equation?tex=z" alt="[公式]"> 。</p>
+<h4 id="222-椭圆曲线">2.2.2 椭圆曲线</h4>
+<p>两类椭圆曲线实质是有限域质数的选取不同，有限域质数的选取也决定了其域的规模。</p>
+<ol>
+<li>
+<p>$$F_p$$ 上的椭圆曲线</p>
+<p>方程为：$$y^2 =x ^3 +ax+b$$，$$a,b \in F_p$$，且$$(4a^3 +27 b^2) mod \ p \neq 0$$</p>
+<p>椭圆曲线的定义为：$$E(F_p) = {(x,y)|x,y \in F_p, y^2 =x ^3 +ax+b} \cup {O}$$，O 是无穷远点</p>
+<p>椭圆曲线 $$E(F_p)$$ 上的点的数目称为椭圆曲线 $$E(F_p)$$ 的阶。（有限域的元素数量）</p>
+</li>
+<li>
+<p>$$F_{2^m}$$ 上的椭圆曲线</p>
+<p>方程为：$$y^2 +xy =x ^3 +ax^2+b$$，$$a,b \in F_p$$，且$$b \neq 0$$</p>
+<p>椭圆曲线的定义为：$$E(F_{2^m}) = {(x,y)|x,y \in F_{2^m}, y^2 +xy =x ^3 +ax^2+b } \cup {O}$$，O 是无穷远点</p>
+<p>椭圆曲线 $$E(F_{2^m})$$ 上的点的数目称为椭圆曲线 $$E(F_{2^m})$$ 的阶</p>
+</li>
+</ol>
+<h4 id="223-椭圆曲线参数">2.2.3 椭圆曲线参数</h4>
+<ol>
+<li>
+<p>$$F_p$$ 上的椭圆曲线</p>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584072206(1).png" alt="1584072206(1)"></p>
+</li>
+<li>
+<p>$$F_{2^m}$$ 上的椭圆曲线</p>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584072340(1).png" alt="1584072340(1)"></p>
+</li>
+</ol>
+<p>确定一条椭圆曲线具体需要哪些参数分析：</p>
+<ul>
+<li>参数a, b 确定一条椭圆曲线的形状</li>
+<li>一个质数P用于描述有限域的大小</li>
+<li>一个用于生成循环子群的基点G</li>
+<li>子群（循环子群）的阶数n</li>
+<li>子群的协因子 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> （ <img src="https://www.zhihu.com/equation?tex=h%3DN%2Fn" alt="[公式]"> ，其中 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 是椭圆曲线群的阶数）</li>
+</ul>
+<p>这六个参数 <img src="https://www.zhihu.com/equation?tex=%28p%2Ca%2Cb%2CG%2Cn%2Ch%29" alt="[公式]"> 联合起来定义了一种ECC算法所用到的椭圆曲线。</p>
+<h3 id="23-密钥对生成和公钥验证算法">2.3 密钥对生成和公钥验证算法</h3>
+<h4 id="231-密钥对生成">2.3.1 密钥对生成</h4>
+<ol>
+<li>
+<p>输入：一个有效的 $$F_q$$ 上的椭圆曲线系统参数</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 生成随机数 $$d \in [1,n-2]$$</p>
+<p>b. G 为基点，计算 $$P(x_p,y_p)$$ 点，$$P=G^d$$</p>
+<p>c. 生成密钥对是 $$(d,P)$$，其中 $$d$$ 是私钥，$$P$$ 是公钥</p>
+</li>
+<li>
+<p>输出：密钥对 $$(d,P)$$</p>
+</li>
+</ol>
+<h4 id="232-公钥验证">2.3.2 公钥验证</h4>
+<ol>
+<li>输入：</li>
+</ol>
+<p>​	a. 一个有效的 $$F_q$$ 上的椭圆曲线系统参数</p>
+<p>​	b. 公钥 $$P(x_p,y_p)$$ 。</p>
+<ol start="2">
+<li>步骤（验证公钥是否有效本质上就是在验证 P 点是否在椭圆曲线上）：</li>
+</ol>
+<p>​	a. 验证 P 点不是无穷远点</p>
+<p>​	b. 验证坐标 $$x_p$$ 和 $$y_p$$ 是否是区间 $$[0,p-1]$$ 内。</p>
+<p>​	c. 验证 $$y_p^2=x_p^3+ax_p+b(mod \ p)$$ 或 $$y_p^3+x_py_p = x_p^3+ax_p^3+b$$</p>
+<p>​	d. 验证 $$p^n=O$$</p>
+<ol start="3">
+<li>输出：若以上验证均成功，则输出”有效“，否则为无效</li>
+</ol>
+<h3 id="24-数字签名算法">2.4 数字签名算法</h3>
+<h4 id="241-用户身份杂凑值">2.4.1. 用户身份杂凑值</h4>
+<ol>
+<li>
+<p>参数信息：</p>
+<p>假设用户 A 的身份标识为 $$ID_A$$，长度为 $$ENTL_A$$。</p>
+<p>椭圆曲线方程的参数为 a，b，基点 G 的坐标为 $$(X_G,Y_G)$$，用户 A 的公钥 $$P_A$$ 的坐标为 $$(X_A,Y_A)$$。</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>用户 A 的<del>杂凑值</del> （Z值只是用来计算杂凑值的一个运算因子，并不是杂凑值）$$Z_A = H_{256}(ENTL_A || ID_A || a || b || x_G || y_G || x_A || y_A)$$</p>
+</li>
+<li>
+<p>参数说明：</p>
+<ul>
+<li>$$ENTL_A$$：为2个字节标识的ID的比特长度。</li>
+<li>$$ID_A$$：为用户身份标识。无特殊约定的情况下，用户身份标识ID的长度为16字节，其默认值从左到右依次为：<code>0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38,0x31,0x32,0x33,0x34,0x35,0x36,0x37,0x38</code>。</li>
+<li>$$a,b$$：为系统曲线参数。</li>
+<li>$$x_G, y_G$$：为基点；</li>
+<li>$$x_A,y_A$$：为用户的公钥。</li>
+</ul>
+</li>
+<li>
+<p>预处理2是指使用Z值和待签名消息，通过SM3运算得到杂凑值H的过程。杂凑值用于SM2数字签名。</p>
+<ul>
+<li>输入：
+<ul>
+<li>$$Z_A$$：字节串，预处理2的输入。</li>
+<li>M：字节串，待签名消息。</li>
+</ul>
+</li>
+<li>输出：
+<ul>
+<li>H：字节串，杂凑值。</li>
+</ul>
+</li>
+<li>计算公式：
+<ul>
+<li>$$H=SM3(Z_A||M)$$</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="242-签名算法">2.4.2. 签名算法</h4>
+<ol>
+<li>
+<p>输入：</p>
+<p>a. 待签名的消息 $$M$$</p>
+<p>b. 用户 A 信息的杂凑值 $$Z_A$$</p>
+<p>c. 用户 A 的私钥 $$d_A$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 置 $$\overline{M} = Z_A || M$$</p>
+<p>b. 使用 SM3 计算杂凑值 $$e=H_v(\overline{M})$$</p>
+<p>c. 生成随机数 $$k \in [1,n-2]$$</p>
+<p>d. 计算椭圆曲线点 $$G^k=(x_1,y_1)$$</p>
+<p>e. 计算 $$r=(e+x_1)mod\ n$$，若 $$r=0$$ 或 $$r+k=n$$，返回步骤 c</p>
+<p>f. 计算 $$s = (\frac{k-r \cdot d_A}{1+d_A})mod \ n $$，若 $$s=0$$，返回步骤 c</p>
+</li>
+<li>
+<p>输出：</p>
+<p>签名消息为 $$(r,s)$$</p>
+</li>
+</ol>
+<h4 id="243-验签算法">2.4.3. 验签算法</h4>
+<ol>
+<li>
+<p>输入：</p>
+<p>a. 待签名消息 $$M'$$</p>
+<p>b. $$M'$$ 的签名消息 $$(r&rsquo;, s&rsquo;)$$</p>
+<p>c. 用户 A 信息的杂凑值 $$Z_A$$</p>
+<p>d. 用户 A 的公钥 $$P_A $$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 验证 $$r&rsquo; \in [1, n-1]$$</p>
+<p>b. 验证 $$s&rsquo; \in [1,n-1]$$</p>
+<p>c. 置 $$\overline{M&rsquo;} = Z_A || M'$$</p>
+<p>d. 使用 SM3 计算杂凑值 $$e=H_v(\overline{M&rsquo;})$$</p>
+<p>e. 计算 $$t=(r'+s&rsquo;)mod \ n$$，验证 $$t != 0$$</p>
+<p>f. 计算 $$(x&rsquo;,y&rsquo;)=G^{s&rsquo;}+P_A^{t}$$</p>
+<p>g. 计算 $$R=(e'+x_1&rsquo;)mod \ n$$，验证 $$R=r'$$</p>
+<blockquote>
+<p>化简：</p>
+<p>$$G^{s&rsquo;}+P_A^{t} = G^{s&rsquo;} + G^{(d_A \ mod \ n )\cdot t&rsquo;} = G^{(s'+d_A \cdot t&rsquo;) mod \ n} = G^{(s'+d_A \cdot (r'+s&rsquo;)) mod \ n}$$</p>
+<p>$$= G^{(s&rsquo;(1+d_A) + d_A \cdot r&rsquo;)mod \ n} = G^{(\frac{k-r&rsquo; \cdot d_A}{1+d_A}(1+d_A) +d_A \cdot r&rsquo;) mod \ n} $$</p>
+<p>$$= G^{(k-r&rsquo; \cdot d_A + r&rsquo; \cdot d_A) mod \ n} = G^k$$</p>
+</blockquote>
+</li>
+<li>
+<p>输出：</p>
+<p>若步骤 a，b，e，g 都验证通过，则输出验证成功，否则输出验证失败</p>
+</li>
+</ol>
+<h4 id="244-数字签名算法实现">2.4.4. 数字签名算法实现</h4>
+<ol>
+<li><code>ec_param_new</code>初始化椭圆曲线，参数p,a,b是确定一条椭圆曲线的参数，n为基点G的阶。p是素数，一般是指有限域中$$F_P$$元素的个数。a,b确定一条椭圆曲线。对于基点$$G=(x_G,y_G) \in E(F_p)，G != 0$$，对于参数n。椭圆曲线的定义为：$$E(F_p) = {(x,y)|x,y \in F_p, y^2 =x ^3 +ax+b} \cup {O}$$，O 是无穷远点椭圆曲线 $$E(F_p)$$ 上的点的数目称为椭圆曲线 $$E(F_p)$$ 的阶。</li>
+<li><code>ec_param_init</code>初始化椭圆曲线参数。</li>
+<li><code>sm2_ec_key_new</code>和<code>sm2_ec_key_init</code>新建一个key和key的初始化，根据私钥d和基点G通过<code>xy_ecpoint_mul_bignum</code>函数生成私钥。</li>
+<li>初始化签名信息</li>
+</ol>
+<h3 id="25-密钥交换算法">2.5 密钥交换算法</h3>
+<p>密钥交换是指在用户 A，B 之间进行密钥交换协商的过程。用各自的私钥和对方的公钥来商定一只只有他们知道的秘密密钥。这个共享的秘密密钥通常用在某个对称密码学算法中，该密钥交换协议能够用于密钥管理和协商。</p>
+<h4 id="251-密钥交换算法">2.5.1 密钥交换算法</h4>
+<ol>
+<li>
+<p>相关参数</p>
+<p>a. 用户 A 的私钥 $$d_A$$，公钥 $$P_A $$</p>
+<p>b. 用户 B 的私钥 $$d_B$$，公钥 $$P_B$$</p>
+<p>c. 用户 A 的杂凑值 $$Z_A = H_{256}(ENTL_A || ID_A || a || b || x_G || y_G || x_A || y_A)$$</p>
+<p>d. 用户 B 的杂凑值 $$Z_B = H_{256}(ENTL_B || ID_B || a || b || x_G || y_G || x_B || y_B)$$</p>
+<p>e. $$w= \lceil (\lceil log_2(n) \rceil /2) \rceil - 1$$</p>
+<p>f. $$h$$ 为 $$n$$ 的余因子</p>
+</li>
+<li>
+<p>步骤</p>
+<ol>
+<li><strong>用户 A</strong>：产生随机数 $$r_A \in [1,n-1]$$，并计算 $$R_A = G^{r_A} = (x_1,y_1)$$，将 $$R_A$$ 发送给 B。</li>
+<li><strong>用户 A</strong>：计算 $$\overline{x_1} = 2^w +(x_1 \ &amp; \ (2^w-1))$$，代入计算 $$t_A = (d_A + \overline{x_1} \cdot r_A) mod \ n $$</li>
+<li><strong>用户 B</strong>：产生随机数 $$r_B \in [1,n-1]$$，并计算 $$R_B = G^{r_B} = (x_2,y_2)$$</li>
+<li><strong>用户 B</strong>：计算 $$\overline{x_2} = 2^w +(x_2 \ &amp; \ (2^w-1))$$，代入计算 $$t_B = (d_B + \overline{x_2} \cdot r_B) mod \ n $$</li>
+<li><strong>用户 B</strong>：验证 $$R_A$$ 是否满足曲线的方程，如果不满足，则协商失败，终止（参考 2.3.2 公钥验证）。</li>
+<li><strong>用户 B</strong>：计算 $$\overline{x_1} = 2^w +(x_1 \ &amp; \ (2^w-1))$$，代入计算 $$V = (P_A+R_A^{\overline{x_1}})^{h \cdot t_B} = (x_V,y_V)$$，验证 $$V \ ?=0$$，如果是，则协商失败，终止。</li>
+<li><strong>用户 B</strong>：计算 $$K_B = KDF(x_V||y_V||Z_A||Z_B,klen)$$，代入计算哈希值 $$S_B = Hash(0x02 ||y_V ||Hash(x_V || Z_A || Z_B || x_1 ||y_1||x_2||y_2))$$，将 $$R_B$$ 和 $$S_B$$ 发送给用户 A</li>
+<li><strong>用户 A</strong>：验证 $$R_B$$ 是否满足曲线的方程，如果不满足，则协商失败，终止（参考 2.3.2 公钥验证）。</li>
+<li><strong>用户 A</strong>：计算 $$\overline{x_2} = 2^w +(x_2 \ &amp; \ (2^w-1))$$，代入计算 $$U = (P_B + R_B^{\overline{x_2}})^{h \cdot t_A} = (x_U,y_U)$$，验证 $$U \ ?=0$$，如果是，则协商失败，终止。</li>
+<li><strong>用户 A</strong>：计算 $$K_A= KDF(x_U||y_U||Z_A||Z_B,klen)$$，代入计算哈希值  $$S_1 = Hash(0x02 ||y_U||Hash(x_U || Z_A || Z_B || x_1 ||y_1||x_2||y_2))$$</li>
+<li><strong>用户 A</strong>：验证 $$S_1 \ ?= S_B$$，若不一致，则协商失败，终止。</li>
+<li><strong>用户 A</strong>：计算 $$S_A = Hash(0x03 ||y_V||Hash(x_V|| Z_A || Z_B || x_1 ||y_1||x_2||y_2))$$ ，并将 $$S_A$$ 发送给用户 B。</li>
+<li><strong>用户 B</strong>：计算 $$S_2 = Hash(0x03 ||y_U||Hash(x_U|| Z_A || Z_B || x_1 ||y_1||x_2||y_2))$$ ，验证 $$S_2 \ ?= S_A$$，若不一致，则协商失败，终止。</li>
+<li>协商成功，$$K_A$$，$$K_B$$ 即为协商的密钥，而后续的 $$S_1$$，$$S_2$$，$$S_A$$，$$S_B$$ 验证则为可选项。</li>
+</ol>
+<blockquote>
+<p>推导 $$K_A = K_B$$：</p>
+<p>$$V = (P_A+R_A^{\overline{x_1}})^{h \cdot t_B}  = (G^{d_A} +(G^{r_A})^{\overline{x_2}})^{h \cdot t_B} = (G^{d_A + \overline{x_2} \cdot r_A })^{h \cdot t_B} = (x_V,y_V)$$</p>
+<p>$$U = (P_B + R_B^{\overline{x_2}})^{h \cdot t_A} = (G^{d_B}+(G^{r_B})^{\overline{x_2}})^{h \cdot t_A} = (G^{d_B+\overline{x_2} \cdot r_B})^{h \cdot t_A} = G^{h \cdot t_A \cdot t_B} = (x_U,y_U)$$</p>
+</blockquote>
+</li>
+</ol>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583985748(1).png" alt="1583985748(1)"></p>
+<h4 id="252-密钥交换算法实现">2.5.2 密钥交换算法实现</h4>
+<h3 id="26-非对称加解密算法">2.6 非对称加解密算法</h3>
+<h4 id="261-密钥派生算法kdf">2.6.1 密钥派生算法（KDF）</h4>
+<ol>
+<li>
+<p>杂凑函数</p>
+<p>a. 密码杂凑函数 $$H_v()$$，其中 v 是杂凑值的长度</p>
+</li>
+<li>
+<p>输入：</p>
+<p>a. 比特串 Z</p>
+<p>b. 派生出来的密钥长度 $$klen$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 设置计数器 ct=1</p>
+<p>b. for $$i=1; k&lt;\lceil klen/v \rceil; i++$${</p>
+<p>​		$$H_{a_i} = H_v(Z || ct)$$</p>
+<p>​		$$ct++$$</p>
+<p>​	}</p>
+<p>c. 若 $$klen/v$$ 为整数，令 $$Ha!<em>{\lceil klen/v \rceil} =Ha</em>{\lceil klen/v \rceil}$$;</p>
+<p>​	否则，$$Ha!<em>{\lceil klen/v \rceil}  = Ha</em>{\lceil klen/v \rceil}[0,klen-(v \times \lfloor klen/v \rfloor)-1] $$</p>
+<p>d. 令 $$K=Ha_1 || Ha_2 || … || Ha_{\lceil klen/v \rceil -1} || Ha!_{\lceil klen/v \rceil }$$</p>
+</li>
+<li>
+<p>输出</p>
+<p>密钥 $$K$$</p>
+</li>
+</ol>
+<h4 id="262-加密算法">2.6.2 加密算法</h4>
+<ol>
+<li>
+<p>输入：</p>
+<p>a. 待加密的信息 $$M$$，长度为 $$klen$$</p>
+<p>b. 用户 B 的公钥 $$P_B$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 生成随机数 $$k \in [1,n-1]$$</p>
+<p>b. 计算 $$C_1 = G^k =(x_1,y_1)$$</p>
+<p>c. 计算 $$S=P_B^h$$，若 $$S=O$$，则报错（h 为 n 的余因子）</p>
+<p>d. 计算 $$P_B^k=(x_2,y_2)$$</p>
+<p>e. 派生密钥 $$t=KDF(x_2||y_2,klen)$$，若 t 为全 0 的比特串，返回步骤 a</p>
+<p>f.  计算 $$C_2= M \oplus t$$</p>
+<p>g. 计算哈希值 $$C_3 =Hash(x_2 || M || y_2)$$</p>
+</li>
+<li>
+<p>输出：</p>
+<p>密文 $$C = C_1 || C_3 || C_2$$</p>
+</li>
+</ol>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583994518(1).png" alt="1583994518(1)"></p>
+<h4 id="263-解密算法">2.6.3 解密算法</h4>
+<ol>
+<li>
+<p>输入：</p>
+<p>a. 密文 $$C = C_1 || C_2 || C_3$$</p>
+<p>b. 用户 b 的私钥 $$d_A$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. 验证 $$C_1$$ 是否满足曲线方程</p>
+<p>b. 计算 $$S = C_1^h$$，若 $$S=O$$，则报错</p>
+<p>c. 计算 $$C_1^{d_B} = (x_2,y_2)$$</p>
+<p>d. 计算 $$t = KDF(x_2||y_2,klen)$$，若 t 为全 0 的比特串，则报错</p>
+<p>e. 计算 $$M'= C_2 \oplus t $$</p>
+<p>f. 计算 $$u = Hash(x_2||M'||y_2)$$，验证 $$u = C_3$$，若验证失败则报错</p>
+</li>
+<li>
+<p>输出：</p>
+<p>明文 $$M'$$</p>
+</li>
+</ol>
+<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583994936(1).png" alt="1583994936(1)"></p>
+<h3 id="264-加解密算法实现">2.6.4 加解密算法实现</h3>
+<h2 id="3sm3">3.SM3</h2>
+<h3 id="31-简介">3.1 简介</h3>
+<p>SM3 为密码哈希算法，用于替代 MD5/SHA-1/SHA-256 等国际算法。</p>
+<h3 id="32-密码杂凑算法">3.2 密码杂凑算法</h3>
+<p>密码杂凑算法的输入值 $$m$$，是长度为 l 的比特消息（$$l &lt; 2^{64}$$）。</p>
+<h4 id="321-填充">3.2.1 填充</h4>
+<ol>
+<li>消息 $$m$$ 后填充一位 1</li>
+<li>再填充 $$k$$ 位的 0，使得 $$(l+1+k)mod \ 512 =448$$</li>
+<li>再添加 64 位比特串，内容为 $$l$$ 的二进制表示</li>
+<li>填充后的完整消息为 $$m’$$</li>
+</ol>
+<p>![image-20200219222124881](/Users/evenlu/Library/Application Support/typora-user-images/image-20200219222124881.png)</p>
+<h4 id="322-迭代压缩">3.2.2 迭代压缩</h4>
+<ol>
+<li>
+<p>迭代处理</p>
+<p>a. 将 $$m'$$ 以512位为单位进行分组，$$m'=B_0||B_1||……||B_{n-1}$$，其中 $$n = (l+k+65)/512$$</p>
+<p>b. 从 0 到 n-1 逐个进行迭代：$$V_{i+1} = CF(V_i,B_i)$$，其中 $$CF()$$ 为压缩函数，$$V_0$$ 是一个初始值 IV，为一个固定值</p>
+<p>$$V_n$$ 就是杂凑值</p>
+</li>
+</ol>
+<h4 id="323-压缩函数cf">3.2.3 压缩函数CF()</h4>
+<ol>
+<li>
+<p>消息扩展</p>
+<p>a. 将 $$B_i$$ 划分成16份，$$B_i = W_0 || W_1 || W_2 || … || W_{15}$$</p>
+<p>b. for j=16; j&lt;=67; j++ {</p>
+<p>​		$$W_j = P_1(W_{j-16}) \oplus W_{j-9} \oplus (W_{j-3} &laquo;&lt;15) \oplus (W_{j-1} &laquo;&lt; 7) \oplus W_{j-6} $$</p>
+<p>​	}</p>
+<p>c. for j=0 ;j++; j&lt;=63{</p>
+<p>​		$$W&rsquo;<em>j=W_j \oplus W</em>{j+4}$$</p>
+<p>​	}</p>
+</li>
+<li>
+<p>压缩函数</p>
+<p>a. 令 $$V_i = ABCDEF$$</p>
+<p>b. for j=0;j&lt;64;j++{</p>
+<p>​		$$SS1 = (A&laquo;&lt;12)+E+(T_j &laquo;&lt;(j \ mod \ 32))&laquo;&lt; 7$$</p>
+<p>​		$$SS2 = SS1 \oplus  (A &laquo;&lt; 12)$$</p>
+<p>​		$$TT1 = FF_j(A,B,C) +D + SS2 + W_j'$$</p>
+<p>​		$$TT2 = GG_j(E,F,G)+H+SS1+W_j$$</p>
+<p>​		$$D = C$$</p>
+<p>​		$$C = B &laquo;&lt; 9$$</p>
+<p>​		$$B = A$$</p>
+<p>​		$$A = TT1$$</p>
+<p>​		$$H = G$$</p>
+<p>​		$$G = F &laquo;&lt;19$$</p>
+<p>​		$$F = E$$</p>
+<p>​		$$E = P_0(TT2)$$</p>
+<p>​	}</p>
+<p>c. 计算 $$V_{i+1} = ABCDEFGH \oplus V_i $$</p>
+</li>
+</ol>
+<h2 id="4sm4">4.SM4</h2>
+<h3 id="41-简介">4.1 简介</h3>
+<p>SM4 为分组密码，用于替代 DES/AES 等国际算法。</p>
+<p>SM4 密码算法是一个分组算法，该算法的分组长度为 128 比特，密钥长度为 128 比特。加密算法和密钥扩展算法都采用 32 轮非线性迭代。</p>
+<p><strong>分组加密</strong>（英语：<strong>Block cipher</strong>），又称<strong>分块加密</strong>或<strong>块密码</strong>，是一种<a href="https://zh.wikipedia.org/wiki/%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5%E7%AE%97%E6%B3%95">对称密钥算法</a>。它将明文分成多个等长的模块（block），使用确定的算法和<a href="https://zh.wikipedia.org/wiki/%E5%AF%B9%E7%A7%B0%E5%AF%86%E9%92%A5">对称密钥</a>对每组分别加密解密。</p>
+<h3 id="42-分组加密算法">4.2 分组加密算法</h3>
+<p>对于每一个分组长度为 128 比特的明文分组，进行加密。</p>
+<ol>
+<li>
+<p>参数说明：</p>
+<p>加密密钥：$$MK=(MK_0,MK_1,MK_2,MK_3)$$，其中$$MK_i$$ 为 32 比特，$$MK$$ 总共为 128 比1特。</p>
+<p>轮密钥：$$(rk_0,rk_1,…,rk_{31})$$</p>
+<p>明文：$$(X_0,X_1,X_2,X_3)$$，其中$$X_i$$ 为 32 比特，$$X$$ 总共为 128 比特。</p>
+<p>密文：$$(Y_0,Y_1,Y_2,Y_3)$$，其中$$Y_i$$ 为 32 比特，$$Y$$ 总共为 128 比特。</p>
+</li>
+<li>
+<p>输入：</p>
+<p>明文：$$(X_0,X_1,X_2,X_3)$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>a. for i=0; i&lt;32;i++{</p>
+<p>​		$$X_{i+4} = F(X_i,X_{i+1},X_{i+2},X_{i+3},rk_i)= X_i \oplus T(X_{i+1} \oplus X_{i+2} \oplus X_{i+3} \oplus rk_i)$$</p>
+<p>​	}</p>
+<p>​	其中 $$T()$$ 为转置函数，$$T(A) = L(τ(A))$$，</p>
+<p>​	假设$$A= (a_0,a_1,a_2,a_3)$$， $$τ(A) = (Sbox(a_0),Sbox(a_1),Sbox(a_2),Sbox(a_3))$$</p>
+<p>​	![image-20200221214611054](/Users/evenlu/Library/Application Support/typora-user-images/image-20200221214611054.png)</p>
+<p>​	$$L(A) = A \oplus (A &laquo;&lt; 2) \oplus (B &laquo;&lt; 10) \oplus (B &laquo;&lt; 18) \oplus (B &laquo;&lt; 24)$$</p>
+<p>b. 反序求得： $$(Y_0,Y_1,Y_2,Y_3) = (X_35,X_34,X_33,X_32)$$</p>
+</li>
+<li>
+<p>输出：</p>
+<p>密文：$$(Y_0,Y_1,Y_2,Y_3)$$</p>
+</li>
+</ol>
+<h3 id="43-分组解密算法">4.3 分组解密算法</h3>
+<p>分组解密算法和加密算法相同，区别只有 32 轮迭代时，轮密钥 $$rk_i$$ 的使用顺序需要颠倒。</p>
+<h4 id="431-密钥扩展算法">4.3.1 密钥扩展算法</h4>
+<ol>
+<li>
+<p>输入：</p>
+<p>加密密钥：$$MK=(MK_0,MK_1,MK_2,MK_3)$$，其中$$MK_i$$ 为 32 比特，$$MK$$ 总共为 128 比1特。</p>
+<p>$$FK = (FK_0,FK_1,FK_2,FK_3)$$ 为固定的系统参数，$$FK_0 = (A3B1BAC6)，FK_1 = (56AA3350)，FK_2 = (677D9197)，FK_3=(B27022DC)$$</p>
+<p>$$CK = (CK_0,CK_1,……,CK_{31})$$ 为固定参数，$$CK_i = (ck_{i,0},ck_{i,1},ck_{i,2},ck_{i,3})$$，$$ck_{i,j} = (4i+j) \times 7(mod \ 256)$$</p>
+</li>
+<li>
+<p>步骤：</p>
+<p>$$(K_0, K_1, K_2, K_3) = (MK_0 \oplus FK_0, MK_1 \oplus FK_1, MK_2 \oplus FK_2, MK_3 \oplus FK_3)$$</p>
+<p>$$rk_i = K_{i+4} = K_i \oplus T&rsquo;(K_{i+1} \oplus K_{i+2} \oplus K_{i+3} \oplus CK_i)$$</p>
+<p>$$T&rsquo;(A) = L&rsquo;(τ(A))$$</p>
+<p>$$L&rsquo;(A) = A \oplus (A &laquo;&lt; 13) \oplus (A &laquo;&lt; 23)$$</p>
+</li>
+<li>
+<p>输出：</p>
+<p>$${rk_i}$$</p>
+</li>
+</ol>
+<h2 id="5sm9">5.SM9</h2>
+<h3 id="51-简介">5.1 简介</h3>
+<p>SM9 为基于身份的密码算法，可以替代基于数字证书的 PKI/CA 体系。通过部署国密算法，可以降低由弱密码和错误实现带来的安全风险和部署 PKI/CA 带来的开销。</p>
+<h2 id="6总结">6.总结</h2>
+<p><strong>参考文献</strong></p>
+<p>[1] <a href="http://gmssl.org/">http://gmssl.org/</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      0001-01-01
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/blog/post/geth-query/geth-query/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">Geth-query</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://puppym.github.io/blog/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2019 -
+    2020
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        Czm
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/blog/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/blog/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/blog/js/main.dee43230127a73d039a734510fa896c89c3c7ce0cf0be0c7a7433f8fd69b76dc.js" integrity="sha256-3uQyMBJ6c9A5pzRRD6iWyJw8fODPC&#43;DHp0M/j9abdtw=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/blog/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

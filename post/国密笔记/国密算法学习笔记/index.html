@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>国密 - Czm blog</title>
+  <title> - Czm blog</title>
   
 
 <meta name="renderer" content="webkit" />
@@ -23,7 +23,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 
 <meta name="author" content="Czm" />
-  <meta name="description" content="国密简介" />
+  <meta name="description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等" />
 
 
 
@@ -58,23 +58,21 @@
 
 
 
-<meta property="og:title" content="国密" />
-<meta property="og:description" content="国密简介" />
+<meta property="og:title" content="" />
+<meta property="og:description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" />
-<meta property="article:published_time" content="2020-03-04T16:21:44+08:00" />
-<meta property="article:modified_time" content="2020-03-04T16:21:44+08:00" />
-<meta itemprop="name" content="国密">
-<meta itemprop="description" content="国密简介">
-<meta itemprop="datePublished" content="2020-03-04T16:21:44&#43;08:00" />
-<meta itemprop="dateModified" content="2020-03-04T16:21:44&#43;08:00" />
-<meta itemprop="wordCount" content="8313">
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等">
+
+<meta itemprop="wordCount" content="11325">
 
 
 
-<meta itemprop="keywords" content="SM2/SM3/SM4/SM9," /><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="国密"/>
-<meta name="twitter:description" content="国密简介"/>
+<meta itemprop="keywords" content="" /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="国密算法学习笔记 [TOC] 1.概述 国密算法是国家商用密码算法的简称。自 2012 年以来，国家密码管理局以《中华人民共和国密码行业标准》的方式，陆续公布了 SM2/SM3/SM4 等"/>
 
 <!--[if lte IE 9]>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
@@ -276,15 +274,15 @@
           <article class="post bg-white">
     
     <header class="post-header">
-      <h1 class="post-title">国密</h1>
+      <h1 class="post-title"></h1>
       
       <div class="post-meta">
-        <time datetime="2020-03-04" class="post-time">
-          2020-03-04
+        <time datetime="0001-01-01" class="post-time">
+          0001-01-01
         </time>
         
-        <span class="more-meta"> 8313 words </span>
-          <span class="more-meta"> 17 min read </span>
+        <span class="more-meta"> 11325 words </span>
+          <span class="more-meta"> 23 min read </span>
 
         
         
@@ -329,6 +327,11 @@
     <li><a href="#5sm9">5.SM9</a>
       <ul>
         <li><a href="#51-简介">5.1 简介</a></li>
+        <li><a href="#52-数据类型及其转换">5.2 数据类型及其转换</a></li>
+        <li><a href="#53-基于标识的数字签名算法">5.3 基于标识的数字签名算法</a></li>
+        <li><a href="#53-数字签名验证算法">5.3 数字签名验证算法</a></li>
+        <li><a href="#54-密钥封装和公钥加密">5.4 密钥封装和公钥加密</a></li>
+        <li><a href="#55-sm9_free的代码结构">5.5 SM9_FREE的代码结构</a></li>
       </ul>
     </li>
     <li><a href="#6总结">6.总结</a></li>
@@ -414,7 +417,7 @@
 <p>有限域 $$F_q$$必须是一个包含有限数量元素的集合。有限域的一个例子就是模p的整数集，其中p是素数。在域中我们需要定义加法(+)和乘法(*)的二元运算，两者都满足封闭性，结合律和交换律。对于这两个操作，每个元素都有一个唯一的单位元，一个唯一的逆元。</p>
 <p><strong>例子</strong></p>
 <p>有限域的一个实例就是模质数p的整数集$$F_p$$，它是定义在整数集$${0,1,2&hellip;p-1}$$上。$$F_p$$的加法和乘法分别就是模加法和模乘法，$$F_{23}$$的一些操作：</p>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584071393(1).png" alt="1584071393(1)"></p>
+<p><img src="0.png" alt=""></p>
 <p>请注意，这里的 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]"> 必须是一个质数！模4整数集就不是一个域: 因为2没有乘法逆(即等式 <img src="https://www.zhihu.com/equation?tex=2+%5Ccdot+x+%5Cbmod%7B4%7D+%3D+1" alt="[公式]"> 没有解)。</p>
 <p>有限域中的除法可以通过利用<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Extended_Euclidean_algorithm">扩展欧几里德算法</a>可以“轻松”地计算乘法逆元，在最坏的情况下，算法的时间复杂度是 <img src="https://www.zhihu.com/equation?tex=O%28%5Clog+p%29" alt="[公式]"> (或者 <img src="https://www.zhihu.com/equation?tex=O%28k+%29" alt="[公式]"> ，如果我们考虑p的比特长度的话)。本质上我们可以认为 <img src="https://www.zhihu.com/equation?tex=x+%2F+y+%3D+x+%5Ccdot+y%5E%7B-1%7D" alt="[公式]"> ，即把x除以y看成是x乘上y的乘法逆元。实现的 <a href="https://zhuanlan.zhihu.com/p/55761894">python例子</a>。</p>
 <h5 id="2213-有限域中的椭圆曲线">2.2.1.3 有限域中的椭圆曲线</h5>
@@ -515,11 +518,11 @@
 <ol>
 <li>
 <p>$$F_p$$ 上的椭圆曲线</p>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584072206(1).png" alt="1584072206(1)"></p>
+<p><img src="1.png" alt=""></p>
 </li>
 <li>
 <p>$$F_{2^m}$$ 上的椭圆曲线</p>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1584072340(1).png" alt="1584072340(1)"></p>
+<p><img src="2.png" alt=""></p>
 </li>
 </ol>
 <p>确定一条椭圆曲线具体需要哪些参数分析：</p>
@@ -531,6 +534,12 @@
 <li>子群的协因子 <img src="https://www.zhihu.com/equation?tex=h" alt="[公式]"> （ <img src="https://www.zhihu.com/equation?tex=h%3DN%2Fn" alt="[公式]"> ，其中 <img src="https://www.zhihu.com/equation?tex=N" alt="[公式]"> 是椭圆曲线群的阶数）</li>
 </ul>
 <p>这六个参数 <img src="https://www.zhihu.com/equation?tex=%28p%2Ca%2Cb%2CG%2Cn%2Ch%29" alt="[公式]"> 联合起来定义了一种ECC算法所用到的椭圆曲线。</p>
+<p>在代码上主要抓住两个部分：</p>
+<ol>
+<li>椭圆曲线群组中的点的运算。（加法和乘法）</li>
+<li>椭圆曲线有限域中横纵坐标的加减乘除运算。（除法采用扩展殴几里德算法）</li>
+<li>然后就是按照文档的步骤实现即可。</li>
+</ol>
 <h3 id="23-密钥对生成和公钥验证算法">2.3 密钥对生成和公钥验证算法</h3>
 <h4 id="231-密钥对生成">2.3.1 密钥对生成</h4>
 <ol>
@@ -564,6 +573,7 @@
 <li>输出：若以上验证均成功，则输出”有效“，否则为无效</li>
 </ol>
 <h3 id="24-数字签名算法">2.4 数字签名算法</h3>
+<p>数字签名算法由一个签名者对数据产生数字签名 ,并由一个验证者验证签名 的可靠性 。每个签名者有一个公钥和一个私钥 ,其 中私钥用于产生签名 ,验证者用签名者的公钥验证签名 。在签名的生成过程之前 ,要用密码杂凑函数对$$\overline{M}$$(包 含 $$Z_A$$ 和待签消息M)进行压缩 ;在 验证过程之前 ,要用密码杂凑函数对 $$\overline{M}$$ (包含 $$Z_A$$和待验证消息 M′ )进行压缩 。</p>
 <h4 id="241-用户身份杂凑值">2.4.1. 用户身份杂凑值</h4>
 <ol>
 <li>
@@ -618,7 +628,7 @@
 <li>
 <p>步骤：</p>
 <p>a. 置 $$\overline{M} = Z_A || M$$</p>
-<p>b. 使用 SM3 计算杂凑值 $$e=H_v(\overline{M})$$</p>
+<p>b. 使用 SM3 计算杂凑值 $$e=H_v(\overline{M})$$ 等价于公式 $$H=SM3(Z_A||M)$$ 取前v个bit。</p>
 <p>c. 生成随机数 $$k \in [1,n-2]$$</p>
 <p>d. 计算椭圆曲线点 $$G^k=(x_1,y_1)$$</p>
 <p>e. 计算 $$r=(e+x_1)mod\ n$$，若 $$r=0$$ 或 $$r+k=n$$，返回步骤 c</p>
@@ -660,12 +670,7 @@
 </li>
 </ol>
 <h4 id="244-数字签名算法实现">2.4.4. 数字签名算法实现</h4>
-<ol>
-<li><code>ec_param_new</code>初始化椭圆曲线，参数p,a,b是确定一条椭圆曲线的参数，n为基点G的阶。p是素数，一般是指有限域中$$F_P$$元素的个数。a,b确定一条椭圆曲线。对于基点$$G=(x_G,y_G) \in E(F_p)，G != 0$$，对于参数n。椭圆曲线的定义为：$$E(F_p) = {(x,y)|x,y \in F_p, y^2 =x ^3 +ax+b} \cup {O}$$，O 是无穷远点椭圆曲线 $$E(F_p)$$ 上的点的数目称为椭圆曲线 $$E(F_p)$$ 的阶。</li>
-<li><code>ec_param_init</code>初始化椭圆曲线参数。</li>
-<li><code>sm2_ec_key_new</code>和<code>sm2_ec_key_init</code>新建一个key和key的初始化，根据私钥d和基点G通过<code>xy_ecpoint_mul_bignum</code>函数生成私钥。</li>
-<li>初始化签名信息</li>
-</ol>
+<p><img src="https://github.com/citahub/libsm/blob/master/docs/images/sm2.png?raw=true" alt="sm2.png"></p>
 <h3 id="25-密钥交换算法">2.5 密钥交换算法</h3>
 <p>密钥交换是指在用户 A，B 之间进行密钥交换协商的过程。用各自的私钥和对方的公钥来商定一只只有他们知道的秘密密钥。这个共享的秘密密钥通常用在某个对称密码学算法中，该密钥交换协议能够用于密钥管理和协商。</p>
 <h4 id="251-密钥交换算法">2.5.1 密钥交换算法</h4>
@@ -704,7 +709,7 @@
 </blockquote>
 </li>
 </ol>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583985748(1).png" alt="1583985748(1)"></p>
+<p><img src="3.png" alt=""></p>
 <h4 id="252-密钥交换算法实现">2.5.2 密钥交换算法实现</h4>
 <h3 id="26-非对称加解密算法">2.6 非对称加解密算法</h3>
 <h4 id="261-密钥派生算法kdf">2.6.1 密钥派生算法（KDF）</h4>
@@ -756,7 +761,7 @@
 <p>密文 $$C = C_1 || C_3 || C_2$$</p>
 </li>
 </ol>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583994518(1).png" alt="1583994518(1)"></p>
+<p><img src="4.png" alt=""></p>
 <h4 id="263-解密算法">2.6.3 解密算法</h4>
 <ol>
 <li>
@@ -778,7 +783,7 @@
 <p>明文 $$M'$$</p>
 </li>
 </ol>
-<p><img src="C:%5CUsers%5Cczm18%5CDesktop%5C%E5%A4%87%E4%BB%BD%5Cblog%5C%E5%9B%BD%E5%AF%86%E9%A1%B9%E7%9B%AE%E6%96%87%E6%A1%A3%5C1583994936(1).png" alt="1583994936(1)"></p>
+<p><img src="5.png" alt=""></p>
 <h3 id="264-加解密算法实现">2.6.4 加解密算法实现</h3>
 <h2 id="3sm3">3.SM3</h2>
 <h3 id="31-简介">3.1 简介</h3>
@@ -860,8 +865,7 @@
 <p>​	}</p>
 <p>​	其中 $$T()$$ 为转置函数，$$T(A) = L(τ(A))$$，</p>
 <p>​	假设$$A= (a_0,a_1,a_2,a_3)$$， $$τ(A) = (Sbox(a_0),Sbox(a_1),Sbox(a_2),Sbox(a_3))$$</p>
-<p>​	![image-20200221214611054](/Users/evenlu/Library/Application Support/typora-user-images/image-20200221214611054.png)</p>
-<p>​	$$L(A) = A \oplus (A &laquo;&lt; 2) \oplus (B &laquo;&lt; 10) \oplus (B &laquo;&lt; 18) \oplus (B &laquo;&lt; 24)$$</p>
+<p>$$L(A) = A \oplus (A &laquo;&lt; 2) \oplus (B &laquo;&lt; 10) \oplus (B &laquo;&lt; 18) \oplus (B &laquo;&lt; 24)$$</p>
 <p>b. 反序求得： $$(Y_0,Y_1,Y_2,Y_3) = (X_35,X_34,X_33,X_32)$$</p>
 </li>
 <li>
@@ -894,9 +898,170 @@
 <h2 id="5sm9">5.SM9</h2>
 <h3 id="51-简介">5.1 简介</h3>
 <p>SM9 为基于身份的密码算法，可以替代基于数字证书的 PKI/CA 体系。通过部署国密算法，可以降低由弱密码和错误实现带来的安全风险和部署 PKI/CA 带来的开销。</p>
-<h2 id="6总结">6.总结</h2>
+<h3 id="52-数据类型及其转换">5.2 数据类型及其转换</h3>
+<p>在本部分中，数据类型包括比特串，字节串，域运算，椭圆曲线上的点和整数。</p>
+<p><img src="6.png" alt=""></p>
+<h4 id="521-数据类型转换之间的关系">5.2.1 数据类型转换之间的关系</h4>
+<p><img src="7.png" alt=""></p>
+<h4 id="522-密码学杂凑函数">5.2.2 密码学杂凑函数</h4>
+<h5 id="5221-密码杂凑函数h_v">5.2.2.1 密码杂凑函数$$H_v()$$</h5>
+<p>密码杂凑函数$$H_v()$$的输入是长度恰为v比特的杂凑值。本部分规定使用国家密码管理主管部门批准的密码杂凑函数，如SM3密码杂凑算法。</p>
+<h5 id="5222-密码函数h_1">5.2.2.2 密码函数$$H_1()$$</h5>
+<p>密码函数$$H_1(Z,n)$$的输入比比特串Z和整数n，输出为一个整数$$h_1\in[1,n-1]$$。$$H_1(Z,n)$$需要调用密码杂凑函数$$H_v()$$。</p>
+<p>密码函数$$H_1(Z,n)$$:</p>
+<p>输入：比特串Z，整数n</p>
+<p>输出：整数$$h_1 \in [1,n-1]$$</p>
+<ol>
+<li>
+<p>初始化一个32比特构成的计数器ct=0x00000001;</p>
+</li>
+<li>
+<p>计算$$hlen=8*\lceil 5*(log_2n)/32 \rceil$$</p>
+</li>
+<li>
+<p>对i从1到$$\lceil hlen/v \rceil$$执行：</p>
+<p>3.1 计算$$H_{a_i}=H_v(0x01||Z || ct)$$</p>
+<p>3.2 ct++</p>
+</li>
+<li>
+<p>若$$hlen/v$$是整数，令$$Ha!\lceil hlen/v \rceil = Ha \lceil hlen/v\rceil$$，</p>
+<p>否则令$$Ha！_{\lceil hlen/v\rceil}$$为 $$Ha \lceil hlen/v\rceil$$最左边的$$(hlen-(v*\lfloor hlen/v \rfloor))$$比特</p>
+</li>
+<li>
+<p>令$$Ha=Ha_1 || Ha_2 || &hellip;. || Ha_a{\lceil hlen/v \rceil -1 } || Ha!_{\lceil hlen/v \rceil}$$ 按照2.4和2.3的步骤将$$Ha$$ 比特串转换为整数。</p>
+</li>
+<li>
+<p>计算$$h_2 = ({Ha} mod (n-1))+1$$</p>
+</li>
+</ol>
+<h5 id="5223-密码函数h_2">5.2.2.3 密码函数$$H_2()$$</h5>
+<p>密码函数$$H_2(Z,n)$$的输入比比特串Z和整数n，输出为一个整数$$h_2\in[1,n-1]$$。$$H_2(Z,n)$$需要调用密码杂凑函数$$H_v()$$。</p>
+<p>密码函数$$H_2(Z,n)$$:</p>
+<p>输入：比特串Z，整数n</p>
+<p>输出：整数$$h_2 \in [1,n-1]$$</p>
+<ol>
+<li>
+<p>初始化一个32比特构成的计数器ct=0x00000001;</p>
+</li>
+<li>
+<p>计算$$hlen=8*\lceil 5*(log_2n)/32 \rceil$$</p>
+</li>
+<li>
+<p>对i从1到$$\lceil hlen/v \rceil$$执行：</p>
+<p>3.1 计算$$H_{a_i}=H_v(0x02||Z || ct)$$</p>
+<p>3.2 ct++</p>
+</li>
+<li>
+<p>若$$hlen/v$$是整数，令$$Ha!\lceil hlen/v \rceil = Ha \lceil hlen/v\rceil$$，</p>
+<p>否则令$$Ha！_{\lceil hlen/v\rceil}$$为 $$Ha \lceil hlen/v\rceil$$最左边的$$(hlen-(v*\lfloor hlen/v \rfloor))$$比特</p>
+</li>
+<li>
+<p>令$$Ha=Ha_1 || Ha_2 || &hellip;. || Ha_a{\lceil hlen/v \rceil -1} || Ha!_{\lceil hlen/v \rceil}$$ 按照2.4和2.3的步骤将$$Ha$$ 比特串转换为整数。</p>
+</li>
+<li>
+<p>计算$$h_2 = ({Ha} mod (n-1))+1$$</p>
+</li>
+</ol>
+<h3 id="53-基于标识的数字签名算法">5.3 基于标识的数字签名算法</h3>
+<p>本部分描述了用椭圆曲线对实现的基于标识的数字签名算法。本部分适用于接收者通过签名者的标识验证数据的完整性和数据发送者的身份，也适用于第三方确定签名及所签数据的真实性。</p>
+<p>该算法的签名者持有一个标识和一个相应的签名私钥，该签名私钥由密钥生成中心通过签名主私钥和签名者的标识结合产生。签名者用自身签名私钥对数据产生数字签名，验证者用签名者的标识验证签名的可靠性。</p>
+<h4 id="531-数字签名生成算法流程">5.3.1 数字签名生成算法流程</h4>
+<p>设待签名的消息为比特串M，为了获取消息M的数字签名（h,S）,作为签名者的用户A实现以下步骤：</p>
+<ol>
+<li>计算群$$G_T$$ 中的元素$$g=e(p_1,P_{pub-s})$$</li>
+<li>产生随机数$$r\in[1,N-1]$$</li>
+<li>计算群$$G_T$$ 中的元素$$w=g^r$$，并且按照上述的6.2.6 和6.2.5的细节将域元素转换为字节串然后转换为比特串。</li>
+<li>计算整数$$h=H_2(M||w,N)$$</li>
+<li>计算整数$$l=(r-h)modN$$，若$$l=0$$ 则返回A2</li>
+<li>计算群G1中的元素S=$$d_{s_A}^l$$</li>
+<li>按照上述数据转换流程将整数h的数据类型转换为字节串。将点S的数据类型转换为字节串，消息M的签名为$$(h,S)$$。</li>
+</ol>
+<p>数据签名生成算法流程</p>
+<p><img src="8.png" alt=""></p>
+<h3 id="53-数字签名验证算法">5.3 数字签名验证算法</h3>
+<p>为了检验收到的消息M及其数字签名(h,S)，作为验证者的用户B应实现以下运算步骤：</p>
+<ol>
+<li>按照6.2.3的步骤将字符串转换为整数类型，检验$$h \in [1,N-1]$$是否成立，若不成立则验证不通过。</li>
+<li>按照6.2.9步骤将字符串S的数据类型转换为椭圆曲线上的点，然后检验$$S\in G_1$$是否成立，若不成立则验证不通过</li>
+<li>计算群$$G_T$$ 中的元素$$g=e(P_1,P_{pub-s})$$</li>
+<li>计算群$$G_T$$中的元素$$t=g^h$$</li>
+<li>计算整数$$h_1=H_1(ID_A||hid,N)$$</li>
+<li>计算群$$G_2$$中的元素$$P=P_2^{h_1}+P_{pub-s}$$</li>
+<li>计算群$$G_T$$中的元素$$u=e(S,P)$$</li>
+<li>计算群$$G_T$$中的元素$$w=u*t$$，将域元素W按照6.2.6和6.2.5的步骤转换为数据类型比特串。</li>
+<li>计算整数$$h_2=H_2(M||w,N)$$，检验h2=h是否成立，若成立则验证通过，否则验证不通过。</li>
+</ol>
+<p>数字签名算法流程：</p>
+<p><img src="9.png" alt=""></p>
+<h3 id="54-密钥封装和公钥加密">5.4 密钥封装和公钥加密</h3>
+<p>本部分规定了用椭圆曲线对实现的基于标识的密钥封装机制和公钥加密与解密算法。利用密钥封装机制可以封装密钥给特定实体。公钥加密与解密算法即基于标识的非对称密码算法，该算法使消息发送者可以利用接收者的标识对消息进行加密，唯有接收者可以用相应的私钥对密文进行解密，从未获取消息。</p>
+<h4 id="541-密钥封装算法">5.4.1 密钥封装算法</h4>
+<p>为了封装比特长度为klen的密钥给用户B，作为封装者的用户A需要执行以下运算步骤：</p>
+<ol>
+<li>计算群G1中的元素$$Q_B=P_1^{[H_1(ID_B || hid,N)]} + p_{pub-e}$$</li>
+<li>产生随机数$r\in[1,N-1]$</li>
+<li>计算群G1中的元素$C=[r]Q_B$，按照2.8和2.5将点转化为字符串然后转化为比特串</li>
+<li>计算群$G_T$中的元素$g=e(P_{pub-e},P_2)$</li>
+<li>计算群$G_T$中的元素$w=g^r$，按照2.6和2.5的细节将w数据由域元素转化为字符串，然后转化为比特串。</li>
+<li>计算$K=KDF(C||w||ID_B,klen)$，若K为全0比特串，则返回步骤2</li>
+<li>输出(K,C)，其中K是被封装的密钥，C是封装密文。</li>
+</ol>
+<p>具体步骤：</p>
+<p><img src="10.png" alt=""></p>
+<h4 id="542-解封装算法">5.4.2 解封装算法</h4>
+<ol>
+<li>
+<p>首先按照4.5给出的细节验证$C \in G_1$是否成立，若不成立则报错退出</p>
+</li>
+<li>
+<p>计算群$G_T$中的元素$w=e(C,de_B)$，按照2.6和2.5给出的细节将w域元素转化为字符串再转化为比特串</p>
+</li>
+<li>
+<p>按照2.6和2.5将C的数据类型由域元素转化为字符串再转化为比特串，计算封装的密钥$K=KDF(C||w||ID_B,klen)$，若K为全0比特串，则报错并且退出。</p>
+</li>
+<li>
+<p>输出密钥K</p>
+<p>具体步骤如下：</p>
+</li>
+</ol>
+<p><img src="11.png" alt=""></p>
+<h3 id="55-sm9_free的代码结构">5.5 SM9_FREE的代码结构</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SM9_FREE
+├── Makefile
+├── SM9Test.c
+├── SM9文档 //SM9的文档，写的比官方文档要好懂一点
+├── miracl //大数运算的基础库，为椭圆曲线有限域的运算提供基础
+└── sm9
+    ├── print_out.c // 格式化打印
+    ├── print_out.h
+    ├── sm3.c       //SM3杂凑哈希
+    ├── sm3.h       
+    ├── sm4.c       //SM4对称加解密
+    ├── sm4.h
+    ├── sm9_algorithm.h  
+    ├── sm9_encrypt.c  // SM9加解密
+    ├── sm9_keyexchange.c //SM9密钥交换
+    ├── sm9_setup.c
+    ├── sm9_signature.c    //SM9签名和验签
+    ├── sm9_utils.c        //SM9的工具函数，比如H1和H2的杂凑函数
+    ├── sm9_utils.h
+    ├── sm_r-ate.c         // R-ate双线性对的运算
+    ├── smzzn12.c          // 为R-ate双线性对提供底层的双线性对计算
+    └── smzzn12.h
+</code></pre></div><h2 id="6总结">6.总结</h2>
+<p>SM9实现起来不是很容易，对于SM9_FREE的代码实现主要存在以下三个问题：</p>
+<ol>
+<li>代码实现中的参数名称和文档中的参数名称对不上，导致代码理解起来不容易。</li>
+<li>代码接口比较原始，使用起来不方便和文档流程对应不上。</li>
+<li>对底层的<code>miracl </code>大数运算的用法，以及r-ate的实现不清楚。</li>
+</ol>
 <p><strong>参考文献</strong></p>
 <p>[1] <a href="http://gmssl.org/">http://gmssl.org/</a></p>
+<p>[2] <a href="https://zhuanlan.zhihu.com/p/55758642">https://zhuanlan.zhihu.com/p/55758642</a></p>
+<p><strong>SM9的参考文档</strong></p>
+<p>[2]  <a href="https://github.com/songgeng87/SM9_FREE/tree/master/SM9_FREE/SM9%E6%96%87%E6%A1%A3">https://github.com/songgeng87/SM9_FREE/tree/master/SM9_FREE/SM9%E6%96%87%E6%A1%A3</a>   (SM9实现的文档)</p>
+<p>[3] <a href="https://github.com/guanzhi/GM-Standards/tree/master/GMT%E6%AD%A3%E5%BC%8F%E6%A0%87%E5%87%86">https://github.com/guanzhi/GM-Standards/tree/master/GMT%E6%AD%A3%E5%BC%8F%E6%A0%87%E5%87%86</a>  （SM9官方的文档）</p>
+<p>[4] <a href="https://secbit.feishu.cn/file/boxcns9RDCY0HIfW3gcXIWWDcBc">https://secbit.feishu.cn/file/boxcns9RDCY0HIfW3gcXIWWDcBc</a>  （飞书总结文档）</p>
 
     </div>
 
@@ -910,7 +1075,7 @@
   <p class="copyright-item">
     <span class="item-title">LastMod</span>
     <span class="item-content">
-      2020-03-04
+      0001-01-01
       
     </span>
   </p>
@@ -926,28 +1091,25 @@
     
 
     <footer class="post-footer">
-      <div class="post-tags">
-          <a href="https://puppym.github.io/blog/tags/sm2/sm3/sm4/sm9/">SM2/SM3/SM4/SM9</a>
-          
-        </div>
+      
 
       
       <nav class="post-nav">
         
-        
-          <a class="next" href="/blog/post/geth-query%E5%B9%B6%E8%A1%8C1/geth-query1/">
-            <span class="next-text nav-default">Geth Query并行优化</span>
-            <span class="prev-text nav-mobile">Next</span>
+          <a class="prev" href="/blog/post/geth-query/geth-query/">
             
             <i class="iconfont">
-              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
   xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
   width="18" height="18">
-  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
 </svg>
 
             </i>
+            <span class="prev-text nav-default">Geth-query</span>
+            <span class="prev-text nav-mobile">Prev</span>
           </a>
+        
       </nav>
     </footer>
   </article>

@@ -2,28 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://puppym.github.io/blog/</loc>
-    <lastmod>2020-03-04T16:21:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://puppym.github.io/blog/post/</loc>
-    <lastmod>2020-03-04T16:21:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    <lastmod>2020-03-04T16:21:44+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://puppym.github.io/blog/tags/blockchain/</loc>
+    <lastmod>2020-01-09T17:24:08+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://puppym.github.io/blog/</loc>
     <lastmod>2020-01-09T17:24:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -45,6 +31,13 @@
   
   <url>
     <loc>https://puppym.github.io/blog/tags/geth-query/</loc>
+    <lastmod>2020-01-09T17:24:08+08:00</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://puppym.github.io/blog/post/</loc>
     <lastmod>2020-01-09T17:24:08+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -100,13 +93,13 @@
   </url>
   
   <url>
-    <loc>https://puppym.github.io/blog/categories/</loc>
+    <loc>https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://puppym.github.io/blog/tags/sm2/sm3/sm4/sm9/</loc>
+    <loc>https://puppym.github.io/blog/categories/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url>

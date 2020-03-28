@@ -68,7 +68,7 @@
 <meta itemprop="description" content="以太坊智能合约数据抽取数据分析">
 <meta itemprop="datePublished" content="2020-01-09T14:49:51&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-09T14:49:51&#43;08:00" />
-<meta itemprop="wordCount" content="3018">
+<meta itemprop="wordCount" content="3057">
 
 
 
@@ -283,7 +283,7 @@
           2020-01-09
         </time>
         
-        <span class="more-meta"> 3018 words </span>
+        <span class="more-meta"> 3057 words </span>
           <span class="more-meta"> 7 min read </span>
 
         
@@ -427,47 +427,97 @@ to.Address(), value, &ldquo;CALL&rdquo;, evm.StateDB.(*state.StateDB).GetNextRev
 <p>这里可能存在一种情况，就是合约hash已经创建成功，但是由于gas费用不足以将合约的code存储进入世界状态会产生<code>ErrCodeStoreOutOfGas</code>错误，但是此时合约的地址已经存在世界状态中，并且转给合约账户的转账操作也已经生效。<code>evm.go 470</code></p>
 </blockquote>
 <p><code>evm.go   420</code>插入<code>capturetransfer</code>动作</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Interpreter</span>().(<span style="color:#f92672">*</span><span style="color:#a6e22e">EVMInterpreter</span>).<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Debug</span> {
-		<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Interpreter</span>().(<span style="color:#f92672">*</span><span style="color:#a6e22e">EVMInterpreter</span>).<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Tracer</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">StructLogger</span>).<span style="color:#a6e22e">CaptureTransferState</span>(<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>), <span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">depth</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">caller</span>.<span style="color:#a6e22e">Address</span>(),
-			<span style="color:#a6e22e">address</span>, <span style="color:#a6e22e">value</span>, <span style="color:#e6db74">&#34;CREATE&#34;</span>, <span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>).<span style="color:#a6e22e">GetNextRevisionId</span>())
-	}
-</code></pre></div><ol start="3">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">	<span class="k">if</span> <span class="nx">evm</span><span class="p">.</span><span class="nf">Interpreter</span><span class="p">().(</span><span class="o">*</span><span class="nx">EVMInterpreter</span><span class="p">).</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Debug</span> <span class="p">{</span>
+		<span class="nx">evm</span><span class="p">.</span><span class="nf">Interpreter</span><span class="p">().(</span><span class="o">*</span><span class="nx">EVMInterpreter</span><span class="p">).</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Tracer</span><span class="p">.(</span><span class="o">*</span><span class="nx">StructLogger</span><span class="p">).</span><span class="nf">CaptureTransferState</span><span class="p">(</span><span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">),</span> <span class="nx">evm</span><span class="p">.</span><span class="nx">depth</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">caller</span><span class="p">.</span><span class="nf">Address</span><span class="p">(),</span>
+			<span class="nx">address</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="s">&#34;CREATE&#34;</span><span class="p">,</span> <span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">).</span><span class="nf">GetNextRevisionId</span><span class="p">())</span>
+	<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="3">
 <li>selfdestruct指令返回销毁账户的余额。</li>
 </ol>
 <p><code>instructions.go  881</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">interpreter</span>.<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Debug</span> {
-		<span style="color:#a6e22e">interpreter</span>.<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Tracer</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">StructLogger</span>).<span style="color:#a6e22e">CaptureTransferState</span>(<span style="color:#a6e22e">interpreter</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>), <span style="color:#a6e22e">interpreter</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">depth</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">contract</span>.<span style="color:#a6e22e">Address</span>(),
-			<span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">BigToAddress</span>(<span style="color:#a6e22e">stack</span>.<span style="color:#a6e22e">pop</span>()), <span style="color:#a6e22e">balance</span>, <span style="color:#e6db74">&#34;selfDestruct&#34;</span>, <span style="color:#a6e22e">interpreter</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>).<span style="color:#a6e22e">GetNextRevisionId</span>())
-	}
-</code></pre></div><ol start="4">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">	<span class="k">if</span> <span class="nx">interpreter</span><span class="p">.</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Debug</span> <span class="p">{</span>
+		<span class="nx">interpreter</span><span class="p">.</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Tracer</span><span class="p">.(</span><span class="o">*</span><span class="nx">StructLogger</span><span class="p">).</span><span class="nf">CaptureTransferState</span><span class="p">(</span><span class="nx">interpreter</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">),</span> <span class="nx">interpreter</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nx">depth</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">contract</span><span class="p">.</span><span class="nf">Address</span><span class="p">(),</span>
+			<span class="nx">common</span><span class="p">.</span><span class="nf">BigToAddress</span><span class="p">(</span><span class="nx">stack</span><span class="p">.</span><span class="nf">pop</span><span class="p">()),</span> <span class="nx">balance</span><span class="p">,</span> <span class="s">&#34;selfDestruct&#34;</span><span class="p">,</span> <span class="nx">interpreter</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">).</span><span class="nf">GetNextRevisionId</span><span class="p">())</span>
+	<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="4">
 <li>区块中每笔交易产生的gas费用会直接在EVM中进行加减，因此在该处应该加入<code>capturetransfers</code>动作抓取<code>transfer</code>。注意这里的gas费用值为用户消耗的gas费用值。</li>
 </ol>
 <blockquote>
 <p>这里计算gas费用也有一些规则：用户首先预支initialGas的上限值，然后在执行合约过程中会逐步消耗gas，但是对于用户的一些操作eth也会奖励用户gas，比如释放storage空间，selfdestruct合约(该操作会退回两笔费用，一笔是gas费用，一笔是合约余额)。最后用户支付的gas费用就是<code>st.initialGas - st.gas</code>。为了防止用户最后支付的gas费用为负值的情况，用户获得奖励的gas小于或等于用户消耗gas数目的一半。因此在销毁合约获得的奖励可能小于理论值，和用户本次交易消耗的gas有关。</p>
 </blockquote>
 <p>​     <code>capturetansfer</code>动作可以添加在<code>state_transition.go 232行</code>，具体代码如      下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Interpreter</span>().(<span style="color:#f92672">*</span><span style="color:#a6e22e">vm</span>.<span style="color:#a6e22e">EVMInterpreter</span>).<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Debug</span> {
-		<span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Interpreter</span>().(<span style="color:#f92672">*</span><span style="color:#a6e22e">vm</span>.<span style="color:#a6e22e">EVMInterpreter</span>).<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Tracer</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">vm</span>.<span style="color:#a6e22e">StructLogger</span>).<span style="color:#a6e22e">CaptureTransferState</span>(<span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>), <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">msg</span>.<span style="color:#a6e22e">From</span>(),
-			<span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Coinbase</span>, new(<span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>).<span style="color:#a6e22e">Mul</span>(new(<span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>).<span style="color:#a6e22e">SetUint64</span>(<span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">gasUsed</span>()), <span style="color:#a6e22e">st</span>.<span style="color:#a6e22e">gasPrice</span>), <span style="color:#e6db74">&#34;GASFEE&#34;</span>, <span style="color:#ae81ff">0</span>)
-	}
-</code></pre></div><ol start="5">
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">	<span class="k">if</span> <span class="nx">st</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nf">Interpreter</span><span class="p">().(</span><span class="o">*</span><span class="nx">vm</span><span class="p">.</span><span class="nx">EVMInterpreter</span><span class="p">).</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Debug</span> <span class="p">{</span>
+		<span class="nx">st</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nf">Interpreter</span><span class="p">().(</span><span class="o">*</span><span class="nx">vm</span><span class="p">.</span><span class="nx">EVMInterpreter</span><span class="p">).</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Tracer</span><span class="p">.(</span><span class="o">*</span><span class="nx">vm</span><span class="p">.</span><span class="nx">StructLogger</span><span class="p">).</span><span class="nf">CaptureTransferState</span><span class="p">(</span><span class="nx">st</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">msg</span><span class="p">.</span><span class="nf">From</span><span class="p">(),</span>
+			<span class="nx">st</span><span class="p">.</span><span class="nx">evm</span><span class="p">.</span><span class="nx">Coinbase</span><span class="p">,</span> <span class="nb">new</span><span class="p">(</span><span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">).</span><span class="nf">Mul</span><span class="p">(</span><span class="nb">new</span><span class="p">(</span><span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">).</span><span class="nf">SetUint64</span><span class="p">(</span><span class="nx">st</span><span class="p">.</span><span class="nf">gasUsed</span><span class="p">()),</span> <span class="nx">st</span><span class="p">.</span><span class="nx">gasPrice</span><span class="p">),</span> <span class="s">&#34;GASFEE&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+	<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="5">
 <li>叔叔区块奖励和父区块的奖励也是直接在EVM中进行运算，因此也需要加入<code>capturetransfer</code>动作，该部分在geth-query重放工具中完成。</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">	<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">uncle</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Uncles</span>() {
-		<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#a6e22e">uncle</span>.<span style="color:#a6e22e">Number</span>, <span style="color:#a6e22e">big8</span>)
-		<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Sub</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Header</span>().<span style="color:#a6e22e">Number</span>)
-		<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Mul</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">blockReward</span>)
-		<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Div</span>(<span style="color:#a6e22e">r</span>, <span style="color:#a6e22e">big8</span>)
-		<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span> = append(<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span>,
-			<span style="color:#a6e22e">newRewardTransfer</span>(<span style="color:#a6e22e">statedb</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Address</span>{}, <span style="color:#a6e22e">uncle</span>.<span style="color:#a6e22e">Coinbase</span>, <span style="color:#a6e22e">r</span>, <span style="color:#e6db74">&#34;UNCLE&#34;</span>))
-		<span style="color:#a6e22e">rd</span> <span style="color:#f92672">:=</span> new(<span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>)
-		<span style="color:#a6e22e">rd</span>.<span style="color:#a6e22e">Div</span>(<span style="color:#a6e22e">blockReward</span>, <span style="color:#a6e22e">big32</span>)
-		<span style="color:#a6e22e">reward</span>.<span style="color:#a6e22e">Add</span>(<span style="color:#a6e22e">reward</span>, <span style="color:#a6e22e">rd</span>)
-	}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">	<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">uncle</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">block</span><span class="p">.</span><span class="nf">Uncles</span><span class="p">()</span> <span class="p">{</span>
+		<span class="nx">r</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">uncle</span><span class="p">.</span><span class="nx">Number</span><span class="p">,</span> <span class="nx">big8</span><span class="p">)</span>
+		<span class="nx">r</span><span class="p">.</span><span class="nf">Sub</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">block</span><span class="p">.</span><span class="nf">Header</span><span class="p">().</span><span class="nx">Number</span><span class="p">)</span>
+		<span class="nx">r</span><span class="p">.</span><span class="nf">Mul</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">blockReward</span><span class="p">)</span>
+		<span class="nx">r</span><span class="p">.</span><span class="nf">Div</span><span class="p">(</span><span class="nx">r</span><span class="p">,</span> <span class="nx">big8</span><span class="p">)</span>
+		<span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span><span class="p">,</span>
+			<span class="nf">newRewardTransfer</span><span class="p">(</span><span class="nx">statedb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Address</span><span class="p">{},</span> <span class="nx">uncle</span><span class="p">.</span><span class="nx">Coinbase</span><span class="p">,</span> <span class="nx">r</span><span class="p">,</span> <span class="s">&#34;UNCLE&#34;</span><span class="p">))</span>
+		<span class="nx">rd</span> <span class="o">:=</span> <span class="nb">new</span><span class="p">(</span><span class="nx">big</span><span class="p">.</span><span class="nx">Int</span><span class="p">)</span>
+		<span class="nx">rd</span><span class="p">.</span><span class="nf">Div</span><span class="p">(</span><span class="nx">blockReward</span><span class="p">,</span> <span class="nx">big32</span><span class="p">)</span>
+		<span class="nx">reward</span><span class="p">.</span><span class="nf">Add</span><span class="p">(</span><span class="nx">reward</span><span class="p">,</span> <span class="nx">rd</span><span class="p">)</span>
+	<span class="p">}</span>
 
-	<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span> = append(<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span>,
-		<span style="color:#a6e22e">newRewardTransfer</span>(<span style="color:#a6e22e">statedb</span>, <span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Address</span>{}, <span style="color:#a6e22e">block</span>.<span style="color:#a6e22e">Coinbase</span>(), <span style="color:#a6e22e">reward</span>, <span style="color:#e6db74">&#34;MINED&#34;</span>))
-</code></pre></div><p><code>transfers</code>表的各项数据如下：</p>
+	<span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span><span class="p">,</span>
+		<span class="nf">newRewardTransfer</span><span class="p">(</span><span class="nx">statedb</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Address</span><span class="p">{},</span> <span class="nx">block</span><span class="p">.</span><span class="nf">Coinbase</span><span class="p">(),</span> <span class="nx">reward</span><span class="p">,</span> <span class="s">&#34;MINED&#34;</span><span class="p">))</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><code>transfers</code>表的各项数据如下：</p>
 <table>
 <thead>
 <tr>
@@ -650,20 +700,39 @@ to.Address(), value, &ldquo;CALL&rdquo;, evm.StateDB.(*state.StateDB).GetNextRev
 </table>
 <h3 id="traces数据">traces数据</h3>
 <p>trace包含内容为：CREATE，CALL，CALLCODE，DELEGATECALL，SELFDESTRUCT操作及预编译合约的调用。这里抓取trace的种类可以自定义。该数据的获取通过打开<code>vm.Config</code>的Debug选项，然后对于每一个trace都会执行<code>captureState</code>函数捕获每一个trace的相关信息。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">StructLog</span> <span style="color:#66d9ef">struct</span> {
-	<span style="color:#a6e22e">Pc</span>            <span style="color:#66d9ef">uint64</span>                      <span style="color:#e6db74">`json:&#34;pc&#34;`</span>
-	<span style="color:#a6e22e">Op</span>            <span style="color:#a6e22e">OpCode</span>                      <span style="color:#e6db74">`json:&#34;op&#34;`</span>
-	<span style="color:#a6e22e">Gas</span>           <span style="color:#66d9ef">uint64</span>                      <span style="color:#e6db74">`json:&#34;gas&#34;`</span>
-	<span style="color:#a6e22e">GasCost</span>       <span style="color:#66d9ef">uint64</span>                      <span style="color:#e6db74">`json:&#34;gasCost&#34;`</span>
-	<span style="color:#a6e22e">Memory</span>        []<span style="color:#66d9ef">byte</span>                      <span style="color:#e6db74">`json:&#34;memory&#34;`</span>
-	<span style="color:#a6e22e">MemorySize</span>    <span style="color:#66d9ef">int</span>                         <span style="color:#e6db74">`json:&#34;memSize&#34;`</span>
-	<span style="color:#a6e22e">Stack</span>         []<span style="color:#f92672">*</span><span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">Int</span>                  <span style="color:#e6db74">`json:&#34;stack&#34;`</span>
-	<span style="color:#a6e22e">Storage</span>       <span style="color:#66d9ef">map</span>[<span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>]<span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span> <span style="color:#e6db74">`json:&#34;-&#34;`</span>
-	<span style="color:#a6e22e">Depth</span>         <span style="color:#66d9ef">int</span>                         <span style="color:#e6db74">`json:&#34;depth&#34;`</span>
-	<span style="color:#a6e22e">RefundCounter</span> <span style="color:#66d9ef">uint64</span>                      <span style="color:#e6db74">`json:&#34;refund&#34;`</span>
-	<span style="color:#a6e22e">Err</span>           <span style="color:#66d9ef">error</span>                       <span style="color:#e6db74">`json:&#34;-&#34;`</span>
-}
-</code></pre></div><p>在捕获trace的过程中由于stack是一个1M大小的数组，当碰到6810086中的<code>0x68b71d202dc52ad80812b563f3f6b0aaf1f19c04c1260d13055daad5b88a36a8</code>交易时，其trace数量为100W，因为StructLog中的指针有指向每一个trace中stack的副本，导致其内存分配巨大而一直得不到释放，并行重放区块会直接被卡死，因此在快速重放时一般会屏蔽statck和memory的抓取。发现问题后可以使用单线程抓取某一区块的全部trace信息。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang"><span class="kd">type</span> <span class="nx">StructLog</span> <span class="kd">struct</span> <span class="p">{</span>
+	<span class="nx">Pc</span>            <span class="kt">uint64</span>                      <span class="s">`json:&#34;pc&#34;`</span>
+	<span class="nx">Op</span>            <span class="nx">OpCode</span>                      <span class="s">`json:&#34;op&#34;`</span>
+	<span class="nx">Gas</span>           <span class="kt">uint64</span>                      <span class="s">`json:&#34;gas&#34;`</span>
+	<span class="nx">GasCost</span>       <span class="kt">uint64</span>                      <span class="s">`json:&#34;gasCost&#34;`</span>
+	<span class="nx">Memory</span>        <span class="p">[]</span><span class="kt">byte</span>                      <span class="s">`json:&#34;memory&#34;`</span>
+	<span class="nx">MemorySize</span>    <span class="kt">int</span>                         <span class="s">`json:&#34;memSize&#34;`</span>
+	<span class="nx">Stack</span>         <span class="p">[]</span><span class="o">*</span><span class="nx">big</span><span class="p">.</span><span class="nx">Int</span>                  <span class="s">`json:&#34;stack&#34;`</span>
+	<span class="nx">Storage</span>       <span class="kd">map</span><span class="p">[</span><span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">]</span><span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span> <span class="s">`json:&#34;-&#34;`</span>
+	<span class="nx">Depth</span>         <span class="kt">int</span>                         <span class="s">`json:&#34;depth&#34;`</span>
+	<span class="nx">RefundCounter</span> <span class="kt">uint64</span>                      <span class="s">`json:&#34;refund&#34;`</span>
+	<span class="nx">Err</span>           <span class="kt">error</span>                       <span class="s">`json:&#34;-&#34;`</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在捕获trace的过程中由于stack是一个1M大小的数组，当碰到6810086中的<code>0x68b71d202dc52ad80812b563f3f6b0aaf1f19c04c1260d13055daad5b88a36a8</code>交易时，其trace数量为100W，因为StructLog中的指针有指向每一个trace中stack的副本，导致其内存分配巨大而一直得不到释放，并行重放区块会直接被卡死，因此在快速重放时一般会屏蔽statck和memory的抓取。发现问题后可以使用单线程抓取某一区块的全部trace信息。</p>
 <blockquote>
 <p>By using the three main trace types (call, create, suicide), we can generalise the type of ether transfers that can occur:</p>
 <ul>

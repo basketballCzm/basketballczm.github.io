@@ -68,7 +68,7 @@
 <meta itemprop="description" content="以太坊智能合约重放工具geth-query优化">
 <meta itemprop="datePublished" content="2020-01-09T17:24:08&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-09T17:24:08&#43;08:00" />
-<meta itemprop="wordCount" content="715">
+<meta itemprop="wordCount" content="719">
 
 
 
@@ -283,7 +283,7 @@
           2020-01-09
         </time>
         
-        <span class="more-meta"> 715 words </span>
+        <span class="more-meta"> 719 words </span>
           <span class="more-meta"> 2 min read </span>
 
         
@@ -326,11 +326,21 @@
 </ol>
 <p>对于思路1主要是在区块数据中，前面区块数据运行较快，后面区块数据运行慢。通过平分区块数量不能达到平分计算量的效果，因此会导致运行前面区块的协程早已运行完毕，运行后面区块的协程还在继续运行，并且此时CPU的逻辑核没有用完，导致CPU利用效率不高。</p>
 <p>对于思路2，具体分析如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># 本机环境</span>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># 本机环境</span>
 cpu: K9900 8核16线程
 mem: 32G
 SSD:4T + 4T
-</code></pre></div><p>首先将逻辑核数用满16核，三星阵列的读取速度最高位800M每秒左右。然后尝试使用12核发现三星阵列的读取速度也已经跑满，测试600W-610W的速度如下所示：</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>首先将逻辑核数用满16核，三星阵列的读取速度最高位800M每秒左右。然后尝试使用12核发现三星阵列的读取速度也已经跑满，测试600W-610W的速度如下所示：</p>
 <p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1584145870/czm_blog/geth-query%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%8C%96/4_z7bvcx.png" alt=""></p>
 <p>上面的图显示当P值12及12以上的时候，geth-query的执行效率提升不高，因此600W-610W的g的最优值为12</p>
 <p>对于batchnum大小的衡量如下：</p>

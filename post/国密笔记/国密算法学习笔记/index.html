@@ -68,7 +68,7 @@
 <meta itemprop="description" content="国密SM2/3/4/9">
 <meta itemprop="datePublished" content="2020-03-02T09:41:04&#43;08:00" />
 <meta itemprop="dateModified" content="2020-03-02T09:41:04&#43;08:00" />
-<meta itemprop="wordCount" content="11323">
+<meta itemprop="wordCount" content="11345">
 
 
 
@@ -283,7 +283,7 @@
           2020-03-02
         </time>
         
-        <span class="more-meta"> 11323 words </span>
+        <span class="more-meta"> 11345 words </span>
           <span class="more-meta"> 23 min read </span>
 
         
@@ -1026,7 +1026,33 @@
 </ol>
 <p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365167/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/11_xbonsk.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365167/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/11_xbonsk.png"></p>
 <h3 id="55-sm9_free的代码结构">5.5 SM9_FREE的代码结构</h3>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SM9_FREE
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">SM9_FREE
 ├── Makefile
 ├── SM9Test.c
 ├── SM9文档 //SM9的文档，写的比官方文档要好懂一点
@@ -1048,7 +1074,9 @@
     ├── sm_r-ate.c         // R-ate双线性对的运算
     ├── smzzn12.c          // 为R-ate双线性对提供底层的双线性对计算
     └── smzzn12.h
-</code></pre></div><h2 id="6总结">6.总结</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="6总结">6.总结</h2>
 <p>SM9实现起来不是很容易，对于SM9_FREE的代码实现主要存在以下三个问题：</p>
 <ol>
 <li>代码实现中的参数名称和文档中的参数名称对不上，导致代码理解起来不容易。</li>

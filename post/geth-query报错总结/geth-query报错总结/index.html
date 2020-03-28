@@ -68,7 +68,7 @@
 <meta itemprop="description" content="以太坊智能合约数据抽取和重放报错总结">
 <meta itemprop="datePublished" content="2020-01-09T17:23:56&#43;08:00" />
 <meta itemprop="dateModified" content="2020-01-09T17:23:56&#43;08:00" />
-<meta itemprop="wordCount" content="1393">
+<meta itemprop="wordCount" content="1427">
 
 
 
@@ -283,7 +283,7 @@
           2020-01-09
         </time>
         
-        <span class="more-meta"> 1393 words </span>
+        <span class="more-meta"> 1427 words </span>
           <span class="more-meta"> 3 min read </span>
 
         
@@ -322,47 +322,99 @@
 </blockquote>
 <h3 id="并发程序文件夹创建失败">并发程序文件夹创建失败</h3>
 <p>对于对并发程序对于新建一个文件夹，正常逻辑是首先检查一个文件夹是否存在，不存在就创建一个文件夹。但是可能存在一种情况：在检查csv_data目录的时候可能会在检查<code>os.IsNotExist(err)</code>时候文件不存在，但是<code>os.Mkdir(absDir, 0777)</code>的时候该<code>csv_data</code>文件已经由别的协程创建成功，因此writer指针为空。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stat</span>(<span style="color:#a6e22e">absDir</span>); <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">IsNotExist</span>(<span style="color:#a6e22e">err</span>) {
-		<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Mkdir</span>(<span style="color:#a6e22e">absDir</span>, <span style="color:#ae81ff">0777</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#a6e22e">Logger</span>
-			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-		}
-	}
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="nx">absDir</span><span class="p">);</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Mkdir</span><span class="p">(</span><span class="nx">absDir</span><span class="p">,</span> <span class="mo">0777</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="nx">Logger</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
 
-	<span style="color:#a6e22e">preDir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">absDir</span> <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">prefix</span>
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stat</span>(<span style="color:#a6e22e">preDir</span>); <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">IsNotExist</span>(<span style="color:#a6e22e">err</span>) {
-		<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Mkdir</span>(<span style="color:#a6e22e">preDir</span>, <span style="color:#ae81ff">0777</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-		}
-	}
+	<span class="nx">preDir</span> <span class="o">:=</span> <span class="nx">absDir</span> <span class="o">+</span> <span class="s">&#34;/&#34;</span> <span class="o">+</span> <span class="nx">prefix</span>
+	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="nx">preDir</span><span class="p">);</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Mkdir</span><span class="p">(</span><span class="nx">preDir</span><span class="p">,</span> <span class="mo">0777</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
 
-	<span style="color:#a6e22e">folderDir</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">fmt</span>.<span style="color:#a6e22e">Sprintf</span>(<span style="color:#e6db74">&#34;%v/%v&#34;</span>, <span style="color:#a6e22e">preDir</span>, <span style="color:#a6e22e">folderSeq</span><span style="color:#f92672">*</span><span style="color:#a6e22e">FILE_NUMBER_IN_FOLDER</span><span style="color:#f92672">*</span><span style="color:#a6e22e">BLOCK_NUMBER_IN_FILE</span>)
-	<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">err</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Stat</span>(<span style="color:#a6e22e">folderDir</span>); <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">IsNotExist</span>(<span style="color:#a6e22e">err</span>) {
-		<span style="color:#a6e22e">err</span> = <span style="color:#a6e22e">os</span>.<span style="color:#a6e22e">Mkdir</span>(<span style="color:#a6e22e">folderDir</span>, <span style="color:#ae81ff">0777</span>)
-		<span style="color:#66d9ef">if</span> <span style="color:#a6e22e">err</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">nil</span> {
-			<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">nil</span>, <span style="color:#a6e22e">err</span>
-		}
-	}
-</code></pre></div><h3 id="for-range语句循环变量为值传递">for range语句循环变量为值传递</h3>
+	<span class="nx">folderDir</span> <span class="o">:=</span> <span class="nx">fmt</span><span class="p">.</span><span class="nf">Sprintf</span><span class="p">(</span><span class="s">&#34;%v/%v&#34;</span><span class="p">,</span> <span class="nx">preDir</span><span class="p">,</span> <span class="nx">folderSeq</span><span class="o">*</span><span class="nx">FILE_NUMBER_IN_FOLDER</span><span class="o">*</span><span class="nx">BLOCK_NUMBER_IN_FILE</span><span class="p">)</span>
+	<span class="k">if</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">err</span> <span class="o">:=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Stat</span><span class="p">(</span><span class="nx">folderDir</span><span class="p">);</span> <span class="nx">os</span><span class="p">.</span><span class="nf">IsNotExist</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+		<span class="nx">err</span> <span class="p">=</span> <span class="nx">os</span><span class="p">.</span><span class="nf">Mkdir</span><span class="p">(</span><span class="nx">folderDir</span><span class="p">,</span> <span class="mo">0777</span><span class="p">)</span>
+		<span class="k">if</span> <span class="nx">err</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="kc">nil</span><span class="p">,</span> <span class="nx">err</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="for-range语句循环变量为值传递">for range语句循环变量为值传递</h3>
 <p>对于情况1能够将<code>transfers</code>的地址加入切片，情况2将循环局部变量的地址加入切片，情况3新建一个对象将<code>transferTmp</code>的值赋值给新对象，并且将新对象的地址加入切片。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">		<span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">transferTmp</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">transfers</span> {
-			<span style="color:#a6e22e">transfer</span> <span style="color:#f92672">:=</span> (<span style="color:#f92672">*</span><span style="color:#a6e22e">valueTransfer</span>)(<span style="color:#a6e22e">unsafe</span>.<span style="color:#a6e22e">Pointer</span>(<span style="color:#f92672">&amp;</span><span style="color:#a6e22e">transferTmp</span>))
-			<span style="color:#75715e">// 1.
-</span><span style="color:#75715e"></span>			<span style="color:#75715e">// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;transfers[i])))
-</span><span style="color:#75715e"></span>			<span style="color:#75715e">// Logger.Infof(&#34;value: %v&#34;, data.transfers[len(data.transfers)-1].value)
-</span><span style="color:#75715e"></span>			<span style="color:#75715e">// 2.
-</span><span style="color:#75715e"></span>			<span style="color:#75715e">// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;transfer)))
-</span><span style="color:#75715e"></span>			<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span> = append(<span style="color:#a6e22e">data</span>.<span style="color:#a6e22e">transfers</span>, <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">valueTransfer</span>{<span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">depth</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">transactionHash</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">src</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">srcBalance</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">dest</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">destBalance</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">value</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">kind</span>, <span style="color:#a6e22e">transfer</span>.<span style="color:#a6e22e">snapshot</span>})
-		}
-</code></pre></div><h3 id="go-指针内存释放问题">go 指针内存释放问题</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">		<span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">transferTmp</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">transfers</span> <span class="p">{</span>
+			<span class="nx">transfer</span> <span class="o">:=</span> <span class="p">(</span><span class="o">*</span><span class="nx">valueTransfer</span><span class="p">)(</span><span class="nx">unsafe</span><span class="p">.</span><span class="nf">Pointer</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">transferTmp</span><span class="p">))</span>
+			<span class="c1">// 1.
+</span><span class="c1"></span>			<span class="c1">// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;transfers[i])))
+</span><span class="c1"></span>			<span class="c1">// Logger.Infof(&#34;value: %v&#34;, data.transfers[len(data.transfers)-1].value)
+</span><span class="c1"></span>			<span class="c1">// 2.
+</span><span class="c1"></span>			<span class="c1">// data.transfers = append(data.transfers, (*valueTransfer)(unsafe.Pointer(&amp;transfer)))
+</span><span class="c1"></span>			<span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span> <span class="p">=</span> <span class="nb">append</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">transfers</span><span class="p">,</span> <span class="o">&amp;</span><span class="nx">valueTransfer</span><span class="p">{</span><span class="nx">transfer</span><span class="p">.</span><span class="nx">depth</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">transactionHash</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">src</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">srcBalance</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">dest</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">destBalance</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">value</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">kind</span><span class="p">,</span> <span class="nx">transfer</span><span class="p">.</span><span class="nx">snapshot</span><span class="p">})</span>
+		<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="go-指针内存释放问题">go 指针内存释放问题</h3>
 <ol>
 <li>对于全局变量要通过指针保存局部变量的值，最好的办法是将局部变量指针指向的局部地址内容重新new一边，然后赋给全局变量指针。因为局部变量的值在后面可能发生变化。使用全局变量的指针保存局部变量的指针最后全局变量保存的值具有很大的随机性(<strong>全局变量保存局部变量的某一成员指针，局部变量也会被gc释放</strong>)。</li>
 </ol>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang">		<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">Interpreter</span>().(<span style="color:#f92672">*</span><span style="color:#a6e22e">EVMInterpreter</span>).<span style="color:#a6e22e">GetConfig</span>().<span style="color:#a6e22e">Tracer</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">StructLogger</span>).<span style="color:#a6e22e">CaptureTransferState</span>(<span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>), <span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">depth</span>, <span style="color:#a6e22e">common</span>.<span style="color:#a6e22e">Hash</span>{}, <span style="color:#a6e22e">caller</span>.<span style="color:#a6e22e">Address</span>(),
-			<span style="color:#a6e22e">to</span>.<span style="color:#a6e22e">Address</span>(), <span style="color:#a6e22e">big</span>.<span style="color:#a6e22e">NewInt</span>(<span style="color:#ae81ff">0</span>).<span style="color:#a6e22e">Set</span>(<span style="color:#a6e22e">value</span>), <span style="color:#e6db74">&#34;CALL&#34;</span>, <span style="color:#a6e22e">evm</span>.<span style="color:#a6e22e">StateDB</span>.(<span style="color:#f92672">*</span><span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">StateDB</span>).<span style="color:#a6e22e">GetNextRevisionId</span>())
-</code></pre></div><p>上面一段代码中直接保存value的地址，该value地址的值后面可能会发生变化，尽管有指针副本一直指向该处，内存不会释放，但是其值已经改变。具体错误现象是<code>transfer</code>中的value，只有transactions中的value和gas fee的value是正确的。其余内部交易的value值都是错误的。因为stack中每次push的value值都是从<code>integer = interpreter.intPool.get()</code>中获取的，该pool中的value值是在动态改变。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-golang" data-lang="golang">		<span class="nx">evm</span><span class="p">.</span><span class="nf">Interpreter</span><span class="p">().(</span><span class="o">*</span><span class="nx">EVMInterpreter</span><span class="p">).</span><span class="nf">GetConfig</span><span class="p">().</span><span class="nx">Tracer</span><span class="p">.(</span><span class="o">*</span><span class="nx">StructLogger</span><span class="p">).</span><span class="nf">CaptureTransferState</span><span class="p">(</span><span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">),</span> <span class="nx">evm</span><span class="p">.</span><span class="nx">depth</span><span class="p">,</span> <span class="nx">common</span><span class="p">.</span><span class="nx">Hash</span><span class="p">{},</span> <span class="nx">caller</span><span class="p">.</span><span class="nf">Address</span><span class="p">(),</span>
+			<span class="nx">to</span><span class="p">.</span><span class="nf">Address</span><span class="p">(),</span> <span class="nx">big</span><span class="p">.</span><span class="nf">NewInt</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="nf">Set</span><span class="p">(</span><span class="nx">value</span><span class="p">),</span> <span class="s">&#34;CALL&#34;</span><span class="p">,</span> <span class="nx">evm</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">.(</span><span class="o">*</span><span class="nx">state</span><span class="p">.</span><span class="nx">StateDB</span><span class="p">).</span><span class="nf">GetNextRevisionId</span><span class="p">())</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面一段代码中直接保存value的地址，该value地址的值后面可能会发生变化，尽管有指针副本一直指向该处，内存不会释放，但是其值已经改变。具体错误现象是<code>transfer</code>中的value，只有transactions中的value和gas fee的value是正确的。其余内部交易的value值都是错误的。因为stack中每次push的value值都是从<code>integer = interpreter.intPool.get()</code>中获取的，该pool中的value值是在动态改变。</p>
 <ol start="2">
 <li>局部指针变量指向一块较大内存，通过全局指针保存。导致一直有指针指向局部分配的较大内存地址，因此大内存一直不能被go的gc释放，导致内存占用过高。</li>
 </ol>

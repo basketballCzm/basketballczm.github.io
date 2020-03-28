@@ -68,7 +68,7 @@
 <meta itemprop="description" content="bellman库代码分析，总结基于bellman库的电路以及gadget的写法">
 <meta itemprop="datePublished" content="2020-03-28T11:55:12&#43;08:00" />
 <meta itemprop="dateModified" content="2020-03-28T11:55:12&#43;08:00" />
-<meta itemprop="wordCount" content="3286">
+<meta itemprop="wordCount" content="3338">
 
 
 
@@ -283,7 +283,7 @@
           2020-03-28
         </time>
         
-        <span class="more-meta"> 3286 words </span>
+        <span class="more-meta"> 3338 words </span>
           <span class="more-meta"> 7 min read </span>
 
         
@@ -318,12 +318,23 @@
     <div class="post-content">
       <h2 id="bellman-exmaple">bellman-exmaple</h2>
 <h3 id="运行bellman测试">运行bellman测试</h3>
-<pre><code>1. 去除Cargo.toml中的ff的路径，不知道是版本原因或者其它原因，这里加了path之后一直显示不能找到ff的路径。
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-fallback" data-lang="fallback">1. 去除Cargo.toml中的ff的路径，不知道是版本原因或者其它原因，这里加了path之后一直显示不能找到ff的路径。
 2. cargo build
 3. cargo test
 这里会报错，修改行fn random&lt;R: RngCore + ?std::marker::Sized&gt;(rng: &amp;mut R)
 4. cargo test  test_mimc --  --test-threads 1 --nocapture 运行/tests/mimrc.rs中的测试用例, test_mimc的意思是只运行该测试用例，‘--’ 之后表示参数，--test-thread表示测试线程数目，--nocapture表示打印输入输出
-</code></pre><h3 id="动手根据写一个小例子">动手根据写一个小例子</h3>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="动手根据写一个小例子">动手根据写一个小例子</h3>
 <p>还是使用libsnark<a href="https://github.com/christianlundkvist/libsnark-tutorial">教程</a> 的小例子<code>x^3+x+5 == 35</code>。(后面发现github上有用bellman实现的关于该小例子的证明。)</p>
 <p><strong>rust代码总的步骤如下：</strong></p>
 <ol>
@@ -333,18 +344,39 @@
 <li>
 <p>电路约束实现，对于电路约束实现主要有以下步骤：</p>
 <p>2.1. 定义问题的结构体，对于问题<code>x^3+x+5 = out</code>问题的结构体如下：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">CubeDemo</span><span style="color:#f92672">&lt;</span>E: <span style="color:#a6e22e">Engine</span><span style="color:#f92672">&gt;</span> {
-    <span style="color:#66d9ef">pub</span> x: Option<span style="color:#f92672">&lt;</span>E::Fr<span style="color:#f92672">&gt;</span>,
-}
-</code></pre></div><p>可以理解CubeDemo中的参数为withness生成prove所需要的参数个数。上述问题的witness只有一个参数x。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-rust" data-lang="rust"><span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">CubeDemo</span><span class="o">&lt;</span><span class="n">E</span>: <span class="nc">Engine</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="n">x</span>: <span class="nb">Option</span><span class="o">&lt;</span><span class="n">E</span>::<span class="n">Fr</span><span class="o">&gt;</span><span class="p">,</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>可以理解CubeDemo中的参数为withness生成prove所需要的参数个数。上述问题的witness只有一个参数x。</p>
 <p>2.2. 实现Cube问题结构体的电路，首先拍平原问题：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust">x <span style="color:#f92672">*</span> x <span style="color:#f92672">=</span> sym_1
-sym_1 <span style="color:#f92672">*</span> x <span style="color:#f92672">=</span> y
-y <span style="color:#f92672">+</span> x <span style="color:#f92672">=</span> sym_2
-sym_2 <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> <span style="color:#f92672">=</span> out
-   
-<span style="color:#960050;background-color:#1e0010">通过引入</span>witness <span style="color:#f92672">=</span> [one, x, out, sym_1, y, sym_2]<span style="color:#960050;background-color:#1e0010">向量将上述电路转化为</span>R1CS的约束系统<span style="color:#960050;background-color:#1e0010">。然后通过拉格朗日插值将</span>R1CS转换为QAP(<span style="color:#960050;background-color:#1e0010">二次多项式问题</span>)<span style="color:#960050;background-color:#1e0010">。</span>
-</code></pre></div><p>在生成电路的过程中主要有以下2个问题：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-rust" data-lang="rust"><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sym_1</span><span class="w">
+</span><span class="w"></span><span class="n">sym_1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="w">
+</span><span class="w"></span><span class="n">y</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sym_2</span><span class="w">
+</span><span class="w"></span><span class="n">sym_2</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">out</span><span class="w">
+</span><span class="w">   
+</span><span class="w"></span><span class="err">通过引入</span><span class="n">witness</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">one</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">out</span><span class="p">,</span><span class="w"> </span><span class="n">sym_1</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="p">,</span><span class="w"> </span><span class="n">sym_2</span><span class="p">]</span><span class="err">向量将上述电路转化为</span><span class="n">R1CS的约束系统</span><span class="err">。然后通过拉格朗日插值将</span><span class="n">R1CS转换为QAP</span><span class="p">(</span><span class="err">二次多项式问题</span><span class="p">)</span><span class="err">。</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>在生成电路的过程中主要有以下2个问题：</p>
 <ul>
 <li>生成变量。生成private &ldquo;auxiliary&rdquo; variable和public &ldquo;primary&rdquo; varibale的接口不同。对于private我的理解是和withness以及由witness通过计算得到的(x,sym_1,sym_2)。对于public是相当于<code>L(s)R(s)-O(s) = h(s)*t(s)</code>中的t(s)，该值相当于是一个公开的值。(相当于verifier将随机数带入到公开的多项式中得到的公开的值)。private变量的生成使用<code>let x = cs.alloc()</code>。public变量使用<code>cs.alloc_input()</code>。</li>
 <li>构建<code>constraint</code>约束<code>cs.enforce()</code>，一般的也将加法转换为乘法。</li>
@@ -372,7 +404,29 @@ sym_2 <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> 
 <h3 id="bellman-代码分析">bellman 代码分析</h3>
 <p>bellman库分离了有限域大数运算<code>ff</code>，群组运算<code>group</code>，特定证明系统库<code>Groth16</code>，以及双线性配对库<code>pairing</code>，通过自定义拉取各类基础库可以达到切换不同曲线和不同证明系统实现零知识证明的效果。</p>
 <h4 id="bellman代码结构">bellman代码结构</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">bellman
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">bellman
 ├── COPYRIGHT
 ├── Cargo.lock
 ├── Cargo.toml    // 项目配置文件
@@ -390,16 +444,29 @@ sym_2 <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> 
 ├── tests
 │   └── mimc.rs    // bellman的一个mimc哈希验证测试
 └── ~
-</code></pre></div><h4 id="gadgets写法">gadgets写法</h4>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="gadgets写法">gadgets写法</h4>
 <p><strong>/src/gadgets</strong></p>
 <p>gadget是ConstraintSystem上面的一个一个组件，通过多个gadget之间输入输出的相互组合形成整个约束系统。</p>
 <p>下面主要分析<code>boolean.rs</code>中的一些gadgets，这些gadgets相当于在电路中运行bool逻辑，首先下面结构体表示在约束电路中的变量，分为值和电路变量表示。其<code>value</code>值为调用gadgets传入的数值，<code>Variable</code>为<code>cs.alloc</code>分配的变量。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"><span style="color:#75715e">#[derive(Clone)]</span>
-<span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">AllocatedBit</span> {
-    variable: <span style="color:#a6e22e">Variable</span>,
-    value: Option<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span><span style="color:#f92672">&gt;</span>,
-}
-</code></pre></div><p>下面分析各个gadget的作用：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-rust" data-lang="rust"><span class="cp">#[derive(Clone)]</span><span class="w">
+</span><span class="w"></span><span class="k">pub</span><span class="w"> </span><span class="k">struct</span> <span class="nc">AllocatedBit</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">    </span><span class="n">variable</span>: <span class="nc">Variable</span><span class="p">,</span><span class="w">
+</span><span class="w">    </span><span class="n">value</span>: <span class="nb">Option</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="p">,</span><span class="w">
+</span><span class="w"></span><span class="p">}</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>下面分析各个gadget的作用：</p>
 <ul>
 <li>
 <p><code>alloc_conditionally</code> 如果value为none，结果报错。如果value为true，b为false ，结果为sucesee。如果value为true，b为true，结果为fail。</p>
@@ -424,60 +491,119 @@ sym_2 <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> 
 </li>
 </ul>
 <p><strong>下面针对xor运算符分析其具体写法</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-rust" data-lang="rust"> <span style="color:#e6db74">/// Performs an XOR operation over the two operands, returning
-</span><span style="color:#e6db74"></span>    <span style="color:#e6db74">/// an `AllocatedBit`.
-</span><span style="color:#e6db74"></span>    <span style="color:#75715e">// 三个参数分别为CS约束系统，该gadget上的两个输入参数，Result&lt;Self, SynthesisError&gt;为返回值，可以用Ok宏来包裹返回值
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">pub</span> <span style="color:#66d9ef">fn</span> <span style="color:#a6e22e">xor</span><span style="color:#f92672">&lt;</span>E, CS<span style="color:#f92672">&gt;</span>(<span style="color:#66d9ef">mut</span> cs: <span style="color:#a6e22e">CS</span>, a: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Self</span>, b: <span style="color:#66d9ef">&amp;</span><span style="color:#a6e22e">Self</span>) -&gt; Result<span style="color:#f92672">&lt;</span>Self, SynthesisError<span style="color:#f92672">&gt;</span>
-<span style="color:#75715e">// where表约束
-</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">where</span>
-        E: <span style="color:#a6e22e">ScalarEngine</span>,
-        CS: <span style="color:#a6e22e">ConstraintSystem</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span>,
-    {
-        <span style="color:#66d9ef">let</span> <span style="color:#66d9ef">mut</span> result_value <span style="color:#f92672">=</span> None;
-        <span style="color:#75715e">// 分配C值，并且C的值成员变量为a^b的值
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">let</span> result_var <span style="color:#f92672">=</span> cs.alloc(
-            <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;xor result&#34;</span>,
-            <span style="color:#f92672">||</span> {
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">*</span>a.value.get()<span style="color:#f92672">?</span> <span style="color:#f92672">^</span> <span style="color:#f92672">*</span>b.value.get()<span style="color:#f92672">?</span> {
-                    result_value <span style="color:#f92672">=</span> Some(<span style="color:#66d9ef">true</span>);
-
-                    Ok(E::Fr::one())
-                } <span style="color:#66d9ef">else</span> {
-                    result_value <span style="color:#f92672">=</span> Some(<span style="color:#66d9ef">false</span>);
-
-                    Ok(E::Fr::zero())
-                }
-            },
-        )<span style="color:#f92672">?</span>;
-        <span style="color:#75715e">// 将a,b,c三者之间的关系添加到约束系统CS中
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Constrain (a + a) * (b) = (a + b - c)
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Given that a and b are boolean constrained, if they
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// are equal, the only solution for c is 0, and if they
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// are different, the only solution for c is 1.
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">//
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// ¬(a ∧ b) ∧ ¬(¬a ∧ ¬b) = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// (1 - (a * b)) * (1 - ((1 - a) * (1 - b))) = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// (1 - ab) * (1 - (1 - a - b + ab)) = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// (1 - ab) * (a + b - ab) = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// a + b - ab - (a^2)b - (b^2)a + (a^2)(b^2) = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// a + b - ab - ab - ab + ab = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// a + b - 2ab = c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// -2a * b = c - a - b
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// 2a * b = a + b - c
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">// (a + a) * b = a + b - c
-</span><span style="color:#75715e"></span>        cs.enforce(
-            <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;xor constraint&#34;</span>,
-            <span style="color:#f92672">|</span>lc<span style="color:#f92672">|</span> lc <span style="color:#f92672">+</span> a.variable <span style="color:#f92672">+</span> a.variable,
-            <span style="color:#f92672">|</span>lc<span style="color:#f92672">|</span> lc <span style="color:#f92672">+</span> b.variable,
-            <span style="color:#f92672">|</span>lc<span style="color:#f92672">|</span> lc <span style="color:#f92672">+</span> a.variable <span style="color:#f92672">+</span> b.variable <span style="color:#f92672">-</span> result_var,
-        );
-        <span style="color:#75715e">// 返回AllocatedBit的c值对象
-</span><span style="color:#75715e"></span>        Ok(AllocatedBit {
-            variable: <span style="color:#a6e22e">result_var</span>,
-            value: <span style="color:#a6e22e">result_value</span>,
-        })
-    }
-</code></pre></div><p>具体步骤如下：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-rust" data-lang="rust"><span class="w"> </span><span class="sd">/// Performs an XOR operation over the two operands, returning
+</span><span class="sd"></span><span class="w">    </span><span class="sd">/// an `AllocatedBit`.
+</span><span class="sd"></span><span class="w">    </span><span class="c1">// 三个参数分别为CS约束系统，该gadget上的两个输入参数，Result&lt;Self, SynthesisError&gt;为返回值，可以用Ok宏来包裹返回值
+</span><span class="c1"></span><span class="w">    </span><span class="k">pub</span><span class="w"> </span><span class="k">fn</span> <span class="nf">xor</span><span class="o">&lt;</span><span class="n">E</span><span class="p">,</span><span class="w"> </span><span class="n">CS</span><span class="o">&gt;</span><span class="p">(</span><span class="k">mut</span><span class="w"> </span><span class="n">cs</span>: <span class="nc">CS</span><span class="p">,</span><span class="w"> </span><span class="n">a</span>: <span class="kp">&amp;</span><span class="nc">Self</span><span class="p">,</span><span class="w"> </span><span class="n">b</span>: <span class="kp">&amp;</span><span class="nc">Self</span><span class="p">)</span><span class="w"> </span>-&gt; <span class="nb">Result</span><span class="o">&lt;</span><span class="n">Self</span><span class="p">,</span><span class="w"> </span><span class="n">SynthesisError</span><span class="o">&gt;</span><span class="w">
+</span><span class="w"></span><span class="c1">// where表约束
+</span><span class="c1"></span><span class="w">    </span><span class="k">where</span><span class="w">
+</span><span class="w">        </span><span class="n">E</span>: <span class="nc">ScalarEngine</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="n">CS</span>: <span class="nc">ConstraintSystem</span><span class="o">&lt;</span><span class="n">E</span><span class="o">&gt;</span><span class="p">,</span><span class="w">
+</span><span class="w">    </span><span class="p">{</span><span class="w">
+</span><span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="k">mut</span><span class="w"> </span><span class="n">result_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">None</span><span class="p">;</span><span class="w">
+</span><span class="w">        </span><span class="c1">// 分配C值，并且C的值成员变量为a^b的值
+</span><span class="c1"></span><span class="w">        </span><span class="kd">let</span><span class="w"> </span><span class="n">result_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cs</span><span class="p">.</span><span class="n">alloc</span><span class="p">(</span><span class="w">
+</span><span class="w">            </span><span class="o">||</span><span class="w"> </span><span class="s">&#34;xor result&#34;</span><span class="p">,</span><span class="w">
+</span><span class="w">            </span><span class="o">||</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="o">*</span><span class="n">a</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">?</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="o">*</span><span class="n">b</span><span class="p">.</span><span class="n">value</span><span class="p">.</span><span class="n">get</span><span class="p">()</span><span class="o">?</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">                    </span><span class="n">result_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span><span class="w">
+</span><span class="w">
+</span><span class="w">                    </span><span class="nb">Ok</span><span class="p">(</span><span class="n">E</span>::<span class="n">Fr</span>::<span class="n">one</span><span class="p">())</span><span class="w">
+</span><span class="w">                </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">                    </span><span class="n">result_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Some</span><span class="p">(</span><span class="kc">false</span><span class="p">);</span><span class="w">
+</span><span class="w">
+</span><span class="w">                    </span><span class="nb">Ok</span><span class="p">(</span><span class="n">E</span>::<span class="n">Fr</span>::<span class="n">zero</span><span class="p">())</span><span class="w">
+</span><span class="w">                </span><span class="p">}</span><span class="w">
+</span><span class="w">            </span><span class="p">},</span><span class="w">
+</span><span class="w">        </span><span class="p">)</span><span class="o">?</span><span class="p">;</span><span class="w">
+</span><span class="w">        </span><span class="c1">// 将a,b,c三者之间的关系添加到约束系统CS中
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// Constrain (a + a) * (b) = (a + b - c)
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// Given that a and b are boolean constrained, if they
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// are equal, the only solution for c is 0, and if they
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// are different, the only solution for c is 1.
+</span><span class="c1"></span><span class="w">        </span><span class="c1">//
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// ¬(a ∧ b) ∧ ¬(¬a ∧ ¬b) = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// (1 - (a * b)) * (1 - ((1 - a) * (1 - b))) = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// (1 - ab) * (1 - (1 - a - b + ab)) = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// (1 - ab) * (a + b - ab) = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// a + b - ab - (a^2)b - (b^2)a + (a^2)(b^2) = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// a + b - ab - ab - ab + ab = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// a + b - 2ab = c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// -2a * b = c - a - b
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// 2a * b = a + b - c
+</span><span class="c1"></span><span class="w">        </span><span class="c1">// (a + a) * b = a + b - c
+</span><span class="c1"></span><span class="w">        </span><span class="n">cs</span><span class="p">.</span><span class="n">enforce</span><span class="p">(</span><span class="w">
+</span><span class="w">            </span><span class="o">||</span><span class="w"> </span><span class="s">&#34;xor constraint&#34;</span><span class="p">,</span><span class="w">
+</span><span class="w">            </span><span class="o">|</span><span class="n">lc</span><span class="o">|</span><span class="w"> </span><span class="n">lc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">variable</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">variable</span><span class="p">,</span><span class="w">
+</span><span class="w">            </span><span class="o">|</span><span class="n">lc</span><span class="o">|</span><span class="w"> </span><span class="n">lc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">variable</span><span class="p">,</span><span class="w">
+</span><span class="w">            </span><span class="o">|</span><span class="n">lc</span><span class="o">|</span><span class="w"> </span><span class="n">lc</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">variable</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">variable</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">result_var</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="p">);</span><span class="w">
+</span><span class="w">        </span><span class="c1">// 返回AllocatedBit的c值对象
+</span><span class="c1"></span><span class="w">        </span><span class="nb">Ok</span><span class="p">(</span><span class="n">AllocatedBit</span><span class="w"> </span><span class="p">{</span><span class="w">
+</span><span class="w">            </span><span class="n">variable</span>: <span class="nc">result_var</span><span class="p">,</span><span class="w">
+</span><span class="w">            </span><span class="n">value</span>: <span class="nc">result_value</span><span class="p">,</span><span class="w">
+</span><span class="w">        </span><span class="p">})</span><span class="w">
+</span><span class="w">    </span><span class="p">}</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>具体步骤如下：</p>
 <ol>
 <li>定义result_value和result_var。分别计算两者的值，result_value的值和约束的不同计算过程类似。result_var的值需要<code>cs.alloc</code>函数进行分配。</li>
 <li>根据输入和输出变量之间的关系，构造约束等式<code>(a + a) * (b) = (a + b - c)</code>，该过程可以通过<code>¬(a ∧ b) ∧ ¬(¬a ∧ ¬b) = c</code>推的。</li>
@@ -485,19 +611,37 @@ sym_2 <span style="color:#f92672">+</span> <span style="color:#ae81ff">5</span> 
 <li>返回<code>AllocatedBit</code>对象。</li>
 </ol>
 <h4 id="bellman-gadget-功能">bellman gadget 功能</h4>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gadgets
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-bash" data-lang="bash">gadgets
 ├── blake2s.rs   // blake2s哈希实现
 ├── boolean.rs   // 一些bool运算gadgets的实现
-├── lookup.rs    // 窗口表查找gadget<span style="color:#f92672">(</span>Window table lookup gadgets<span style="color:#f92672">)</span>，按照bit位查找窗口表的值
+├── lookup.rs    // 窗口表查找gadget<span class="o">(</span>Window table lookup gadgets<span class="o">)</span>，按照bit位查找窗口表的值
 
 ├── multieq.rs   // MultiEq子模块该子模块有自己的成员函数也实现了CS trait中的函数。
 ├── multipack.rs // 将字节数组转化为标量元素
 ├── num.rs       // 表示基础曲线标量字段的小工具
 ├── sha256.rs    // sha256哈希函数电路
-├── test
+├── <span class="nb">test</span>
 │   └── mod.rs   // 测试电路子模块TestConstraintSystem系统重新实现CS trait
 └── uint32.rs     //uint32约束子模块，帮助sha256哈希的计算
-</code></pre></div><h4 id="constraintsystem原理">ConstraintSystem原理</h4>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="constraintsystem原理">ConstraintSystem原理</h4>
 <p><strong>/src/lib.rs</strong></p>
 <p>首先申明一个ContraintSystem的trait里面定义了构建约束系统的方法。</p>
 <p><code>pub trait ConstraintSystem&lt;E: ScalarEngine&gt;: Sized</code></p>

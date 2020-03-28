@@ -68,7 +68,7 @@
 <meta itemprop="description" content="国密SM2/3/4/9">
 <meta itemprop="datePublished" content="2020-03-02T09:41:04&#43;08:00" />
 <meta itemprop="dateModified" content="2020-03-02T09:41:04&#43;08:00" />
-<meta itemprop="wordCount" content="11325">
+<meta itemprop="wordCount" content="11323">
 
 
 
@@ -283,7 +283,7 @@
           2020-03-02
         </time>
         
-        <span class="more-meta"> 11325 words </span>
+        <span class="more-meta"> 11323 words </span>
           <span class="more-meta"> 23 min read </span>
 
         
@@ -419,7 +419,7 @@
 <p>有限域 $$F_q$$必须是一个包含有限数量元素的集合。有限域的一个例子就是模p的整数集，其中p是素数。在域中我们需要定义加法(+)和乘法(*)的二元运算，两者都满足封闭性，结合律和交换律。对于这两个操作，每个元素都有一个唯一的单位元，一个唯一的逆元。</p>
 <p><strong>例子</strong></p>
 <p>有限域的一个实例就是模质数p的整数集$$F_p$$，它是定义在整数集$${0,1,2&hellip;p-1}$$上。$$F_p$$的加法和乘法分别就是模加法和模乘法，$$F_{23}$$的一些操作：</p>
-<p><img src="0.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/0_rd86po.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/0_rd86po.png"></p>
 <p>请注意，这里的 <img src="https://www.zhihu.com/equation?tex=p" alt="[公式]"> 必须是一个质数！模4整数集就不是一个域: 因为2没有乘法逆(即等式 <img src="https://www.zhihu.com/equation?tex=2+%5Ccdot+x+%5Cbmod%7B4%7D+%3D+1" alt="[公式]"> 没有解)。</p>
 <p>有限域中的除法可以通过利用<a href="https://link.zhihu.com/?target=https%3A//en.wikipedia.org/wiki/Extended_Euclidean_algorithm">扩展欧几里德算法</a>可以“轻松”地计算乘法逆元，在最坏的情况下，算法的时间复杂度是 <img src="https://www.zhihu.com/equation?tex=O%28%5Clog+p%29" alt="[公式]"> (或者 <img src="https://www.zhihu.com/equation?tex=O%28k+%29" alt="[公式]"> ，如果我们考虑p的比特长度的话)。本质上我们可以认为 <img src="https://www.zhihu.com/equation?tex=x+%2F+y+%3D+x+%5Ccdot+y%5E%7B-1%7D" alt="[公式]"> ，即把x除以y看成是x乘上y的乘法逆元。实现的 <a href="https://zhuanlan.zhihu.com/p/55761894">python例子</a>。</p>
 <h5 id="2213-有限域中的椭圆曲线">2.2.1.3 有限域中的椭圆曲线</h5>
@@ -520,11 +520,11 @@
 <ol>
 <li>
 <p>$$F_p$$ 上的椭圆曲线</p>
-<p><img src="1.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/1_atzjhn.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/1_atzjhn.png"></p>
 </li>
 <li>
 <p>$$F_{2^m}$$ 上的椭圆曲线</p>
-<p><img src="2.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/2_hzhycz.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/2_hzhycz.png"></p>
 </li>
 </ol>
 <p>确定一条椭圆曲线具体需要哪些参数分析：</p>
@@ -672,7 +672,6 @@
 </li>
 </ol>
 <h4 id="244-数字签名算法实现">2.4.4. 数字签名算法实现</h4>
-<p><img src="https://github.com/citahub/libsm/blob/master/docs/images/sm2.png?raw=true" alt="sm2.png"></p>
 <h3 id="25-密钥交换算法">2.5 密钥交换算法</h3>
 <p>密钥交换是指在用户 A，B 之间进行密钥交换协商的过程。用各自的私钥和对方的公钥来商定一只只有他们知道的秘密密钥。这个共享的秘密密钥通常用在某个对称密码学算法中，该密钥交换协议能够用于密钥管理和协商。</p>
 <h4 id="251-密钥交换算法">2.5.1 密钥交换算法</h4>
@@ -711,7 +710,7 @@
 </blockquote>
 </li>
 </ol>
-<p><img src="3.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/3_ffojrl.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/3_ffojrl.png"></p>
 <h4 id="252-密钥交换算法实现">2.5.2 密钥交换算法实现</h4>
 <h3 id="26-非对称加解密算法">2.6 非对称加解密算法</h3>
 <h4 id="261-密钥派生算法kdf">2.6.1 密钥派生算法（KDF）</h4>
@@ -763,7 +762,7 @@
 <p>密文 $$C = C_1 || C_3 || C_2$$</p>
 </li>
 </ol>
-<p><img src="4.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365173/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/4_bojsmp.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365173/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/4_bojsmp.png"></p>
 <h4 id="263-解密算法">2.6.3 解密算法</h4>
 <ol>
 <li>
@@ -785,7 +784,7 @@
 <p>明文 $$M'$$</p>
 </li>
 </ol>
-<p><img src="5.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/5_wt6npk.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365163/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/5_wt6npk.png"></p>
 <h3 id="264-加解密算法实现">2.6.4 加解密算法实现</h3>
 <h2 id="3sm3">3.SM3</h2>
 <h3 id="31-简介">3.1 简介</h3>
@@ -799,7 +798,6 @@
 <li>再添加 64 位比特串，内容为 $$l$$ 的二进制表示</li>
 <li>填充后的完整消息为 $$m’$$</li>
 </ol>
-<p>![image-20200219222124881](/Users/evenlu/Library/Application Support/typora-user-images/image-20200219222124881.png)</p>
 <h4 id="322-迭代压缩">3.2.2 迭代压缩</h4>
 <ol>
 <li>
@@ -902,9 +900,9 @@
 <p>SM9 为基于身份的密码算法，可以替代基于数字证书的 PKI/CA 体系。通过部署国密算法，可以降低由弱密码和错误实现带来的安全风险和部署 PKI/CA 带来的开销。</p>
 <h3 id="52-数据类型及其转换">5.2 数据类型及其转换</h3>
 <p>在本部分中，数据类型包括比特串，字节串，域运算，椭圆曲线上的点和整数。</p>
-<p><img src="6.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/6_ndguy1.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/6_ndguy1.png"></p>
 <h4 id="521-数据类型转换之间的关系">5.2.1 数据类型转换之间的关系</h4>
-<p><img src="7.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/7_ccchgp.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/7_ccchgp.png"></p>
 <h4 id="522-密码学杂凑函数">5.2.2 密码学杂凑函数</h4>
 <h5 id="5221-密码杂凑函数h_v">5.2.2.1 密码杂凑函数$$H_v()$$</h5>
 <p>密码杂凑函数$$H_v()$$的输入是长度恰为v比特的杂凑值。本部分规定使用国家密码管理主管部门批准的密码杂凑函数，如SM3密码杂凑算法。</p>
@@ -979,7 +977,7 @@
 <li>按照上述数据转换流程将整数h的数据类型转换为字节串。将点S的数据类型转换为字节串，消息M的签名为$$(h,S)$$。</li>
 </ol>
 <p>数据签名生成算法流程</p>
-<p><img src="8.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/8_akic3e.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/8_akic3e.png"></p>
 <h3 id="53-数字签名验证算法">5.3 数字签名验证算法</h3>
 <p>为了检验收到的消息M及其数字签名(h,S)，作为验证者的用户B应实现以下运算步骤：</p>
 <ol>
@@ -994,7 +992,7 @@
 <li>计算整数$$h_2=H_2(M||w,N)$$，检验h2=h是否成立，若成立则验证通过，否则验证不通过。</li>
 </ol>
 <p>数字签名算法流程：</p>
-<p><img src="9.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/9_rgf7dh.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365160/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/9_rgf7dh.png"></p>
 <h3 id="54-密钥封装和公钥加密">5.4 密钥封装和公钥加密</h3>
 <p>本部分规定了用椭圆曲线对实现的基于标识的密钥封装机制和公钥加密与解密算法。利用密钥封装机制可以封装密钥给特定实体。公钥加密与解密算法即基于标识的非对称密码算法，该算法使消息发送者可以利用接收者的标识对消息进行加密，唯有接收者可以用相应的私钥对密文进行解密，从未获取消息。</p>
 <h4 id="541-密钥封装算法">5.4.1 密钥封装算法</h4>
@@ -1009,7 +1007,7 @@
 <li>输出(K,C)，其中K是被封装的密钥，C是封装密文。</li>
 </ol>
 <p>具体步骤：</p>
-<p><img src="10.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/10_bcgun4.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365159/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/10_bcgun4.png"></p>
 <h4 id="542-解封装算法">5.4.2 解封装算法</h4>
 <ol>
 <li>
@@ -1026,7 +1024,7 @@
 <p>具体步骤如下：</p>
 </li>
 </ol>
-<p><img src="11.png" alt=""></p>
+<p><img src="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365167/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/11_xbonsk.png" alt="https://res.cloudinary.com/dcvachvmj/image/upload/v1585365167/czm_blog/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95/11_xbonsk.png"></p>
 <h3 id="55-sm9_free的代码结构">5.5 SM9_FREE的代码结构</h3>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">SM9_FREE
 ├── Makefile

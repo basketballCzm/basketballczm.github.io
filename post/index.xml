@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 28 Mar 2020 11:55:12 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 04 Apr 2020 12:34:16 +0800</lastBuildDate>
     
 	<atom:link href="https://puppym.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Raft和pbft</title>
+      <link>https://puppym.github.io/blog/post/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/raft%E5%92%8Cpbft/</link>
+      <pubDate>Sat, 04 Apr 2020 12:34:16 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/raft%E5%92%8Cpbft/</guid>
+      <description>Raft和PBFT共识算法</description>
+    </item>
     
     <item>
       <title>Bellman</title>

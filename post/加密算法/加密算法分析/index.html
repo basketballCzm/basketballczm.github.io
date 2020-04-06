@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>加密算法分析 - Czm blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Czm" />
+  <meta name="description" content="加密算法简介" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.0" />
+
+
+<link rel="canonical" href="https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" />
+
+
+
+
+
+<link rel="icon" href="/blog/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/sass/jane.min.fa3d941d1d0e0ddc985804227feabffea55c89883eb0af34e0532a7ae9135151.css" integrity="sha256-&#43;j2UHR0ODdyYWAQif&#43;q//qVciYg&#43;sK804FMqeukTUVE=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="加密算法分析" />
+<meta property="og:description" content="加密算法简介" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/" />
+<meta property="article:published_time" content="2020-04-06T10:12:55+08:00" />
+<meta property="article:modified_time" content="2020-04-06T10:12:55+08:00" />
+<meta itemprop="name" content="加密算法分析">
+<meta itemprop="description" content="加密算法简介">
+<meta itemprop="datePublished" content="2020-04-06T10:12:55&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-06T10:12:55&#43;08:00" />
+<meta itemprop="wordCount" content="1931">
+
+
+
+<meta itemprop="keywords" content="ECDSA,EdDSA,对称和非对称加密," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="加密算法分析"/>
+<meta name="twitter:description" content="加密算法简介"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">Czm blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/blog/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/blog/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/blog/" class="logo">
+    
+      Czm blog
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">加密算法分析</h1>
+      
+      <div class="post-meta">
+        <time datetime="2020-04-06" class="post-time">
+          2020-04-06
+        </time>
+        
+        <span class="more-meta"> 1931 words </span>
+          <span class="more-meta"> 4 min read </span>
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#加密算法">加密算法</a></li>
+    <li><a href="#非对称加密算法">非对称加密算法</a>
+      <ul>
+        <li><a href="#rsa">RSA</a></li>
+        <li><a href="#ecc椭圆曲线密码">ECC(椭圆曲线密码)</a></li>
+        <li><a href="#常见的签名加密算法">常见的签名加密算法</a></li>
+        <li><a href="#各种加密算法性能对比">各种加密算法性能对比</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <h2 id="加密算法">加密算法</h2>
+<p>加密算法分为对称加密和非对称加密算法，对称加密加解密使用同一密钥，非对称加密加解公钥加密，公钥加密，私钥解密。</p>
+<p>对称加密主要有：DES，AES。虽然加解密速度比较快，但是密钥管理不安全，密钥管理负担重。</p>
+<p>非对称加密：安全性更高，公钥是公开的，密钥自己保存。但是加解密时间较长，速度慢。</p>
+<p>混合使用方法：首先将对称加密的密钥使用非对称加密的公钥进行加密，然后发送出去，然后使用私钥进行解密得到对称加密的密钥，然后双方使用对称加密来进行通讯。对于小的数据量，使用非对称加解密也是可以接受的。</p>
+<h2 id="非对称加密算法">非对称加密算法</h2>
+<h3 id="rsa">RSA</h3>
+<p><a href="https://blog.csdn.net/weixin_42117918/article/details/86421877">RSA(非对称加密)与ECC（椭圆曲线加密）的区别</a></p>
+<p><a href="https://juejin.im/post/5b48b0d7e51d4519962ea383#heading-22">浅谈常见的七种加密算法及实现</a></p>
+<h3 id="ecc椭圆曲线密码">ECC(椭圆曲线密码)</h3>
+<p>实际包含以下内容：</p>
+<ul>
+<li>基于椭圆曲线的公钥密码</li>
+<li>基于椭圆曲线的数字签名</li>
+<li>基于椭圆曲线的密钥交换</li>
+</ul>
+<p>基于的数学问题，在椭圆曲线的运算上利用了<code>椭圆曲线上的离散对数问题</code>的复杂性。该问题的本质是<code>以知点xG求数x的问题</code>，定义为<code>已知椭圆曲线E，E上的一点G，以及G的x倍点xG，求x</code>。</p>
+<h4 id="椭圆曲线加密解密算法原理">椭圆曲线加密解密算法原理</h4>
+<p><a href="https://blog.csdn.net/weixin_42117918/article/details/86421877">加解密过程原理</a> 加解密的保障是椭圆曲线上离散对数的问题。在验证的等式中其实就是把私钥隐藏在公钥中，然后由公钥推不出私钥。</p>
+<h4 id="椭圆曲线签名算法原理ecdsa">椭圆曲线签名算法原理（ECDSA）</h4>
+<p><a href="https://blog.csdn.net/weixin_42117918/article/details/86421877">签名过程原理</a></p>
+<h4 id="eddsa签名算法">EdDSA签名算法</h4>
+<p>EdDSA签名算法基于ECC的签名算法，比特币使用的是ECDSA签名基于曲线secp256k1。注意secp256r1曲线因为默认使用Dual_EC_DRBG随机数生成器被留有后门，因为ECDSA签名算法的安全性比较依赖于安全的随机数生成算法。</p>
+<p>EdDSA签名算法由于曲线和参数的选择不同可以划分为Ed25519和Ed448算法，分别基于curve25519曲线和curve448曲线。使用较多的是Ed25519算法。扭曲爱德华兹曲线（Twisted Edwards curves），因为相比于后者而言运行速度要更快，密钥和签名空间也较小。</p>
+<p>通过观察签名过程，我们发现一个私钥对通过过一个消息M进行签名时R与S都是固定的<a href="https://www.anquanke.com/post/id/167018">EdDSA过程详解</a>，所以说EdDSA是一种确定性的签名算法，不像ECDSA那样每次签名都根据选取的随机数的变化而不同，所以EdDSA的安全性也就不在依赖于随机数生成器。ED25519采用Schnorr机制作为签名的构建方式，是的签名与验证的性能得到巨大提升。</p>
+<p>EdDSA的运算速度也比ECDSA算法要快很多，门罗币和zcash都也已经切换到了EdDSA，目前被确认为下一代椭圆曲线算法。</p>
+<p>EdDSA具体过程参见 <a href="https://www.anquanke.com/post/id/167018">针对EdDSA的fault attack</a>  <a href="https://tiannian.me/2018/12/28/cryptography/ed25519/">针对数字签名机制</a></p>
+<h4 id="eddsa和ecdsa之间的差异">EdDSA和ECDSA之间的差异</h4>
+<p>EdDSA的计算速度和安全性都要比ECDSA好。其中的一个原因是EdDSA在签名的时候不用选随机数，其随机数的选取依赖于hash安全性。</p>
+<p><strong>ECDSA签名要保证r有足够的随机性，保证每次签名的随机数都不一样，如果两个签名的随机数相同，那么将有办法获取原始的私钥。</strong></p>
+<p>我们在做签名的时候，要保证r的足够随机性，这样保障每一个签名都不一样，如果r一直使用的是同一个，将有办法获取原始的私钥 k。</p>
+<p>对于消息M1 和 M2 的签名(r1, s1) 和 （r2, s2）</p>
+<p>首先因为随机数r相同，则r1 == r2，因为r为公钥的x坐标。</p>
+<p>由于<code>s = (h + kx)/r</code></p>
+<p><code>r = (s2-s1)^-1*(h2-h1)</code>  1</p>
+<p><code>k = x^-1 * (sr - h)</code>  2</p>
+<p>将1带入2中</p>
+<p><code>k = x^-1 *  (s*(s2-s1)^-1*(h2-h1) - h)</code></p>
+<p>因此可以求出最后的私钥k。</p>
+<h3 id="常见的签名加密算法">常见的签名加密算法</h3>
+<ul>
+<li>
+<p>MD5 算法用的是hash函数，是对一段信息产生消息摘要，以防止被篡改。该再要函数无论输入是多大，最后的输出都会变成一个128bit的串。</p>
+</li>
+<li>
+<p>SHA1也是消息摘要算法，比MD5的安全性更强，已于长度小于2^64位的消息，SHA1会产生一个160位的消息摘要，消息摘要到原消息是不可逆的过程。主要用于文件完整性检查以及数字签名等领域。</p>
+</li>
+<li>
+<p>HMAC算法是和密钥相关的哈希运算消息认证码，HMAC运算利用哈希算法(MD5,SHA1等)，以一个密钥和一个消息作为输入生成一个消息摘要作为输出。</p>
+<p>HMAC发送放和接收方都有key进行计算，但是第三方是没有该key的，因此无法计算出正确的散列值，这样能够防止数据被篡改。</p>
+</li>
+<li>
+<p>对称加密方式DES，3DES，AES，安全性依次增加。</p>
+<p>DES加解密都都使用同一密钥，是一种分组加密方式，以64为为一组进行加密，密钥长度为56，加解密使用同一算法。</p>
+<p>3DES对同一块进行三个不同的密钥进行3次加密，强度更高。</p>
+<p>AES是<code>对称分组密码体制</code>，密钥长度最少为128为，算法容易在各种硬件和软件平台上使用。</p>
+</li>
+<li>
+<p>RSA是第一个能够同时用于加密和数字签名的算法。</p>
+</li>
+<li>
+<p>ECC比RAS有更小的密钥，安全级别更高，都是非对称加密方法，但是相比于RSA，ECC加解密操作消耗更多的CPU。</p>
+</li>
+</ul>
+<h3 id="各种加密算法性能对比">各种加密算法性能对比</h3>
+<p><a href="https://juejin.im/post/5b48b0d7e51d4519962ea383#heading-8">各种加密算法对比</a></p>
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzAwMjEzNzAzNQ==&amp;mid=2650719438&amp;idx=2&amp;sn=63e085dbf2f4c573661185f99bdb486c&amp;chksm=82c56a6ab5b2e37cc55bbff7b8513c228ceddcd4c14524d78d410bb0e7929385f9738b648936&amp;scene=21#wechat_redirect">由数学知识引出椭圆曲线</a></p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2020-04-06
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://puppym.github.io/blog/tags/ecdsa/">ECDSA</a>
+          <a href="https://puppym.github.io/blog/tags/eddsa/">EdDSA</a>
+          <a href="https://puppym.github.io/blog/tags/%E5%AF%B9%E7%A7%B0%E5%92%8C%E9%9D%9E%E5%AF%B9%E7%A7%B0%E5%8A%A0%E5%AF%86/">对称和非对称加密</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+        
+          <a class="next" href="/blog/post/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/raft%E5%92%8Cpbft/">
+            <span class="next-text nav-default">Raft和pbft</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://puppym.github.io/blog/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2019 -
+    2020
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        Czm
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/blog/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/blog/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/blog/js/main.dee43230127a73d039a734510fa896c89c3c7ce0cf0be0c7a7433f8fd69b76dc.js" integrity="sha256-3uQyMBJ6c9A5pzRRD6iWyJw8fODPC&#43;DHp0M/j9abdtw=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/blog/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

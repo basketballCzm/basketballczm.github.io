@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 04 Apr 2020 12:34:16 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 06 Apr 2020 10:12:55 +0800</lastBuildDate>
     
 	<atom:link href="https://puppym.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>加密算法分析</title>
+      <link>https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:12:55 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</guid>
+      <description>加密算法简介</description>
+    </item>
     
     <item>
       <title>Raft和pbft</title>

@@ -6,10 +6,73 @@
     <description>Recent content in Tags on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 06 Apr 2020 10:12:55 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 27 May 2020 17:37:06 +0800</lastBuildDate>
     
 	<atom:link href="https://puppym.github.io/blog/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>zkp</title>
+      <link>https://puppym.github.io/blog/tags/zkp/</link>
+      <pubDate>Wed, 27 May 2020 17:37:06 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/zkp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zkp repo</title>
+      <link>https://puppym.github.io/blog/tags/zkp-repo/</link>
+      <pubDate>Wed, 27 May 2020 17:37:06 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/zkp-repo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zkp论文</title>
+      <link>https://puppym.github.io/blog/tags/zkp%E8%AE%BA%E6%96%87/</link>
+      <pubDate>Wed, 27 May 2020 17:19:25 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/zkp%E8%AE%BA%E6%96%87/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zksnark</title>
+      <link>https://puppym.github.io/blog/tags/zksnark/</link>
+      <pubDate>Wed, 27 May 2020 16:52:36 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/zksnark/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>区块链思考</title>
+      <link>https://puppym.github.io/blog/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83/</link>
+      <pubDate>Wed, 27 May 2020 16:51:36 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>loopring</title>
+      <link>https://puppym.github.io/blog/tags/loopring/</link>
+      <pubDate>Mon, 06 Apr 2020 10:52:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/loopring/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>zkrollup</title>
+      <link>https://puppym.github.io/blog/tags/zkrollup/</link>
+      <pubDate>Mon, 06 Apr 2020 10:52:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/tags/zkrollup/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>ECDSA</title>

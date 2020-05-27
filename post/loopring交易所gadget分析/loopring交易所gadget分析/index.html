@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Loopring交易所gadget分析 - Czm blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Czm" />
+  <meta name="description" content="Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.0" />
+
+
+<link rel="canonical" href="https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/" />
+
+
+
+
+
+<link rel="icon" href="/blog/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/sass/jane.min.fa3d941d1d0e0ddc985804227feabffea55c89883eb0af34e0532a7ae9135151.css" integrity="sha256-&#43;j2UHR0ODdyYWAQif&#43;q//qVciYg&#43;sK804FMqeukTUVE=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Loopring交易所gadget分析" />
+<meta property="og:description" content="Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/" />
+<meta property="article:published_time" content="2020-04-06T10:51:50+08:00" />
+<meta property="article:modified_time" content="2020-04-06T10:51:50+08:00" />
+<meta itemprop="name" content="Loopring交易所gadget分析">
+<meta itemprop="description" content="Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark">
+<meta itemprop="datePublished" content="2020-04-06T10:51:50&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-06T10:51:50&#43;08:00" />
+<meta itemprop="wordCount" content="6586">
+
+
+
+<meta itemprop="keywords" content="loopring,zkrollup,zksnark," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Loopring交易所gadget分析"/>
+<meta name="twitter:description" content="Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">Czm blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/blog/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/blog/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/blog/" class="logo">
+    
+      Czm blog
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Loopring交易所gadget分析</h1>
+      
+      <div class="post-meta">
+        <time datetime="2020-04-06" class="post-time">
+          2020-04-06
+        </time>
+        
+        <span class="more-meta"> 6586 words </span>
+          <span class="more-meta"> 14 min read </span>
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#基本gadgets">基本Gadgets</a>
+      <ul>
+        <li><a href="#mathgadgets">MathGadgets</a></li>
+        <li><a href="#merkletree">MerkleTree</a></li>
+        <li><a href="#accountgadgets">AccountGadgets</a></li>
+        <li><a href="#ordergagets">orderGagets</a></li>
+        <li><a href="#matchinggadgets">MatchingGadgets</a></li>
+      </ul>
+    </li>
+    <li><a href="#circuit">Circuit</a>
+      <ul>
+        <li><a href="#depositcircuit">DepositCircuit</a></li>
+        <li><a href="#ordercancellationcircuit">OrderCancellationCircuit</a></li>
+        <li><a href="#ringsettlementoff-chain">RingSettlement(off-chain)</a></li>
+        <li><a href="#onchainwithdraw">onchainWithdraw</a></li>
+        <li><a href="#offchainwithdraw">offchainWithdraw</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <h1 id="loopringcircuit解读">loopringCircuit解读</h1>
+<h2 id="基本gadgets">基本Gadgets</h2>
+<h3 id="mathgadgets">MathGadgets</h3>
+<p>在MathGadgets文件中各个组件Gadget类通过继承父类GadgetT来完成一些符合组件的编写工作。<code>generate_r1cs_constraints</code>理解是在电路板上添加约束，每一个转换的中间过程都应该将约束添加到原型板上。<code>generate_r1cs_witness</code>是为了生成一个证明，通过在原型板上设置公共变量的值，并且为私有变量设置见证值，这里体现出了各个变量之间的行为。一共有以下组件：</p>
+<p>注意<code>ConstrainT</code>调用的是<code>r1cs_constrain</code></p>
+<table>
+<thead>
+<tr>
+<th><strong>Constants</strong></th>
+<th align="left"><strong>Constants stored in a VariableT for ease of use</strong></th>
+<th><strong>member variable</strong></th>
+<th><strong>generate_r1cs_witness</strong></th>
+<th><strong>constructor</strong></th>
+<th><strong>generate_r1cs_constraints</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DynamicVariableGadget</strong></td>
+<td align="left"><strong>Helper function that contains the history of all the values of a variable</strong></td>
+<td><strong>std::vector<!-- raw HTML omitted --> variables;<!-- raw HTML omitted -->bool allowGeneratingWitness;</strong></td>
+<td><strong>assert(allowGeneratingWitness);<!-- raw HTML omitted -->pb.val(variables.front()) = value;</strong></td>
+<td><strong>variables.push_back(new variable);</strong></td>
+<td><strong>none</strong></td>
+</tr>
+<tr>
+<td><strong>TransferGadget</strong></td>
+<td align="left"><strong>Helper function for subadd to do transfers</strong></td>
+<td><strong>subadd_gadget subadd;</strong></td>
+<td><strong>subadd.generate_r1cs_witness();</strong></td>
+<td><strong>from.add(subadd.X);<!-- raw HTML omitted -->to.add(subadd.Y);</strong></td>
+<td><strong>subadd.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td><strong>UnsafeSubGadget</strong></td>
+<td align="left"><strong>A - B</strong></td>
+<td><strong>VariableT value;<!-- raw HTML omitted -->sub;<!-- raw HTML omitted -->sum;</strong></td>
+<td><strong>sum = value-sub;</strong></td>
+<td><strong>init VariableT</strong></td>
+<td><strong>ConstraintT(value - sub, FieldT::one(), sum)</strong></td>
+</tr>
+<tr>
+<td><strong>UnsafeAddGadget</strong></td>
+<td align="left"><strong>A + B</strong></td>
+<td><strong>VariableT value;<!-- raw HTML omitted -->add;<!-- raw HTML omitted -->sum</strong></td>
+<td><strong>sum = value+add;</strong></td>
+<td><strong>init VariableT</strong></td>
+<td><strong>ConstraintT(value + add, FieldT::one(), sum)</strong></td>
+</tr>
+<tr>
+<td><strong>UnsafeMulGadget</strong></td>
+<td align="left"><strong>A * B</strong></td>
+<td><strong>VariableT valueA;<!-- raw HTML omitted -->valueB;<!-- raw HTML omitted -->product;</strong></td>
+<td><strong>product = valueA*valueB</strong></td>
+<td><strong>init VariableT</strong></td>
+<td><strong>ConstraintT(valueA, valueB, product)</strong></td>
+</tr>
+<tr>
+<td><strong>AddGadget</strong></td>
+<td align="left"><strong>A + B = sum with A, B and sum &lt; 2^n</strong></td>
+<td><strong>UnsafeAddGadget unsafeAdd;<!-- raw HTML omitted -->libsnark::Undual_variable_gadget<!-- raw HTML omitted --> rangeCheck;(libsnark gadgets)</strong></td>
+<td><strong>unsafeAdd.generate_r1cs_witness();<!-- raw HTML omitted -->rangeCheck.generate_r1cs_witness_from_packed();</strong></td>
+<td><strong>init unsafeAdd, rangeCheck<!-- raw HTML omitted -->assert(n+1 &lt;= NUM_BITS_FIELD_CAPACITY(253))</strong></td>
+<td><strong>unsafeAdd.generate_r1cs_constraints();<!-- raw HTML omitted -->rangeCheck.generate_r1cs_constraints(true);</strong></td>
+</tr>
+<tr>
+<td><strong>TernaryGadget</strong></td>
+<td align="left"><strong>b ? A : B</strong></td>
+<td><strong>VariableT b;<!-- raw HTML omitted -->x;<!-- raw HTML omitted -->y;<!-- raw HTML omitted -->selected;</strong></td>
+<td><strong>select = (b == 1)?x:y;</strong></td>
+<td><strong>init VariableT</strong></td>
+<td><strong>param:bool enforceBitness = true<!-- raw HTML omitted -->if(enforceBitness){generate_boolean_r1cs_constraint&lt;ethsnarks::FieldT&gt;(pb, b, FMT(annotation_prefix, &ldquo;.bitness&rdquo;));}<!-- raw HTML omitted -->ConstraintT(b, y - x, y - selected);</strong></td>
+</tr>
+<tr>
+<td><strong>LeqGadget</strong></td>
+<td align="left"><strong>(A &lt;(=) B)</strong>  只能保证在n &lt;= 253-1的情况下成立</td>
+<td><strong>VariableT _It;<!-- raw HTML omitted -->__leq;<!-- raw HTML omitted -->libsnark::comparison_gadget comparison;</strong></td>
+<td><strong>comparison.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT<!-- raw HTML omitted -->assert(n &lt;= NUM_BITS_FIELD_CAPACITY - 1);</strong></td>
+<td><strong>comparison.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td><strong>AndGadget</strong></td>
+<td align="left"><strong>(input[0] &amp;&amp; input[1] &amp;&amp; &hellip;) (all inputs need to be boolean)</strong></td>
+<td><strong>vector<!-- raw HTML omitted --> inputs;<!-- raw HTML omitted -->vector<!-- raw HTML omitted --> results;</strong></td>
+<td>*<em>results[0] = inputs[0]<em>inputs[1];<!-- raw HTML omitted -->for(i = 2; i &lt; input.size; i++ ){results[i-1] = results[i-2]*inputs[i];}</em></em></td>
+<td><strong>init inputs;<!-- raw HTML omitted -->assert(inputs.size &gt; 1);<!-- raw HTML omitted -->for(i = 1; i &lt; inputs.size; i++){results.push(VariableT);}</strong></td>
+<td><strong>ConstraintT(inputs[0], inputs[1], results[0]);<!-- raw HTML omitted -->for(i = 2; i &lt; inputs.size; i++){ConstraintT(inputs[i], results[i-2], results[i-1]);}</strong></td>
+</tr>
+<tr>
+<td><strong>OrGadget</strong></td>
+<td align="left"><strong>(input[0] || input[1] || &hellip;) (all inputs need to be boolean)</strong></td>
+<td><strong>vector<!-- raw HTML omitted --> inputs;<!-- raw HTML omitted -->vector<!-- raw HTML omitted --> results;</strong></td>
+<td><strong>results[0] =1-(1-inputs[0])*(1-inputs[1]);<!-- raw HTML omitted -->for(i = 2; i &lt; inputs.size; i++ ){results[i-1] = 1-(1-results[i-2])*(1-inputs[i]);}</strong></td>
+<td><strong>init inputs;<!-- raw HTML omitted -->assert(inputs.size &gt; 1);<!-- raw HTML omitted -->for(i = 1; i &lt; inputs.size; i++){results.push(VariableT);}</strong></td>
+<td><strong>ConstraintT(1-inputs[0], 1-inputs[1], 1-results[0]);<!-- raw HTML omitted -->for(i = 2; i &lt; inputs.size; i++){ConstraintT(1-inputs[i], 1-results[i-2], 1-results[i-1]);}</strong></td>
+</tr>
+<tr>
+<td><strong>NotGadget</strong></td>
+<td align="left"><strong>!A (A needs to be boolean)</strong></td>
+<td><strong>VariableT A;<!-- raw HTML omitted -->VariableT _not;</strong></td>
+<td><strong>_not = 1- A</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>ConstraintT(1 - A, 1, _not)</strong></td>
+</tr>
+<tr>
+<td><strong>XorArrayGadget</strong></td>
+<td align="left"><strong>A[i] ^ B[i]</strong></td>
+<td><strong>VariableArrayT A;<!-- raw HTML omitted -->VariableArrayT B;<!-- raw HTML omitted -->VariableArrayT C;</strong></td>
+<td><strong>for(i = 0; i &lt; C.size; i++){C[i] = A[i] +B[i] - ((A[i] == 1 &amp;&amp; B[i] == 1)? 2:0);}</strong></td>
+<td><strong>assert(A.size == B.size);</strong></td>
+<td><strong>for(i = 0; i &lt; C.size(); i++){ConstraintT(2*A[i], B[i], A[i]+B[i]-C[i]);}</strong></td>
+</tr>
+<tr>
+<td><strong>EqualGadget</strong></td>
+<td align="left"><strong>(A == B)</strong></td>
+<td><strong>UnsafeSubGadget difference;<!-- raw HTML omitted -->IsNonZero isNonZeroDifference;<!-- raw HTML omitted -->NotGadget isZeroDifference;</strong></td>
+<td><strong>difference.generate_r1cs_witness();<!-- raw HTML omitted -->difference.generate_r1cs_witness();<!-- raw HTML omitted -->isZeroDifference.generate_r1cs_witness();</strong></td>
+<td><strong>init difference, isNonZeroDifference<!-- raw HTML omitted -->difference(pb, A, B, FMT(prefix, &ldquo;.difference&rdquo;));<!-- raw HTML omitted -->isNonZeroDifference(pb, difference.result(), FMT(prefix, &ldquo;.isNonZeroDifference&rdquo;))<!-- raw HTML omitted -->isZeroDifference(pb, isNonZeroDifference.result(), FMT(prefix, &ldquo;.isZeroDifference&rdquo;))<!-- raw HTML omitted --></strong></td>
+<td><strong>difference.generate_r1cs_constraints();<!-- raw HTML omitted -->isNonZeroDifference.generate_r1cs_constraints();<!-- raw HTML omitted -->isZeroDifference.generate_r1cs_constraints();<!-- raw HTML omitted --></strong></td>
+</tr>
+<tr>
+<td><strong>RequireEqualGadget</strong></td>
+<td align="left"><strong>require(A == B)</strong></td>
+<td><strong>VariableT A;<!-- raw HTML omitted -->VariableT B;</strong></td>
+<td><strong>none</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>ConstraintT(A, FieldT::one(), B);</strong></td>
+</tr>
+<tr>
+<td><strong>RequireZeroAorBGadget</strong></td>
+<td align="left"><strong>require(A == 0 || B == 0)</strong></td>
+<td><strong>VariableT A;<!-- raw HTML omitted -->VariableT B;</strong></td>
+<td><strong>none</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>ConstraintT(A, B, FieldT::zero());</strong></td>
+</tr>
+<tr>
+<td><strong>RequireNotZeroGadget</strong></td>
+<td align="left"><strong>require(A != 0)</strong></td>
+<td><strong>VariableT A;<!-- raw HTML omitted -->VariableT A_inv;</strong></td>
+<td><strong>A_inv = !A;</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>ConstraintT(A, A_inv, FieldT::one());</strong></td>
+</tr>
+<tr>
+<td><strong>RequireNotEqualGadget</strong></td>
+<td align="left"><strong>require(A != B)</strong></td>
+<td><strong>VariableT A;<!-- raw HTML omitted -->VariableT B;<!-- raw HTML omitted -->VariableT difference;<!-- raw HTML omitted -->RequireNotZeroGadget notZero;</strong></td>
+<td><strong>difference = A-B;<!-- raw HTML omitted -->notZero.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>ConstraintT(A - B, FieldT::one(), difference);<!-- raw HTML omitted -->notZero.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td><strong>MinGadget</strong></td>
+<td align="left"><strong>min(A, B)</strong></td>
+<td><strong>LeqGadget A_lt_B;<!-- raw HTML omitted -->TernaryGadget minimum;</strong></td>
+<td><strong>A_lt_B.generate_r1cs_witness();<!-- raw HTML omitted -->minimum.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>A_lt_B.generate_r1cs_constraints();<!-- raw HTML omitted -->minimum.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td><strong>RequireLeqGadget</strong></td>
+<td align="left"><strong>require(A &lt;= B)</strong></td>
+<td><strong>LeqGadget leqGadget;</strong></td>
+<td><strong>leqGadget.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>leqGadget.generate_r1cs_constraints();<!-- raw HTML omitted -->ConstraintT(leqGadget.leq(), FieldT::one(), FieldT::one());</strong></td>
+</tr>
+<tr>
+<td><strong>RequireLtGadget</strong></td>
+<td align="left"><strong>require(A &lt; B)</strong></td>
+<td><strong>LeqGadget leqGadget;</strong></td>
+<td><strong>leqGadget.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>leqGadget.generate_r1cs_constraints();<!-- raw HTML omitted -->ConstraintT(leqGadget.lt(), FieldT::one(), FieldT::one());</strong></td>
+</tr>
+<tr>
+<td><strong>MulDivGadget</strong></td>
+<td align="left"><strong>(value * numerator) = product</strong></td>
+<td></td>
+<td><strong>denominator_notZero.generate_r1cs_witness();<!-- raw HTML omitted -->product.generate_r1cs_witness();<!-- raw HTML omitted -->if (denominator != Field::zero()){quotient = product/denominator;}else{quotient=Field::zero();}<!-- raw HTML omitted -->remainder.packed = product.result - denominator*quotient;<!-- raw HTML omitted -->remainder.generate_r1cs_witness_from_packed();<!-- raw HTML omitted -->remainder_lt_denominator.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;<!-- raw HTML omitted -->assert(numBitsValue + numBitsNumerator &lt;= NUM_BITS_FIELD_CAPACITY);</strong></td>
+<td><strong>denominator_notZero.generate_r1cs_constraints();<!-- raw HTML omitted -->product.generate_r1cs_constraints();<!-- raw HTML omitted -->ConstraintT(denominator, quotient, product.result() - remainder.packed)<!-- raw HTML omitted -->remainder.generate_r1cs_constraints(true);<!-- raw HTML omitted -->remainder_lt_denominator.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><strong>product / denominator = quotient</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td align="left"><strong>product % denominator = remainder</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>RequireAccuracyGadget</strong></td>
+<td align="left"><strong>_accuracy.numerator / _accuracy.denominator &lt;=  value / original<!-- raw HTML omitted -->original _accuracy.numerator &lt;= value * _accuracy.denominator<!-- raw HTML omitted -->We have to make sure there are no overflows and the value is &lt;= the original value (so a user never spends more) so we also check <!-- raw HTML omitted -->value &lt;= original<!-- raw HTML omitted -->value &lt; 2^maxNumBits</strong></td>
+<td>用来校验float类型在电路编码的精度损失，精确度损失在不同的场景有不同的需求 <a href="https://github.com/Loopring/protocols/pull/156">link</a>。要求给定数的精确度大于<code>_accuracy</code>的值</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>EdDSA_HashRAM_Poseidon_gadget</strong></td>
+<td align="left"><strong>Poseidon 哈希函数，ethsnark已经进行了相应的封装，传入相应参数生成Poseidon 哈希</strong></td>
+<td><strong>Poseidon_gadget_T&lt;6, 1, 6, 52, 5, 1&gt; m_hash_RAM;<!-- raw HTML omitted -->libsnark::dual_variable_gadget<!-- raw HTML omitted --> hash;</strong></td>
+<td><strong>m_hash_RAM.generate_r1cs_witness();<!-- raw HTML omitted -->hash.bits.fill_with_bits_of_field_element(pb, pb.val(m_hash_RAM.result()));<!-- raw HTML omitted -->hash.generate_r1cs_witness_from_bits();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>m_hash_RAM.generate_r1cs_constraints();<!-- raw HTML omitted -->hash.generate_r1cs_constraints(true);</strong></td>
+</tr>
+<tr>
+<td><strong>EdDSA_Poseidon</strong></td>
+<td align="left"><strong>使用poseidon哈希函数的EdDSA数字签名函数</strong></td>
+<td></td>
+<td><strong>generate_r1cs_witness&hellip;.<!-- raw HTML omitted --></strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>generate_r1cs_constraints&hellip;<!-- raw HTML omitted -->ConstraintT(m_lhs.result_x(), FieldT::one(), m_rhs.result_x());<!-- raw HTML omitted -->ConstraintT(m_lhs.result_y(), FieldT::one(), m_rhs.result_y());</strong></td>
+</tr>
+<tr>
+<td><strong>SignatureVerifier</strong></td>
+<td align="left"><strong>Verifies a signature hashed with Poseidon</strong></td>
+<td><strong>const jubjub::VariablePointT sig_R;<!-- raw HTML omitted -->const VariableArrayT sig_s;<!-- raw HTML omitted -->const VariableT sig_m;<!-- raw HTML omitted -->EdDSA_Poseidon signatureVerifier;</strong></td>
+<td><strong>pb.val(sig_R.x) = sig.R.x;<!-- raw HTML omitted -->pb.val(sig_R.y) = sig.R.y;<!-- raw HTML omitted -->sig_s.fill_with_bits_of_field_element(pb, sig.s);<!-- raw HTML omitted -->signatureVerifier.generate_r1cs_witness();</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>signatureVerifier.generate_r1cs_constraints();</strong></td>
+</tr>
+<tr>
+<td><strong>PublicDataGadget</strong></td>
+<td align="left"><strong>Public data helper class.<!-- raw HTML omitted -->将所有链上的数据(public data) 哈希成一个固定值，因此固定了每个电路证明的输入</strong></td>
+<td><strong>const VariableT publicInput;<!-- raw HTML omitted -->std::vector<!-- raw HTML omitted --> publicDataBits;<!-- raw HTML omitted -->std::unique_ptr&lt;sha256_many&gt; hasher;<!-- raw HTML omitted -->std::unique_ptr&lt;libsnark::dual_variable_gadget<!-- raw HTML omitted -->&gt; calculatedHash;<!-- raw HTML omitted --></strong></td>
+<td><strong>hasher-&gt;generate_r1cs_witness();<!-- raw HTML omitted -->calculatedHash-&gt;generate_r1cs_witness_from_bits();<!-- raw HTML omitted -->pb.val(publicInput) = pb.val(calculatedHash-&gt;packed);</strong></td>
+<td><strong>init VariableT;</strong></td>
+<td><strong>hasher-&gt;generate_r1cs_constraints();<!-- raw HTML omitted -->calculatedHash-&gt;generate_r1cs_constraints(false);<!-- raw HTML omitted -->ConstraintT(calculatedHash-&gt;packed, FieldT::one(), publicInput);</strong></td>
+</tr>
+<tr>
+<td><strong>FloatGadget</strong></td>
+<td align="left"><strong>在电路中使用一种明确的编码格式来编码float类型</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>LabelHasher</strong></td>
+<td align="left"><strong>用于固定label标签中的内容</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>DualVariableGadget : public libsnark::dual_variable_gadget<!-- raw HTML omitted --></strong></td>
+<td align="left"><strong>相当于是一个动态数组，里面有单个，变量类型是VariableT</strong></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="merkletree">MerkleTree</h3>
+<p>下面gadget主要实现了MerkleTree根节点的计算 ，以及查看根节点的值是否和预期结果相互匹配。</p>
+<table>
+<thead>
+<tr>
+<th>Merkle_path_select_4</th>
+<th>通过bit位选择四个叶子节点的顺序，然后按照指定顺序进行hash</th>
+<th>OrGadget bit0_or_bit1;<!-- raw HTML omitted -->AndGadget bit0_and_bit1;<!-- raw HTML omitted -->TernaryGadget child0-3</th>
+<th>generate_r1cs_witness</th>
+<th>init bit0_or_bit1, bit0_and_bit1;<!-- raw HTML omitted -->init child0-3;</th>
+<th>generate_r1cs_constraints</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>merkle_path_compute_4</strong></td>
+<td><strong>按照顺序从底向上计算hash，该merkletree是一颗四叉树</strong></td>
+<td><strong>const size_t m_depth;<!-- raw HTML omitted -->const VariableArrayT m_address_bits;<!-- raw HTML omitted -->const VariableT m_leaf;<!-- raw HTML omitted -->const VariableArrayT m_path;<!-- raw HTML omitted -->std::vector&lt;merkle_path_selector_4&gt; m_selectors;<!-- raw HTML omitted -->std::vector<!-- raw HTML omitted --> m_hashers;</strong></td>
+<td><strong>for(i = 0; i &lt; m_hashers.size; i++){m_selectors[i].generate_r1cs_witness();<!-- raw HTML omitted -->m_hashers[i].generate_r1cs_witness();}</strong></td>
+<td><strong>assert(in_depth &gt; 0);<!-- raw HTML omitted -->assert(in_address_bits.size == in_depth*2);<!-- raw HTML omitted -->for(i = 0; i &lt; m_depth; i++){merkle_path_selector_4();}<!-- raw HTML omitted -->m_hashers.push_back(HashT(var_array()))</strong></td>
+<td><strong>for(i = 0; i &lt; m_hashers.size; i++){m_selectors[i].generate_r1cs_constraints();<!-- raw HTML omitted -->m_hashers[i].generate_r1cs_constraints();}</strong></td>
+</tr>
+<tr>
+<td><strong>merkle_path_authenticator_4</strong></td>
+<td><strong>MerkleTree验证器，验证根节点和最后的结果值</strong></td>
+<td><strong>const VariableT m_expected_root;</strong></td>
+<td><strong>none</strong></td>
+<td><strong>merkle_path_compute_4<!-- raw HTML omitted -->::meukle_path_compute_4(in_pb, in_depth, in_address_bits, in_leaf, in_path, in_annotation_prefix);</strong></td>
+<td><strong>merkle_path_compute_4<!-- raw HTML omitted -->::generate_r1cs_constraints();<!-- raw HTML omitted -->ConstraintT(this-&gt;result(), 1, m_expected_root);//match the root_node and m_expected_root</strong></td>
+</tr>
+</tbody>
+</table>
+<p>下面分析有关业务的gadgets：</p>
+<h3 id="accountgadgets">AccountGadgets</h3>
+<p><strong>AccountGadgets</strong>主要有四个gadgets，<code>UpdateAccountGadget</code>依赖于<code>AccountGadget</code>，<code>UpdateBalanceGadget</code>依赖于<code>BalanceGadget</code>。主要用于更新<code>merkletree</code>上的余额，更新了余额后，<code>balanceroot</code>的值会发生变化，也会导致<code>Accountroot</code>发生变化。因此需要上述<code>gadgets</code>来更新<code>merkletree</code>。</p>
+<p><strong>UpdateAccountGadget</strong>首先分析下这个<code>gadgets</code>，首先更新叶子节点前后的变化，初始化<code>proof</code>证明计算<code>merkleroot</code>过程中的路径。该值是由<code>witness</code>传入，<code>proofVerifierBefore</code>计算之前的<code>merkleroot</code>，并且进行验证。<code>rootCalculatorAfter</code>计算之后的<code>merkleroot</code>。</p>
+<p><strong>UpdateBalanceGadget</strong>也是和上面同理。</p>
+<p><strong>witness</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">const</span> <span class="n">Proof</span><span class="o">&amp;</span> <span class="n">_proof</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ordergagets">orderGagets</h3>
+<p><strong>orderGagets</strong>主要进行一些订单有效的校验，比如<code>feeBips</code>和<code>rebateBips</code>两者中有一个要为0；<code>feeBips</code>要小于或等于最大费用；订单中转换的两种币种的<code>tokenID</code>要不相同。并且校验了之前<code>tradeHistroyBefore</code>的<code>orderID</code>和当前的<code>orderID</code>之间的不同，然后做出不同的判断，如果<code>order.orderID &gt; tradeHistory.orderID</code>订单会覆盖历史订单；如果<code>order.orderID == tradeHistory.orderID</code>使用历史订单，这里的一种情况可以用于当历史订单的时间戳失效后，通过相同的<code>orderID</code>来增加订单的时间；如果<code>order.orderID &lt; tradeHistory.orderID</code>则订单会被取消。最后就是验证订单拥有者的有效性，即对订单的输入进行hash，然后对hash结果进行签名。最后使用公钥验证签名结果的有效性。</p>
+<p><strong>witness</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">const</span> <span class="n">Order</span><span class="o">&amp;</span> <span class="n">order</span><span class="p">,</span> 
+<span class="k">const</span> <span class="n">Account</span><span class="o">&amp;</span> <span class="n">account</span><span class="p">,</span> 
+<span class="k">const</span> <span class="n">BalanceLeaf</span><span class="o">&amp;</span> <span class="n">balanceLeafS</span><span class="p">,</span> 
+<span class="k">const</span> <span class="n">BalanceLeaf</span><span class="o">&amp;</span> <span class="n">balanceLeafB</span><span class="p">,</span> 
+<span class="k">const</span> <span class="n">TradeHistoryLeaf</span><span class="o">&amp;</span> <span class="n">tradeHistoryLeaf</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="matchinggadgets">MatchingGadgets</h3>
+<p><strong>CheckFillRateGadget</strong>这个组件主要是用来检测订单的填充率，当订单的填充率达到一定的比例时候就默认订单已经填充满了。计算公式为<code>(fillAmountS/fillAmountB) * 100 &lt; (amountS/amountB) * 101</code>，化简之后为<code>(fillAmountS * amountB * 100) &lt; (fillAmountB * amountS * 101)</code>，如果<code>fillAmount</code>的值满足这个等式就说明订单填充率已经完成。</p>
+<p><strong>这里修改了测试，发现当amount的最大值为<code>296</code>，当超过这个值是，电路的<code>UnsafeMulGadget</code>计算就会发生溢出，导致订单填充率校验结果为无效结果。</strong></p>
+<p><strong>CheckValidGadget</strong>依赖于<code>CheckFillRateGadget</code>的组件，主要用于检测订单是否被正确的填满。主要的检测有<code>fillAmounts</code>小于<code>Amounts</code>； 检查<code>allOrNone</code>标识为0，应为有该标识表示订单可以被部分填充。检查时间戳是否在有效区间，检查填充率是否满足，检查<code>FillAmountS</code>和<code>FillAmountB</code>同时不能为0，这里的<code>FillAmount</code>主要是本次订单匹配需要<code>fill</code>的值，因为是已经匹配过的值，所以这里的值不能为0。</p>
+<p><strong>FeeCalculatorGadget</strong>(<strong>不依赖别的gadgets</strong>)计算协议费，费用，回扣。在不同的电路中，订单需要支付不同项的费用。费用都是按照<code>protocolFeeBips</code>，<code>feeBips</code>，<code>rebateBips</code>的值来进行计算。</p>
+<p><strong>MaxFillAmountsGadget</strong>(<strong>不依赖别的gadgets</strong>)计算订单的<code>remainingS</code>和<code>remainingB</code>的最大填充数量。首先计算买入币种还有多少没有买，然后根据<code>amountS/amountB</code>的比例算出还有多少币没有卖，然后分别得出填充数量<code>fillAmountS</code>和<code>fillAmountB</code>的值。显示根据剩余买入的数目计算剩余卖出的数目，校验剩余卖出的数目是否小于账户余额，然后根据其最小值计算其实际剩余买入数目的最大值。</p>
+<p><strong>TakerMakerMatchingGadget</strong>(<strong>不依赖别的gadgets</strong>)计算两个订单结算后的填充数量。首先比较toker要买的币数量和maker要卖的币数量的大小，以多的token为基础计算token少的一方需要卖出和买入的token数目。最后得出<code>makerFillS</code>，<code>makerFillB</code>，<code>takerFillS</code>，<code>takerFillB</code>和订单是否匹配的结果<code>bMatchable</code>。</p>
+<p>**MatchingGadget ** **(依赖于<code>TakerMakerMatchingGadget</code>的组件)**以上面的<code>gadgets</code>为基础，查看两个订单是否匹配，并且通过<code>buy</code>标识来指定谁是<code>taker</code>，谁是<code>maker</code>，修改<code>taker</code>的<code>fillA.S</code>变量。最后得出此次匹配的最终匹配结果和<code>fillA_S</code>，<code>fillA_B</code>，<code>fillB_S</code>，<code>fillB_B</code>的最终结果。<strong>在这个计算的过程中因为整除之后存在余数，taker卖出tokenS的价格高于自己定的最低价格。maker买入的价格低于自己定的最高价格，因此taker会获益，但是toker的手续费根据DESIGN.md也会高于maker。出现上面情况的主要原因是MulDivGadget除法去掉余数后产生的误差</strong></p>
+<p><strong>OrderMatchingGadget</strong>  **(依赖于<code>MatchingGadget</code> <code>MaxFillAmountsGadget</code> <code>CheckValidGadgets</code>的组件)**这个<code>gadgets</code>基于上面的<code>gadgets</code>，在匹配之前检查了两个订单的买入和卖出tokenID的值是否相互匹配，这个相等的判断是写入到电路中的，<code>MatchingGadgets</code>匹配两个订单后，<code>checkValid</code>需要获取每个订单的匹配结果的填充值<code>matchingGadget.getFillA_S()</code>，<code>matchingGadget.getFillA_B()</code>，从而检查出两个订单匹配的有效性。</p>
+<hr>
+<h2 id="circuit">Circuit</h2>
+<h3 id="depositcircuit">DepositCircuit</h3>
+<h4 id="1-流程">1. 流程</h4>
+<ol>
+<li>用户发送Deposit请求到ETH主链的XXX合约。</li>
+<li>中继监听XXX合约，收到用户的Deposit请求。</li>
+<li>中继组装Deposit请求生成Deposit请求的block进行提交，调用XXX合约的commitBlock。</li>
+<li>中继调用电路部分的block的prove。</li>
+<li>中继调用XXX合约的VerifiyBlock。</li>
+</ol>
+<h4 id="2-prove-input">2 Prove Input</h4>
+<p>Prove的input包含block的信息和deposit的信息：</p>
+<p><strong>Depositblock的信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">DepositBlock</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">exchangeID</span><span class="p">;</span>
+
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">merkleRootBefore</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">merkleRootAfter</span><span class="p">;</span>
+    
+    <span class="c1">// # Accumulated hash of starting onchain request
+</span><span class="c1"></span>    <span class="n">libff</span><span class="o">::</span><span class="n">bigint</span><span class="o">&lt;</span><span class="n">libff</span><span class="o">::</span><span class="n">alt_bn128_r_limbs</span><span class="o">&gt;</span> <span class="n">startHash</span><span class="p">;</span>
+    
+    <span class="c1">// # Index of onchain request
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">startIndex</span><span class="p">;</span>
+    <span class="c1">// # Number of onchain requests processed in this block
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">count</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Loopring</span><span class="o">::</span><span class="n">Deposit</span><span class="o">&gt;</span> <span class="n">deposits</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>每个<strong>Deposit</strong>的信息：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">Deposit</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">amount</span><span class="p">;</span>
+    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdate</span><span class="p">;</span>
+    <span class="n">AccountUpdate</span> <span class="n">accountUpdate</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BalanceUpdate</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">tokenID</span><span class="p">;</span>
+    <span class="n">Proof</span> <span class="n">proof</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootBefore</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootAfter</span><span class="p">;</span>
+    <span class="n">BalanceLeaf</span> <span class="n">before</span><span class="p">;</span>
+    <span class="n">BalanceLeaf</span> <span class="n">after</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">AccountUpdate</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">accountID</span><span class="p">;</span>
+    <span class="n">Proof</span> <span class="n">proof</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootBefore</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootAfter</span><span class="p">;</span>
+    <span class="n">Account</span> <span class="n">before</span><span class="p">;</span>
+    <span class="n">Account</span> <span class="n">after</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Account</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">jubjub</span><span class="o">::</span><span class="n">EdwardsPoint</span> <span class="n">publicKey</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">nonce</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">balancesRoot</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BalanceUpdate</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">tokenID</span><span class="p">;</span>
+    <span class="n">Proof</span> <span class="n">proof</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootBefore</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">rootAfter</span><span class="p">;</span>
+    <span class="n">BalanceLeaf</span> <span class="n">before</span><span class="p">;</span>
+    <span class="n">BalanceLeaf</span> <span class="n">after</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">BalanceLeaf</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">balance</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">tradingHistoryRoot</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="C:%5CUsers%5Cczm18%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5C1572250383687.png" alt="1572250383687"></p>
+<p>对于上面的图只要稍加修改，修改最左侧输入为<code>DepositBlock</code>数据，修改<code>onchainwithdraw</code>为<code>Deposit</code>中的数据即可。</p>
+<h4 id="3-circuit">3 Circuit</h4>
+<p>电路会计算一个如下的sha256 hash，然后verifyBlock的时候输入hash会与这个hash进行验证，一致则表示成功。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="c1">// Public data
+</span><span class="c1"></span><span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">exchangeID</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">merkleRootBefore</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">merkleRootAfter</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="c1">// 起始desposit的hash值
+</span><span class="c1"></span><span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="n">depositBlockHashStart</span><span class="p">.</span><span class="n">bits</span><span class="p">));</span>
+<span class="c1">// 每个despoit操作的hash叠加，因为是以太坊的大端存储格式，因此要翻转
+</span><span class="c1"></span><span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">reverse</span><span class="p">(</span><span class="n">hashers</span><span class="p">.</span><span class="n">back</span><span class="p">().</span><span class="n">result</span><span class="p">().</span><span class="n">bits</span><span class="p">));</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">startIndex</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">count</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>电路运行流程</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="mf">1.</span> <span class="err">计算存储金额的上限，如果存储金额后总金额大于最大金额容量</span><span class="mi">2</span><span class="o">**</span><span class="mi">96</span><span class="o">-</span><span class="mi">1</span><span class="err">，则存储后金额为最大金额。</span>
+<span class="mf">2.</span> <span class="n">updateBalance</span>
+<span class="mf">3.</span> <span class="n">updateAccount</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ordercancellationcircuit">OrderCancellationCircuit</h3>
+<h4 id="1-流程-1">1 流程</h4>
+<ol>
+<li>用户发送Cancel请求到中继。</li>
+<li>中继接收用户Cancel请求，组装成deposit请求生成deposit的block提交到ETH主链，调用XXX合约的commitBlock。</li>
+<li>中继调用电路部分生成block的prove。</li>
+<li>中继调用XXX合约的verifyBlock。</li>
+</ol>
+<h4 id="2-prove-input-1">2 Prove input</h4>
+<p><strong>block的信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="n">CancellationBlock</span>
+<span class="p">{</span>
+    <span class="nl">exchangeID</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+
+    <span class="nl">merkleRootBefore</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="nl">merkleRootAfter</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+
+    <span class="err">#</span> <span class="nl">Operator</span><span class="p">:</span>
+    <span class="err">#</span> <span class="n">Account</span> <span class="n">update</span> <span class="n">data</span>
+    <span class="nl">operatorAccountID</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">accountUpdate_O</span><span class="p">:</span> <span class="n">AccountUpdate</span><span class="p">,</span>
+
+    <span class="nl">cancels</span><span class="p">:</span> <span class="n">Cancellation</span><span class="p">[],</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>每个OrderCancellation的信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="n">Cancellation</span>
+<span class="p">{</span>
+    <span class="err">#</span> <span class="n">Offchain</span> <span class="n">request</span> <span class="n">data</span>
+    <span class="nl">fee</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="nl">label</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="nl">signature</span><span class="p">:</span> <span class="n">Signature</span><span class="p">,</span>
+
+    <span class="err">#</span> <span class="nl">User</span><span class="p">:</span>
+    <span class="err">#</span> <span class="n">Trade</span> <span class="n">history</span> <span class="n">update</span> <span class="n">data</span>
+    <span class="err">#</span> <span class="n">Balance</span> <span class="n">update</span> <span class="n">data</span> <span class="k">for</span> <span class="n">tokenF</span> <span class="n">and</span> <span class="n">token</span> <span class="n">withdrawn</span>
+    <span class="err">#</span> <span class="n">Account</span> <span class="n">update</span> <span class="n">data</span>
+    <span class="nl">tradeHistoryUpdate_A</span><span class="p">:</span> <span class="n">TradeHistoryUpdate</span><span class="p">;</span>
+    <span class="nl">balanceUpdateT_A</span><span class="p">:</span> <span class="n">BalanceUpdate</span><span class="p">,</span>
+    <span class="nl">balanceUpdateF_A</span><span class="p">:</span> <span class="n">BalanceUpdate</span><span class="p">;</span>
+    <span class="nl">accountUpdate_A</span><span class="p">:</span> <span class="n">AccountUpdate</span><span class="p">;</span>
+
+    <span class="err">#</span> <span class="nl">Operator</span><span class="p">:</span>
+    <span class="err">#</span> <span class="n">Balance</span> <span class="n">update</span> <span class="n">data</span> <span class="k">for</span> <span class="n">tokenF</span>
+    <span class="nl">balanceUpdateF_O</span><span class="p">:</span> <span class="n">BalanceUpdate</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>数据状态更新参考上面格式，替换成相应的<code>Cancellation</code>和<code>OrderCancellationBlock</code>中的信息即可。</p>
+<h4 id="3-circuit-1">3 Circuit</h4>
+<h4 id="31--计算publicdatahash">3.1  计算publicDataHash</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="c1">// Public data
+</span><span class="c1"></span><span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">exchangeID</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">merkleRootBefore</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">merkleRootAfter</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+<span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">labelHasher</span><span class="o">-&gt;</span><span class="n">result</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">bits</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">onchainDataAvailability</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">constants</span><span class="p">.</span><span class="n">padding_0000</span><span class="p">);</span>
+    <span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">operatorAccountID</span><span class="p">.</span><span class="n">bits</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="n">OrderCancellationGadget</span><span class="o">&amp;</span> <span class="nl">cancel</span> <span class="p">:</span> <span class="n">cancels</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">publicData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">cancel</span><span class="p">.</span><span class="n">getPublicData</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">onchainDataAvailability</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">):</span>
+        <span class="n">orderCancellations</span> <span class="o">+=</span> <span class="n">orderCancelltions</span><span class="o">.</span><span class="n">getpublicData</span><span class="p">();</span>
+    <span class="n">publicDataHash</span> <span class="o">=</span> <span class="n">sha_256</span><span class="p">(</span><span class="n">exchangeID</span> <span class="o">+</span> <span class="n">merkleRootBefore</span> <span class="o">+</span> <span class="n">merkleRootAfter</span> <span class="o">+</span> <span class="n">constant</span><span class="o">.</span><span class="n">padding_0000</span> <span class="o">+</span> <span class="n">operatorAccountID</span> <span class="o">+</span> <span class="n">orderCancellations</span><span class="p">);</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">publicDataHash</span> <span class="o">=</span> <span class="n">sha_256</span><span class="p">(</span><span class="n">exchangeID</span> <span class="o">+</span> <span class="n">merkleRootBefore</span> <span class="o">+</span> <span class="n">merkleRootAfter</span> <span class="o">+</span> <span class="n">labelHasher</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的hash值就是<code>CancellationBlock</code>中的每个值，加上填充，加上每个<code>cancel.getPublicData()</code>的值。</p>
+<h4 id="32-ordercancellationgadget">3.2 OrderCancellationGadget</h4>
+<ol>
+<li>校验<code>oldOrderId</code>小于等于<code>newOrderId</code>。</li>
+<li>确保<code>fFee</code>和<code>fee</code>在精度范围内相等。<code>Float16Encoding</code>。</li>
+<li>将订单的填充数目<code>filled_after</code>置为0。</li>
+<li>用户向operator支付取消交易费用。</li>
+<li>将用户的随机数加1。</li>
+<li>更新账户A<code>TradeHistory</code>算出新的merkleroot。</li>
+<li>账户A<code>TradeHistroy</code>的merkleroot改变之后，需要更新<code>updateBalanceT_A</code>和<code>updateBalanceF_A</code>。</li>
+<li>账户A<code>balance</code>的merkleroot发生变化，A的<code>Accountroot</code>也需要更新。<code>updateAccount_A</code>。</li>
+<li>更新操作员的余额信息。<code>updateBalanceF_O</code>。</li>
+<li>更新操作员的账户信息。<code>updateAccount_O</code>。</li>
+</ol>
+<h3 id="ringsettlementoff-chain">RingSettlement(off-chain)</h3>
+<h4 id="1-流程-2">1 流程</h4>
+<ol>
+<li>用户发送match order请求到中继。</li>
+<li>中继收到用户的match order请求，在线下匹配订单，并将订单两两组成<code>RingSettlement</code>，然后组成<code>RingSettlementBlock</code>提交到ETH主链，调用XXX合约commitblock。</li>
+<li>中继调用电路部分生成block的prove。</li>
+<li>中继调用XXX合约验证verifyBlock。</li>
+</ol>
+<h4 id="2-prove-input-2">2 Prove Input</h4>
+<p>Prove的Input包含block的信息和每个<code>RingSettlement</code>的信息。</p>
+<p><strong>block的信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">RingSettlementBlock</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="c1">// 交易所的ID
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">exchangeID</span><span class="p">;</span>
+
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">merkleRootBefore</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">merkleRootAfter</span><span class="p">;</span>
+    <span class="c1">// timestamp used in this block
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">timestamp</span><span class="p">;</span>
+    
+    <span class="c1">// Protocol fees used in this block
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">protocolTakerFeeBips</span><span class="p">;</span>
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">protocolMakerFeeBips</span><span class="p">;</span>
+    
+    <span class="c1">// operator sign
+</span><span class="c1"></span>    <span class="n">Signature</span> <span class="n">signature</span><span class="p">;</span>
+    <span class="c1">// protocol fee account update data 
+</span><span class="c1"></span>    <span class="n">AccountUpdate</span> <span class="n">accountUpdate_P</span><span class="p">;</span>
+    
+    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">operatorAccountID</span><span class="p">;</span>
+    <span class="c1">// operator account update
+</span><span class="c1"></span>    <span class="n">AccountUpdate</span> <span class="n">accountUpdate_O</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Loopring</span><span class="o">::</span><span class="n">RingSettlement</span><span class="o">&gt;</span> <span class="n">ringSettlements</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>RingSettlement的信息</strong></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c++" data-lang="c++"><span class="k">class</span> <span class="nc">RingSettlement</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+    <span class="n">Ring</span> <span class="n">ring</span><span class="p">;</span>
+    
+    <span class="c1">// the starting merkleroot
+</span><span class="c1"></span>    <span class="n">ethsnarks</span><span class="o">::</span><span class="n">FieldT</span> <span class="n">accountsMerkleRoot</span><span class="p">;</span>
+    
+    <span class="c1">// update tradeHistroy
+</span><span class="c1"></span>    <span class="n">TradeHistoryUpdate</span> <span class="n">tradeHistoryUpdate_A</span><span class="p">;</span>
+    <span class="n">TradeHistoryUpdate</span> <span class="n">tradeHistoryUpdate_B</span><span class="p">;</span>
+    
+    <span class="c1">// update accountA information
+</span><span class="c1"></span>    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateS_A</span><span class="p">;</span>
+    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateB_A</span><span class="p">;</span>
+    <span class="n">AccountUpdate</span> <span class="n">accountUpdate_A</span><span class="p">;</span>
+    
+    <span class="c1">// update accountB information
+</span><span class="c1"></span>    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateS_B</span><span class="p">;</span>
+    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateB_B</span><span class="p">;</span>
+    <span class="n">AccountUpdate</span> <span class="n">accountUpdate_B</span><span class="p">;</span>
+    
+    <span class="c1">// balance update data for protocol fee payment
+</span><span class="c1"></span>    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateA_P</span><span class="p">;</span>
+    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateB_P</span><span class="p">;</span>
+    
+    <span class="c1">// balance update data for the operator(fee/rebate/protocol fee)
+</span><span class="c1"></span>    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateA_O</span><span class="p">;</span>
+    <span class="n">BalanceUpdate</span> <span class="n">balanceUpdateB_O</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="n">Order</span>
+<span class="p">{</span>
+    <span class="nl">exchangeID</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">orderID</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">accountID</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">tokenS</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">tokenB</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">amountS</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="nl">amountB</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+    <span class="nl">allOrNone</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">validSince</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">validUntil</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">maxFeeBips</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">buy</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">label</span><span class="p">:</span> <span class="n">string</span><span class="p">,</span>
+
+    <span class="nl">feeBips</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+    <span class="nl">rebateBips</span><span class="p">:</span> <span class="n">number</span><span class="p">,</span>
+
+    <span class="nl">signature</span><span class="p">:</span> <span class="n">Signature</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Ring</span>
+<span class="p">{</span>
+    <span class="nl">orderA</span><span class="p">:</span> <span class="n">Order</span><span class="p">,</span>
+    <span class="nl">orderB</span><span class="p">:</span> <span class="n">Order</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="3-circuit-2">3 Circuit</h4>
+<h4 id="31-计算publicdatahash">3.1 计算publicDataHash</h4>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">onchainDataAvailability</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">blocksize</span><span class="p">):</span>
+        <span class="n">transformaData</span> <span class="o">+=</span> <span class="n">ringSettlement</span><span class="o">.</span><span class="n">getpublicData</span><span class="p">();</span>
+    <span class="n">publicDataHash</span> <span class="o">=</span> <span class="n">sha_256</span><span class="p">(</span><span class="n">exchangeID</span> <span class="o">+</span> <span class="n">merkleRootBefore</span> <span class="o">+</span> <span class="n">merkleRootAfter</span> <span class="o">+</span> <span class="n">timestamp</span> <span class="o">+</span> <span class="n">protocolTakerFeeBips</span> <span class="o">+</span> <span class="n">protocolMakerFeeBips</span> <span class="o">+</span> <span class="n">constant</span><span class="o">.</span><span class="n">padding_0000</span> <span class="o">+</span> <span class="n">operatorAccountID</span> <span class="o">+</span> <span class="n">transformData</span><span class="p">);</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">publicDataHash</span> <span class="o">=</span> <span class="n">sha_256</span><span class="p">(</span><span class="n">exchangeID</span> <span class="o">+</span> <span class="n">merkleRootBefore</span> <span class="o">+</span> <span class="n">merkleRootAfter</span> <span class="o">+</span> <span class="n">timestamp</span> <span class="o">+</span> <span class="n">protocolTakerFeeBips</span> <span class="o">+</span> <span class="n">protocolMakerFeeBips</span><span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="32ringsettlementgadget">3.2RingSettlementGadget</h4>
+<ol>
+<li>使用<code>OrderMatchingGadget</code>匹配两个订单，获得订单匹配结果，如果订单能够匹配上，获取本次匹配的填充量。</li>
+<li>校验填充值<code>fillS_A</code>使用<code>floatGadget</code>编码的精度损失，精度损失需要在<code>Float24Accuracy</code>范围内。</li>
+<li>根据<code>buy</code>标识识别谁是<code>maker</code>和谁是<code>taker</code>，然后计算实际<code>taker</code>的买入值和<code>maker</code>的卖出值。</li>
+<li>计算A和B订单填充之后的值。</li>
+<li>计算订单A和B的协议费用。</li>
+<li>订单A和B都减少卖出的<code>fillS_value</code>。</li>
+<li>用户给<code>operator</code>支付总费用。</li>
+<li><code>operator</code>分别给订单AB回扣和支付<code>protocol fee</code>。</li>
+<li>更新A,B,protocol account, operator的merkletree状态。</li>
+</ol>
+<p><strong>onchainWithdraw和offchainWithdraw在</strong></p>
+<p>现在withdraw有两种⽅式：onchain withdraw和offchain withdraw。
+两个各有优劣：
+1 onchain withdraw缺点是⽐较慢，要先经过以太主⽹确认才会到中继进⾏处理；优点是可以确保被处
+理（合约设置超过15分钟就要被优先处理）
+2 offchain withdraw的优点是快，直接发到中继进⾏处理；缺点是中继可以选择性的不处理；</p>
+<h3 id="onchainwithdraw">onchainWithdraw</h3>
+<p>1 ⽤户发送withdraw请求到ETH主链的Exchange合约
+2 中继监听Exchange合约收到⽤户的withdraw请求
+3 中继组装withdraw请求⽣成withdraw的block提交，调⽤Exchange的commitBlock
+4 中继调⽤电路部分⽣成block的prove
+5 中继调⽤Exchange的verifyBlock</p>
+<h3 id="offchainwithdraw">offchainWithdraw</h3>
+<p>1 ⽤户发送withdraw请求到中继
+2 中继收到⽤户withdraw请求。组装withdraw请求⽣成withdraw的block提交到ETH主链，调⽤Exchange的commitBlock
+3 中继调⽤电路部分⽣成block的prove
+4 中继调⽤Exchange合约的verifyBlock</p>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2020-04-06
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://puppym.github.io/blog/tags/loopring/">loopring</a>
+          <a href="https://puppym.github.io/blog/tags/zkrollup/">zkrollup</a>
+          <a href="https://puppym.github.io/blog/tags/zksnark/">zksnark</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">Loopring交易所circuit分析</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/">
+            <span class="next-text nav-default">加密算法分析</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://puppym.github.io/blog/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2019 -
+    2020
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        Czm
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/blog/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/blog/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/blog/js/main.dee43230127a73d039a734510fa896c89c3c7ce0cf0be0c7a7433f8fd69b76dc.js" integrity="sha256-3uQyMBJ6c9A5pzRRD6iWyJw8fODPC&#43;DHp0M/j9abdtw=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/blog/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

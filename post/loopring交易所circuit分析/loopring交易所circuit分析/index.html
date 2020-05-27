@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Loopring交易所circuit分析 - Czm blog</title>
+  
+
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+
+<meta name="applicable-device" content="pc,mobile">
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="author" content="Czm" />
+  <meta name="description" content="Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark" />
+
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.67.0" />
+
+
+<link rel="canonical" href="https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/" />
+
+
+
+
+
+<link rel="icon" href="/blog/favicon.ico" />
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/sass/jane.min.fa3d941d1d0e0ddc985804227feabffea55c89883eb0af34e0532a7ae9135151.css" integrity="sha256-&#43;j2UHR0ODdyYWAQif&#43;q//qVciYg&#43;sK804FMqeukTUVE=" media="screen" crossorigin="anonymous">
+
+
+
+
+
+<meta property="og:title" content="Loopring交易所circuit分析" />
+<meta property="og:description" content="Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/" />
+<meta property="article:published_time" content="2020-04-06T10:52:22+08:00" />
+<meta property="article:modified_time" content="2020-04-06T10:52:22+08:00" />
+<meta itemprop="name" content="Loopring交易所circuit分析">
+<meta itemprop="description" content="Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark">
+<meta itemprop="datePublished" content="2020-04-06T10:52:22&#43;08:00" />
+<meta itemprop="dateModified" content="2020-04-06T10:52:22&#43;08:00" />
+<meta itemprop="wordCount" content="6137">
+
+
+
+<meta itemprop="keywords" content="loopring,zkrollup,zksnark," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Loopring交易所circuit分析"/>
+<meta name="twitter:description" content="Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+
+
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/blog/" class="logo">Czm blog</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+        
+      </li><li class="mobile-menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+        
+      </li>
+    
+
+    
+  </ul>
+</nav>
+
+
+  
+    
+
+
+
+
+
+
+  <link rel="stylesheet" href="/blog/lib/photoswipe/photoswipe.min.css" />
+  <link rel="stylesheet" href="/blog/lib/photoswipe/default-skin/default-skin.min.css" />
+
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+  
+
+  
+
+  
+
+  <header id="header" class="header container">
+    <div class="logo-wrapper">
+  <a href="/blog/" class="logo">
+    
+      Czm blog
+    
+  </a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/">This is Home</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/post/">Archives</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/tags/">Tags</a>
+          
+
+        
+
+      </li>
+    
+        <li class="menu-item">
+        
+          
+          
+            <a class="menu-item-link" href="https://puppym.github.io/blog/categories/">Categories</a>
+          
+
+        
+
+      </li>
+    
+
+    
+    
+
+    
+  </ul>
+</nav>
+
+  </header>
+
+  <div id="mobile-panel">
+    <main id="main" class="main bg-llight">
+      <div class="content-wrapper">
+        <div id="content" class="content container">
+          <article class="post bg-white">
+    
+    <header class="post-header">
+      <h1 class="post-title">Loopring交易所circuit分析</h1>
+      
+      <div class="post-meta">
+        <time datetime="2020-04-06" class="post-time">
+          2020-04-06
+        </time>
+        
+        <span class="more-meta"> 6137 words </span>
+          <span class="more-meta"> 13 min read </span>
+
+        
+        
+
+        
+        
+      </div>
+    </header>
+
+    
+    
+<div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">Table of Contents</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#电路列表">电路列表</a></li>
+        <li><a href="#注意点">注意点</a></li>
+        <li><a href="#可能问题">可能问题</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+
+    
+    <div class="post-content">
+      <h3 id="电路列表">电路列表</h3>
+<ol>
+<li>Ring Settlement(环结算)：主要是通过撮合两种不同代币的完成各种<code>token</code>之间的相互转化。环结算的协议费和操作费只能用单一的币种进行结算。</li>
+<li>Deposit：主要是用户向链上存储<code>token</code>，并且改变链上的<code>merkleroot</code>的状态  。<code>updateBalanceGadget</code>和<code>updateAccountGadget</code>一般有两个功能，一种是校验当前计算的<code>merkleroot</code>是否和保存的<code>merkleroot</code>相互匹配。一种是计算更新之后新的<code>merkleroot</code>的值，并且进行保存。</li>
+<li>off-chain withdraw: 优点是比较快，直接发到中继进行处理，缺点是中继可以选择性不处理。这个操作需要支付交易费用，并且交易费用可以使用和交易币种不同的token。</li>
+<li>on-chain withdraw: 有关闭模式，当<code>bshutdownMode</code>模式开启后进入交易所关闭模式，所有的<code>on-chain</code>请求都会被禁止，未处理完的<code>on-chain deposit</code>请求会继续被处理。只有特殊的<code>on-chain withdraw</code>请求会被commit，这些请求会重置merkletree上的相应内容，当整个merkletree恢复到最初状态，交易所能够拿出它抵押的金额。</li>
+<li>Order Cancellation：取消当前要撮合的订单。</li>
+</ol>
+<h3 id="注意点">注意点</h3>
+<ol>
+<li>pb_variable 类型中的<code>pb_variable</code>是<code>unsigned long</code>类型的变量。</li>
+<li>每个电路的<code>generate_r1cs_constraints</code>函数中会存在num变量，<strong>这个值是固化在电路中的？</strong>，主要是用来记录一个block中含有多少个该类的交易。</li>
+<li><code>label</code>主要是用来保存一些交易信息，是将一些复杂的功能简化，比如在<code>deposit</code>电路中<code>label</code>可以用来表示这个订单是从哪个钱包来的单子，在<code>offchainwithdraw</code>中<code>operator</code>需要收取一定的手续费，<code>label</code>可以用来标记operator后续手续费的具体分配，因为在链上存储了每一个block的<code>labelhash</code>，<code>label</code>的内容就不能被更改。因此也是一种使用简单的方法将各种复杂问题一起处理。</li>
+<li><code>DualVariableGadget</code>组件并不简单，因为各个<code>gadget</code>是通过<code>generate_r1cs_witness</code>函数来进行传入输入值——相当于一些<code>gadget</code>的见证，通过<code>generate_r1cs_constraints</code>来进行电路约束，但是在逻辑上后者是在前者之前被执行，但是在<code>constraints</code>中添加约束的变量值又是在<code>witness</code>函数中进行传入的——这里是因为<code>constraints</code>里面仅仅是对于电路的逻辑约束，具体的值的校验要在<code>witness</code>函数执行之后再进行。如果前者的<code>witness</code>过程出现错误，应该返回<code>false</code>。</li>
+<li><code>onchainwithdrawal</code>电路和<code>deposit</code>电路因为是on-chain操作，在eth中生成的交易中含有nonce，因此Account中的<code>nonce</code>随机数值不会进行加1。</li>
+<li>注意每条电路中的<code>publicData</code>值是每条电路的输入值和输出值组合在一起，并且计算结果hash，并且校验两者hash是否相同。注意hash结果的值是在<code>constraints</code>里面进行计算的。</li>
+<li><code>/blocks</code>下面json文件格式为<code>&quot;./blocks/block_&quot; + exchangeID + &quot;_&quot; + nextBlockIdx + &quot;_info.json&quot;</code>，<code>/states</code>下面的json文件格式为<code>&quot;./states/state_&quot; + str(exchangeID) + &quot;_&quot; + str(previousBlockIdx) + &quot;.json&quot;</code>，<code>exchangeID</code>为交易所ID，后面是块的ID。</li>
+<li>关于类型<code>pb.val(VariableT) = Field</code></li>
+<li>使用的数字签名函数和hash函数有创新，使用的hash函数是<code>poseidon</code>哈希函数，其使用的曲线是<code>jubjub</code>曲线，通过博客说是有较好的性能。使用的数字签名函数是基于<code>poseidon</code>哈希函数的EdDSA数字签名函数。</li>
+<li><code>protocolFeeBips</code>在<code>ringsettlementblock</code>，这个值随着抵押金额的增加费用逐渐降低。<code>protocolFee  = amountB * protocolFeeBips / 100000</code>，这个费用是operator给<code>protocol Account</code>。fee 和 rebate 在 order 中。<code>fee = amountB * feeBips / 10000</code>。<code>rebate = amount * rebateBips / 10000</code>。fee是用户支付给operator，rebate是operator支付给(钱包用户)用户的回扣。</li>
+<li>bshutdown模式为交易所关门模式，交易所会继续处理用户的OnchainWithdraw，即count不为0，然后withdraws里面的数据是用户提交要处理的出局。Operator也可以自己填充单子，具体的做法是将count置为0，然后自己填充withdraws，operator自己生成证明将用户的token退还给用户。</li>
+<li>当交易所跑路后，用户需要使用<code>dataavailable</code>模式获取链上所有的数据，然后通过<code>dataavailable</code>的数据证明自己有一些余额，链上合约会返回用户的token，链上的merkleroot和calldata，保证了数据链下数据不被篡改。calldata保证了根据链上数据一步一步算的时候每一步输入的正确性，最后结果会生成一个merkletree。通过验证本地的merkleroot和链上merkleroot是否相同，从而证明本地计算数据的正确性和真实性。</li>
+<li>交易所对于是否开启<code>onChainDataAvailable</code>有两种玩法，一种是开启<code>onChainDataAvailable</code>，用户可以监管和交易所跑路，用户可以证明自己有这么多钱。一种不开启，虽然吞吐量高，但是用户需要承担交易所跑路并且销毁数据，用户就不能证明自己有那么多钱。</li>
+<li>对于on-chain的<code>deposit</code>和<code>onchainWithdraw</code>两个操作计算每个子操作计算publicData的hash的时候是计算<code>accumulated hash</code>。</li>
+<li>merkletree当中的account下有nonce变量，该变量防止重发off-chain操作，因此每一次off-chain操作都应该使得nonce的值加1。将该nonce包含进用户offchainWithdraw和orderCancellation，operator的RingSettlement的签名中，防止off-chain操作被重放。对于bshutdown的OnchainWithdraw操作，account的nonce值要被回执为0。</li>
+<li>在每条电路运行过程中的hash(publicData)的前23位，就是生成证明中的input的值。这样做是为了固定电路的输入值，当链上使用生成的proof验证时通过该值可以确保电路的输入是链上的输入。</li>
+<li>对于链上存储的<code>depositBlockHashStart</code>是一个bigint类型，该类型相当于是小端正常hash值的大端存储。因此在bigint转换成<code>DualVariableGadget</code>的过程中会将bigint转化成小端存储的hash值。<strong>因此链上都是存储的反向的hash值，因此每次导出块就是反向hash值的</strong>。对于大端和小端的理解：存储方式不一样，小端数据翻转后传输到大端上两者的值是相同的。</li>
+<li>对于DualVariableGadget相当于是一个动态数组，里面的packed相当于值，bits相当于这个gadgets所占的位数。</li>
+<li>onchain操作通过accumlatehash值来确保用来prove的值不被更改。首先用户提交数据到eth，在eth链上算accumlatehash，operator打包block去生成证明。publicData中的accumlatehash可以和链上计算的accumlatehash相互比较，确保prove的输入的数据正确。如果operator输入prove的数据正确，但是上链的publicData被修改，那么链上使用publicData计算publicInput，然后用该值verifiy的时候会错误。</li>
+<li>在链下保存merkletree的状态，merkletree的状态每次在链下更新只会计算一遍，在计算的过程中相应的程序会生成block.json，该json文件包含merkletree状态更新的一些中间过程。然后该json文件会输入到prove中生成证明，如果operator作恶，那么证明的生成会错误。相当于整体上计算了两遍，中继一边，电路会计算一边使用前一遍执行的中间结果计算一边然后进行验证。</li>
+<li>数据一致性保证：</li>
+</ol>
+<ul>
+<li>operator不能更改用户的数据，用户对应状态树中的私钥签名保证。</li>
+<li>operator不能直接改merkletree上的状态，merklerootbefore和merklerootafter保证。</li>
+<li>operator不能改链下计算状态树后的数据，block.json是block_info.json经过链下程序计算得到。block.json是用来生成证明的数据，也就是block_info.json程序在计算过程中的一些中间过程保存在block.json中。改block_info.json，对于Onchain行为，使用accumulateHash进行校验，对于offchain行为，使用loopring的公钥验证数字签名会进行校验。改block.json中的数据，生成证明会失败。</li>
+</ul>
+<ol start="22">
+<li>merkletree使用稀疏merkletree。</li>
+<li>signature分析，一共使用了两种公私密钥，eth公私钥，loopring公私钥。</li>
+<li>order取消后cancell会被变为1，在ringsettlement的时候MatchingGadget将fill为0，在orderMatching检查订单CheckValidGadget，会在这里检查出fill为0。isNonZeroFillAmountS。</li>
+<li><strong>publicDatahash在电路中计算一次确保了你在电路中计算所用的输入是和你commit到链上的block相同。然后存在一种情况就是commit到链上的block和输入到电路中额值都被中继改了，其实有两种方式校验，第一对应offchain的操作，用户会用loopring的私钥给其签名。对于onchain操作（在链下计算开始时改数据，以太坊公钥对订单验签不会通过）。2. 通过merkleroot校验，一个账户是5，你改成10，明显merkleroot的校验不会通过。（计算完之后改数据，merkleRoot校验不会通过）</strong></li>
+</ol>
+<p><strong>用户使用loopring私钥签名的场景</strong>，下面都是offchain操作，为了保证数据不被更改，需要用户进行签名。onchain操作通过链上的accumulateHash和以太坊的私钥的签名来保证。</p>
+<ul>
+<li>offchainwithdraw request单笔交易的数据签名。</li>
+<li>Ordercancellation request签名</li>
+<li>OrderGadget 用户对自己订单进行签名</li>
+</ul>
+<p><strong>operator使用loopring私钥签名的场景</strong></p>
+<ul>
+<li>operator 对ringsettlement的publicData.publicInput和accountBefore_O.nonce两者进行验证签名，因为operator能操作fee和rebate的值，它需要使用自己的私钥来授权支付的rebate和protocol fee。</li>
+</ul>
+<ol start="24">
+<li>onchain和offchain的withdraw都会在publicData里面记录<code>getApprovedWithdrawalData</code>数据，这样做主要是为了得出withdrawamount的实际金额。因为订单请求withdraw的金额和实际withdrawamount的金额要根据balance的值来得出。</li>
+</ol>
+<h3 id="可能问题">可能问题</h3>
+<ol>
+<li><code>offchainWithdrawalCircuit.h</code>对账户费用余额和账户余额两个账户的处理有略微不同。<code>feePayment(pb, NUM_BITS_AMOUNT, balanceFBefore.balance, balanceBefore_O.balance, fFee.value(), FMT(prefix, &quot;.feePayment&quot;))</code>对于费用账户的处理，有<code>overflow</code>的校验，但是对<code>balance_after(pb, balanceBefore.balance, amountWithdrawn.value(), FMT(prefix, &quot;.balance_after&quot;))</code>的处理是<code>UnsafeSubGadget</code>，没有进行溢出检测的校验。因此第107行左右的<code>balance_after</code>的初始化有疑问。</li>
+</ol>
+<ul>
+<li><strong>解决</strong>：这里的<code>amountWithdrawn.generate_r1cs_witness(toFloat(pb.val(amountToWithdraw.result()), Float28Encoding));``amountWithdrawn</code>的值在withness里面使用 <code>amountRequested.packed</code>和<code>balanceBefore.balance</code>两者中的最小值进行了<code>witness</code>步骤，因此在<code>balance_after</code>进行初始化的时候不会初始化成负值。</li>
+</ul>
+<ol start="2">
+<li><code>onchainWithdrawalCircuit</code> ，<code>balance_after</code>的初始化也有同样问题。</li>
+</ol>
+<ul>
+<li><strong>解决</strong>：这里的解决方案和上面也是一样。</li>
+</ul>
+<ol start="3">
+<li><code>MatchingGadgets.h</code>中的<code>CheckFillRateGadget</code>使用了<code>UnsafeMulGadget</code>不安全的乘法，因此在比较两个结果的大小时可能会<code>(fillAmountS * amountB * 100) &lt; (fillAmountB * amountS * 101)</code>溢出。因为产生溢出正常校验可能会异常。</li>
+</ol>
+<ul>
+<li><strong>解决</strong>：因为这里amount的值被限制在了<code>2^96-1</code>，因此这里的相乘并不会溢出。</li>
+</ul>
+<ol start="4">
+<li>RingSettlementCircuit.h<code>电路中的</code>TransformRingSettlementDataGadget<code>的</code>generate_r1cs_constraints`函数能够进一步优化为以下代码。</li>
+</ol>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-c" data-lang="c"><span class="k">struct</span> <span class="n">Range</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">offset</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">length</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Range</span><span class="o">&gt;</span> <span class="n">ranges</span><span class="p">;</span>
+<span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">0</span><span class="p">,</span> <span class="mi">40</span><span class="p">});</span>   <span class="c1">// orderA.orderID + orderB.orderID
+</span><span class="c1"></span><span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">});</span>  <span class="c1">// orderA.accountID + orderB.accountID
+</span><span class="c1"></span><span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">80</span><span class="p">,</span> <span class="mi">16</span><span class="p">});</span>  <span class="c1">// orderA.tokenS + orderB.tokenS
+</span><span class="c1"></span><span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">96</span><span class="p">,</span> <span class="mi">48</span><span class="p">});</span>  <span class="c1">// orderA.fillS + orderB.fillS
+</span><span class="c1"></span><span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">144</span><span class="p">,</span> <span class="mi">8</span><span class="p">});</span>  <span class="c1">// orderA.data
+</span><span class="c1"></span><span class="n">ranges</span><span class="p">.</span><span class="n">push_back</span><span class="p">({</span><span class="mi">152</span><span class="p">,</span> <span class="mi">8</span><span class="p">});</span>  <span class="c1">// orderB.data
+</span><span class="c1"></span><span class="k">for</span><span class="p">(</span><span class="k">const</span> <span class="n">Range</span><span class="o">&amp;</span> <span class="nl">subRange</span> <span class="p">:</span> <span class="n">ranges</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">numRings</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">transformedData</span><span class="p">.</span><span class="n">add</span><span class="p">(</span><span class="n">subArray</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">ringSize</span> <span class="o">+</span> <span class="n">subRange</span><span class="p">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">subRange</span><span class="p">.</span><span class="n">length</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><ol start="5">
+<li>关于<code>MatchingGadgets</code>这个组件分析</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">caseC</th>
+<th>Taker</th>
+<th>Maker</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">tokenS</td>
+<td>GTO</td>
+<td>WETH</td>
+</tr>
+<tr>
+<td align="center">tokenB</td>
+<td>WETH</td>
+<td>GTO</td>
+</tr>
+<tr>
+<td align="center">amountS</td>
+<td>101</td>
+<td>101</td>
+</tr>
+<tr>
+<td align="center">amountB</td>
+<td>100</td>
+<td>100</td>
+</tr>
+<tr>
+<td align="center">isBuy</td>
+<td>Yes</td>
+<td>no</td>
+</tr>
+<tr>
+<td align="center">fill.S</td>
+<td>99</td>
+<td>100</td>
+</tr>
+<tr>
+<td align="center">fill.B</td>
+<td>100</td>
+<td>99</td>
+</tr>
+<tr>
+<td align="center">target price (WETH/GTO)</td>
+<td>1.01</td>
+<td>100/101</td>
+</tr>
+<tr>
+<td align="center">settle price (WETH/GTO)</td>
+<td>0.99</td>
+<td>0.99</td>
+</tr>
+<tr>
+<td align="center">balance tokenS</td>
+<td>2</td>
+<td>1</td>
+</tr>
+<tr>
+<td align="center">balance tokenB</td>
+<td>100</td>
+<td>99</td>
+</tr>
+<tr>
+<td align="center">order sale price</td>
+<td>100/101 W</td>
+<td>100/101 G</td>
+</tr>
+<tr>
+<td align="center">settle price</td>
+<td>100/99 W</td>
+<td>99/100 G</td>
+</tr>
+</tbody>
+</table>
+<p>对于taker：<code>100/99 &gt; 100/101</code>，因此成交卖出价格高于订单卖出价格。</p>
+<p>对于maker: <code>100/101 &gt; 99/100</code>因此实际卖出价格是低于订单卖出价格。但是其依旧是能够成交，依赖于<code>(fillAmountS * amountB * 100) &lt; (fillAmountB * amountS * 101)</code></p>
+<p>总结：订单匹配有益于taker。其余情况参考。 <a href="https://github.com/Loopring/protocols/issues/623">link</a></p>
+<ol start="6">
+<li>MatchingGadget中注释写错。<code>        takerFillB_lt_makerFillS(pb, takerFill.B, makerFill.S, NUM_BITS_AMOUNT, FMT(prefix, &quot;.takerFill.B &lt; makerFill.B&quot;)),</code>应该为<code>&quot;.takerFill.B &lt; makerFill.S&quot;</code></li>
+<li>对于main.cpp中的<code>prove</code>和<code>generatekeys</code>两个动作同时进行可能存在问题。有两种逻辑：首先pk和vk不存在，在生成证明的时候首先generatorkeys，然后再proof，这种情况逻辑上说得通，但是不符合常理。当pk和vk不存在时，不允许执行prove操作。因为generatorkeys是trust setup，因此这一步骤需要多人参与并且只产生一次。因此这里更好采取后面一种使用方法。</li>
+<li>对于Data.h文件中，offchainWithdrawBlock类中，<code>startIndex</code>和<code>startHash</code>没有使用，貌似直接从<code>onchainWithdrawBlock</code>中复制过来😂。</li>
+</ol>
+
+    </div>
+
+    
+    
+<div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">Author</span>
+    <span class="item-content">Czm</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">LastMod</span>
+    <span class="item-content">
+      2020-04-06
+      
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">License</span>
+    <span class="item-content"><a rel="license noopener" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">CC BY-NC-ND 4.0</a></span>
+  </p>
+</div>
+
+
+    
+    
+
+    <footer class="post-footer">
+      <div class="post-tags">
+          <a href="https://puppym.github.io/blog/tags/loopring/">loopring</a>
+          <a href="https://puppym.github.io/blog/tags/zkrollup/">zkrollup</a>
+          <a href="https://puppym.github.io/blog/tags/zksnark/">zksnark</a>
+          
+        </div>
+
+      
+      <nav class="post-nav">
+        
+          <a class="prev" href="/blog/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83-web3/">
+            
+            <i class="iconfont">
+              <svg  class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M691.908486 949.511495l75.369571-89.491197c10.963703-12.998035 10.285251-32.864502-1.499144-44.378743L479.499795 515.267417 757.434875 204.940602c11.338233-12.190647 11.035334-32.285311-0.638543-44.850487l-80.46666-86.564541c-11.680017-12.583596-30.356378-12.893658-41.662889-0.716314L257.233596 494.235404c-11.332093 12.183484-11.041474 32.266891 0.657986 44.844348l80.46666 86.564541c1.772366 1.910513 3.706415 3.533476 5.750981 4.877077l306.620399 321.703933C662.505829 963.726242 680.945807 962.528973 691.908486 949.511495z"></path>
+</svg>
+
+            </i>
+            <span class="prev-text nav-default">区块链思考-web3</span>
+            <span class="prev-text nav-mobile">Prev</span>
+          </a>
+        
+          <a class="next" href="/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/">
+            <span class="next-text nav-default">Loopring交易所gadget分析</span>
+            <span class="prev-text nav-mobile">Next</span>
+            
+            <i class="iconfont">
+              <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="18" height="18">
+  <path d="M332.091514 74.487481l-75.369571 89.491197c-10.963703 12.998035-10.285251 32.864502 1.499144 44.378743l286.278095 300.375162L266.565125 819.058374c-11.338233 12.190647-11.035334 32.285311 0.638543 44.850487l80.46666 86.564541c11.680017 12.583596 30.356378 12.893658 41.662889 0.716314l377.434212-421.426145c11.332093-12.183484 11.041474-32.266891-0.657986-44.844348l-80.46666-86.564541c-1.772366-1.910513-3.706415-3.533476-5.750981-4.877077L373.270379 71.774697C361.493148 60.273758 343.054193 61.470003 332.091514 74.487481z"></path>
+</svg>
+
+            </i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+
+  
+  
+
+  
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+    
+
+  
+
+        </div>
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="icon-links">
+  
+
+
+<a href="https://puppym.github.io/blog/index.xml" rel="noopener alternate" type="application/rss&#43;xml"
+    class="iconfont" title="rss" target="_blank">
+    <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="30" height="30">
+  <path d="M819.157333 1024C819.157333 574.592 449.408 204.8 0 204.8V0c561.706667 0 1024 462.293333 1024 1024h-204.842667zM140.416 743.04a140.8 140.8 0 0 1 140.501333 140.586667A140.928 140.928 0 0 1 140.074667 1024C62.72 1024 0 961.109333 0 883.626667s62.933333-140.544 140.416-140.586667zM678.784 1024h-199.04c0-263.210667-216.533333-479.786667-479.744-479.786667V345.173333c372.352 0 678.784 306.517333 678.784 678.826667z"></path>
+</svg>
+
+  </a>
+   
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    Powered by <a class="hexo-link" href="https://gohugo.io">Hugo</a>
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    Theme - <a class="theme-link" href="https://github.com/xianmin/hugo-theme-jane">Jane</a>
+  </span>
+
+  <span class="copyright-year">
+    &copy;
+    
+      2019 -
+    2020
+    <span class="heart">
+      
+      <i class="iconfont">
+        <svg class="icon" viewBox="0 0 1025 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="14" height="14">
+  <path d="M1000.1 247.9c-15.5-37.3-37.6-70.6-65.7-98.9-54.4-54.8-125.8-85-201-85-85.7 0-166 39-221.4 107.4C456.6 103 376.3 64 290.6 64c-75.1 0-146.5 30.4-201.1 85.6-28.2 28.5-50.4 61.9-65.8 99.3-16 38.8-24 79.9-23.6 122.2 0.7 91.7 40.1 177.2 108.1 234.8 3.1 2.6 6 5.1 8.9 7.8 14.9 13.4 58 52.8 112.6 102.7 93.5 85.5 209.9 191.9 257.5 234.2 7 6.1 15.8 9.5 24.9 9.5 9.2 0 18.1-3.4 24.9-9.5 34.5-30.7 105.8-95.9 181.4-165 74.2-67.8 150.9-138 195.8-178.2 69.5-57.9 109.6-144.4 109.9-237.3 0.1-42.5-8-83.6-24-122.2z"
+   fill="#8a8a8a"></path>
+</svg>
+
+      </i>
+    </span><span class="author">
+        Czm
+        
+      </span></span>
+
+  
+  
+
+  
+</div>
+
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont">
+        
+        <svg class="icon" viewBox="0 0 1024 1024" version="1.1"
+  xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+  width="35" height="35">
+  <path d="M510.866688 227.694839 95.449397 629.218702l235.761562 0-2.057869 328.796468 362.40389 0L691.55698 628.188232l241.942331-3.089361L510.866688 227.694839zM63.840492 63.962777l894.052392 0 0 131.813095L63.840492 195.775872 63.840492 63.962777 63.840492 63.962777zM63.840492 63.962777"></path>
+</svg>
+
+      </i>
+    </div>
+  </div>
+  
+<script type="text/javascript" src="/blog/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="/blog/lib/slideout/slideout-1.0.1.min.js"></script>
+
+
+
+
+<script type="text/javascript" src="/blog/js/main.dee43230127a73d039a734510fa896c89c3c7ce0cf0be0c7a7433f8fd69b76dc.js" integrity="sha256-3uQyMBJ6c9A5pzRRD6iWyJw8fODPC&#43;DHp0M/j9abdtw=" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    <script type="text/javascript" src="/blog/js/load-photoswipe.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe.min.js"></script>
+    <script type="text/javascript" src="/blog/lib/photoswipe/photoswipe-ui-default.min.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zksnark on Czm blog</title>
+    <link>https://puppym.github.io/blog/tags/zksnark/</link>
+    <description>Recent content in zksnark on Czm blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 27 May 2020 16:52:36 +0800</lastBuildDate>
+    
+	<atom:link href="https://puppym.github.io/blog/tags/zksnark/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Zksnark加法乘法同态</title>
+      <link>https://puppym.github.io/blog/post/%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%8F%8A%E5%9C%A8zk-snark%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zksnark%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81/</link>
+      <pubDate>Wed, 27 May 2020 16:52:36 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%8F%8A%E5%9C%A8zk-snark%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zksnark%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81/</guid>
+      <description>zksnark加法和乘法同态理解</description>
+    </item>
+    
+    <item>
+      <title>Loopring交易所circuit分析</title>
+      <link>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:52:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/</guid>
+      <description>Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark</description>
+    </item>
+    
+    <item>
+      <title>Loopring交易所gadget分析</title>
+      <link>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:51:50 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/</guid>
+      <description>Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>leetcode on Czm blog</title>
+    <link>https://puppym.github.io/blog/tags/leetcode/</link>
+    <description>Recent content in leetcode on Czm blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 04 Jan 2020 16:21:44 +0800</lastBuildDate>
+    
+	<atom:link href="https://puppym.github.io/blog/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>leetcode287寻找重复数字</title>
+      <link>https://puppym.github.io/blog/post/leetcode287/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/leetcode287/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/</guid>
+      <description>leetcode 寻找重复数字</description>
+    </item>
+    
+  </channel>
+</rss>

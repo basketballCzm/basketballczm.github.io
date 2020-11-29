@@ -6,10 +6,15 @@
     <description>Recent content in ethereum on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 09 Jan 2020 17:24:08 +0800</lastBuildDate>
-    
-	<atom:link href="https://puppym.github.io/blog/tags/ethereum/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 28 Nov 2020 10:35:22 +0800</lastBuildDate><atom:link href="https://puppym.github.io/blog/tags/ethereum/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gas分析</title>
+      <link>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 28 Nov 2020 10:35:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</guid>
+      <description>ethereum gas 花费总结</description>
+    </item>
     
     <item>
       <title>Geth Query并行优化</title>

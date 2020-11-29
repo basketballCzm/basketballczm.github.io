@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>gas on Czm blog</title>
+    <link>https://puppym.github.io/blog/tags/gas/</link>
+    <description>Recent content in gas on Czm blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 28 Nov 2020 10:35:22 +0800</lastBuildDate><atom:link href="https://puppym.github.io/blog/tags/gas/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gas分析</title>
+      <link>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 28 Nov 2020 10:35:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</guid>
+      <description>ethereum gas 花费总结</description>
+    </item>
+    
+  </channel>
+</rss>

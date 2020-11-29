@@ -6,10 +6,15 @@
     <description>Recent content in leetcode on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 04 Jan 2020 16:21:44 +0800</lastBuildDate>
-    
-	<atom:link href="https://puppym.github.io/blog/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Tue, 08 Sep 2020 10:25:55 +0800</lastBuildDate><atom:link href="https://puppym.github.io/blog/tags/leetcode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Combination</title>
+      <link>https://puppym.github.io/blog/post/leetcode77/combination/</link>
+      <pubDate>Tue, 08 Sep 2020 10:25:55 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/leetcode77/combination/</guid>
+      <description>leetcode 77组合数</description>
+    </item>
     
     <item>
       <title>leetcode287寻找重复数字</title>

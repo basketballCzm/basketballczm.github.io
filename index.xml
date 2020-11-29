@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Czm blog</title>
@@ -6,20 +6,185 @@
     <description>Recent content on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 May 2020 17:37:06 +0800</lastBuildDate>
-    
-        <atom:link href="https://puppym.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Sat, 28 Nov 2020 10:35:22 +0800</lastBuildDate><atom:link href="https://puppym.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gas分析</title>
+      <link>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 28 Nov 2020 10:35:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</guid>
+      <description>ethereum gas 花费总结</description>
+    </item>
     
     <item>
-      <title>Posts</title>
-      <link>https://puppym.github.io/blog/post/</link>
+      <title>Combination</title>
+      <link>https://puppym.github.io/blog/post/leetcode77/combination/</link>
+      <pubDate>Tue, 08 Sep 2020 10:25:55 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/leetcode77/combination/</guid>
+      <description>leetcode 77组合数</description>
+    </item>
+    
+    <item>
+      <title>近期笔试总结</title>
+      <link>https://puppym.github.io/blog/post/%E7%AC%94%E8%AF%959.7/huawei/</link>
+      <pubDate>Mon, 07 Sep 2020 16:45:08 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E7%AC%94%E8%AF%959.7/huawei/</guid>
+      <description>华为，百度，中兴笔试总结</description>
+    </item>
+    
+    <item>
+      <title>基于零知识证明的例子汇总</title>
+      <link>https://puppym.github.io/blog/post/%E5%9F%BA%E4%BA%8E%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%9A%84%E4%BE%8B%E5%AD%90%E6%B1%87%E6%80%BB/%E5%9F%BA%E4%BA%8E%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%9A%84%E4%BE%8B%E5%AD%90%E6%B1%87%E6%80%BB/</link>
       <pubDate>Wed, 27 May 2020 17:37:06 +0800</pubDate>
       
-      <guid>https://puppym.github.io/blog/post/</guid>
+      <guid>https://puppym.github.io/blog/post/%E5%9F%BA%E4%BA%8E%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%9A%84%E4%BE%8B%E5%AD%90%E6%B1%87%E6%80%BB/%E5%9F%BA%E4%BA%8E%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E7%9A%84%E4%BE%8B%E5%AD%90%E6%B1%87%E6%80%BB/</guid>
+      <description>基于零知识证明的例子汇总</description>
+    </item>
+    
+    <item>
+      <title>零知识证明学习清单</title>
+      <link>https://puppym.github.io/blog/post/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E5%AD%A6%E4%B9%A0%E6%B8%85%E5%8D%95/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E5%AD%A6%E4%B9%A0%E6%B8%85%E5%8D%95/</link>
+      <pubDate>Wed, 27 May 2020 17:19:25 +0800</pubDate>
       
-        <description></description>
+      <guid>https://puppym.github.io/blog/post/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E5%AD%A6%E4%B9%A0%E6%B8%85%E5%8D%95/%E9%9B%B6%E7%9F%A5%E8%AF%86%E8%AF%81%E6%98%8E%E5%AD%A6%E4%B9%A0%E6%B8%85%E5%8D%95/</guid>
+      <description>零知识证明学习清单</description>
+    </item>
+    
+    <item>
+      <title>Zksnark加法乘法同态</title>
+      <link>https://puppym.github.io/blog/post/%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%8F%8A%E5%9C%A8zk-snark%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zksnark%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81/</link>
+      <pubDate>Wed, 27 May 2020 16:52:36 +0800</pubDate>
       
+      <guid>https://puppym.github.io/blog/post/%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%8F%8A%E5%9C%A8zk-snark%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zksnark%E5%8A%A0%E6%B3%95%E4%B9%98%E6%B3%95%E5%90%8C%E6%80%81/</guid>
+      <description>zksnark加法和乘法同态理解</description>
+    </item>
+    
+    <item>
+      <title>区块链思考-web3</title>
+      <link>https://puppym.github.io/blog/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83-web3/</link>
+      <pubDate>Wed, 27 May 2020 16:51:36 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83/%E5%8C%BA%E5%9D%97%E9%93%BE%E6%80%9D%E8%80%83-web3/</guid>
+      <description>基于零知识证明的例子汇总</description>
+    </item>
+    
+    <item>
+      <title>Loopring交易所circuit分析</title>
+      <link>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:52:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80circuit%E5%88%86%E6%9E%90/</guid>
+      <description>Loopring交易所circuit分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark</description>
+    </item>
+    
+    <item>
+      <title>Loopring交易所gadget分析</title>
+      <link>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:51:50 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/loopring%E4%BA%A4%E6%98%93%E6%89%80gadget%E5%88%86%E6%9E%90/</guid>
+      <description>Loopring交易所gadget分析，loopring是以太坊上基于zkrollup的去中心化交易所，能够保证交易所作恶但不能获益。其零知识部分基于libsnark和ethsnark</description>
+    </item>
+    
+    <item>
+      <title>加密算法分析</title>
+      <link>https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</link>
+      <pubDate>Mon, 06 Apr 2020 10:12:55 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95/%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90/</guid>
+      <description>加密算法简介</description>
+    </item>
+    
+    <item>
+      <title>Raft和pbft</title>
+      <link>https://puppym.github.io/blog/post/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/raft%E5%92%8Cpbft/</link>
+      <pubDate>Sat, 04 Apr 2020 12:34:16 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%85%B1%E8%AF%86%E7%AE%97%E6%B3%95/raft%E5%92%8Cpbft/</guid>
+      <description>Raft和PBFT共识算法</description>
+    </item>
+    
+    <item>
+      <title>Bellman</title>
+      <link>https://puppym.github.io/blog/post/bellman%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/bellman/</link>
+      <pubDate>Sat, 28 Mar 2020 11:55:12 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/bellman%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90/bellman/</guid>
+      <description>bellman库代码分析，总结基于bellman库的电路以及gadget的写法</description>
+    </item>
+    
+    <item>
+      <title>国密SM2/3/4/9</title>
+      <link>https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
+      <pubDate>Mon, 02 Mar 2020 09:41:04 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E5%9B%BD%E5%AF%86%E7%AC%94%E8%AE%B0/%E5%9B%BD%E5%AF%86%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>国密SM2/3/4/9</description>
+    </item>
+    
+    <item>
+      <title>Geth Query并行优化</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C1/geth-query1/</link>
+      <pubDate>Thu, 09 Jan 2020 17:24:08 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E5%B9%B6%E8%A1%8C1/geth-query1/</guid>
+      <description>以太坊智能合约重放工具geth-query优化</description>
+    </item>
+    
+    <item>
+      <title>Geth Query报错总结</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/</link>
+      <pubDate>Thu, 09 Jan 2020 17:23:56 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/geth-query%E6%8A%A5%E9%94%99%E6%80%BB%E7%BB%93/</guid>
+      <description>以太坊智能合约数据抽取和重放报错总结</description>
+    </item>
+    
+    <item>
+      <title>Geth-query获取数据</title>
+      <link>https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/</link>
+      <pubDate>Thu, 09 Jan 2020 14:49:51 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/geth-query%E8%8E%B7%E5%8F%96%E6%95%B0%E6%8D%AE/</guid>
+      <description>以太坊智能合约数据抽取数据分析</description>
+    </item>
+    
+    <item>
+      <title>Go Sheduler</title>
+      <link>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/go-scheduler/go-scheduler/</guid>
+      <description>go-sheduler简介</description>
+    </item>
+    
+    <item>
+      <title>leetcode287寻找重复数字</title>
+      <link>https://puppym.github.io/blog/post/leetcode287/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/</link>
+      <pubDate>Sat, 04 Jan 2020 16:21:44 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/leetcode287/%E5%AF%BB%E6%89%BE%E9%87%8D%E5%A4%8D%E6%95%B0%E5%AD%97/</guid>
+      <description>leetcode 寻找重复数字</description>
+    </item>
+    
+    <item>
+      <title>Geth-query</title>
+      <link>https://puppym.github.io/blog/post/geth-query/geth-query/</link>
+      <pubDate>Thu, 02 Jan 2020 09:41:04 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
+      <description>以太坊智能合约数据快速抽取和重放</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://puppym.github.io/blog/post/2020-7-26-shared/2020.7.26.shared/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/2020-7-26-shared/2020.7.26.shared/</guid>
+      <description>分享概要 以太坊数据的价值。 攻击交易的分析。dataEth.pdf 以太坊社交网络分析。Measurements, Analyses, and Insights on the Entire Ethereum Blockchain Network 中山大学做的</description>
     </item>
     
   </channel>

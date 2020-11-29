@@ -6,10 +6,33 @@
     <description>Recent content in Posts on Czm blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 27 May 2020 17:37:06 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2020 10:35:22 +0800</lastBuildDate><atom:link href="https://puppym.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gas分析</title>
+      <link>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</link>
+      <pubDate>Sat, 28 Nov 2020 10:35:22 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/gas%E5%88%86%E6%9E%90/gas%E5%88%86%E6%9E%90/</guid>
+      <description>ethereum gas 花费总结</description>
+    </item>
     
-	<atom:link href="https://puppym.github.io/blog/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Combination</title>
+      <link>https://puppym.github.io/blog/post/leetcode77/combination/</link>
+      <pubDate>Tue, 08 Sep 2020 10:25:55 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/leetcode77/combination/</guid>
+      <description>leetcode 77组合数</description>
+    </item>
     
+    <item>
+      <title>近期笔试总结</title>
+      <link>https://puppym.github.io/blog/post/%E7%AC%94%E8%AF%959.7/huawei/</link>
+      <pubDate>Mon, 07 Sep 2020 16:45:08 +0800</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/%E7%AC%94%E8%AF%959.7/huawei/</guid>
+      <description>华为，百度，中兴笔试总结</description>
+    </item>
     
     <item>
       <title>基于零知识证明的例子汇总</title>
@@ -153,6 +176,15 @@
       
       <guid>https://puppym.github.io/blog/post/geth-query/geth-query/</guid>
       <description>以太坊智能合约数据快速抽取和重放</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://puppym.github.io/blog/post/2020-7-26-shared/2020.7.26.shared/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://puppym.github.io/blog/post/2020-7-26-shared/2020.7.26.shared/</guid>
+      <description>分享概要 以太坊数据的价值。 攻击交易的分析。dataEth.pdf 以太坊社交网络分析。Measurements, Analyses, and Insights on the Entire Ethereum Blockchain Network 中山大学做的</description>
     </item>
     
   </channel>
